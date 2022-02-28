@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
-
-import Header from './components/Header/Header';
-import NewProduct from './components/Products/NewProduct';
-import ProductList from './components/Products/ProductList';
+import React from 'react';
 import './App.css';
+import beautify from './common/beautify';
+import Footer from './common/components/NavigationElement/Footer';
+import HeadBar from './common/components/NavigationElement/HeadBar';
+import HomeBackground from './common/components/ViewElement/HomeBackground';
 
-const App = () => {}
+const App = () => {
+  return (
+    <React.Fragment>
+      <HeadBar />
+      <HomeBackground />
+      <Footer />
+    </React.Fragment>
+  )
+}
 
-export default App;
+export default beautify(App);
