@@ -17,7 +17,7 @@ const Footer = () => {
         px: 2,
         mt: 'auto',
         mx: 'auto',
-        backgroundColor: 'info.main'
+        backgroundColor: 'primary.main'
       }}
       display="flex"
       alignItems="center"

@@ -1,7 +1,7 @@
-import MuiAppBar from '@mui/material/AppBar';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import MuiToolbar from '@mui/material/Toolbar';
+import Toolbar from '@mui/material/Toolbar';
 import React from 'react';
 
 const rightLink = {
@@ -13,8 +13,8 @@ const rightLink = {
 const HeadBar = () => {
   return (
     <div>
-      <MuiAppBar position="fixed" elevation={0}>
-        <MuiToolbar sx={{ justifyContent: 'space-between' }}>
+      <AppBar position="fixed" elevation={0}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ flex: 1 }} />
           <Link
             variant="h6"
@@ -44,9 +44,9 @@ const HeadBar = () => {
               {'Register'}
             </Link>
           </Box>
-        </MuiToolbar>
-      </MuiAppBar>
-      <MuiToolbar />
+        </Toolbar>
+      </AppBar>
+      <Toolbar />
     </div>
   );
 }
