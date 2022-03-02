@@ -58,8 +58,9 @@ const Register = () => {
 
   const auth = useContext(AuthContext);
 
-  const onSubmit = (data) => {
-    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+  const onSubmit = async (data) => {
 
     delete data.rePassword;
     data.region = +data.region;
