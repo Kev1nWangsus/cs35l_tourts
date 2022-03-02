@@ -1,12 +1,237 @@
-import React from "react";
+import {yupResolver} from '@hookform/resolvers/yup';
+import {FormControl, FormHelperText, InputLabel} from '@mui/material';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import React, {useContext} from 'react';
+import {Controller, useForm} from 'react-hook-form';
+import * as Yup from 'yup';
+import FormContainer from '../../common/components/FormElement/FormContainer';
 import Footer from '../../common/components/NavigationElement/Footer';
 import HeadBar from '../../common/components/NavigationElement/HeadBar';
+import NavText from '../../common/components/NavigationElement/NavText';
+import {genders, ratings, regions} from '../../common/constant/constant';
+import {AuthContext} from "../../common/context/authcontext";
+
+
+const defaultValues = {
+  email: "",
+  password: "",
+  username: "",
+  region: "",
+  rating: "",
+  gender: "",
+};
 
 const Register = () => {
+  const validator = Yup.object().shape({
+    email: Yup.string()
+      .required("Email is required")
+      .email("Email is invalid"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(6, "Password should be at least 6 characters")
+      .max(30, "Password should be at most 30 characters"),
+    rePassword: Yup.string()
+      .required('Confirm Password is required')
+      .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+    username: Yup.string()
+      .required('Username is required')
+      .min(6, 'Username must be at least 6 characters')
+      .max(20, 'Username must not exceed 20 characters'),
+    gender: Yup.string()
+      .required("Gender is required"),
+    rating: Yup.string()
+      .required("Rating is required"),
+    region: Yup.string()
+      .required("Region is required")
+    
+  });
+  const { 
+    handleSubmit, 
+    register, 
+    control, 
+    formState: {errors} 
+  } = useForm({
+    defaultValues: defaultValues,
+    resolver: yupResolver(validator)
+  });
+
+  const onSubmit = (data) => {
+    delete(data.rePassword);
+    data.region = +data.region;
+    data.rating = +data.rating;
+    data.gender = +data.gender;
+    console.log(data);
+
+    // stringfy data
+    // send request
+    JSON.stringify(data);
+
+  }
+  const auth = useContext(AuthContext);
+
   return (
     <React.Fragment>
       <HeadBar />
-      {"Register page under construction"}
+        <FormContainer>
+
+          <Typography variant="h3" gutterBottom marked="center" align="center" sx={{ mb: 4 }}>
+            Register
+          </Typography>
+
+          <TextField 
+            required
+            id="username"
+            name="username"
+            label="Username"
+            fullWidth
+            margin="dense"
+            {...register('username')}
+            error={errors.username ? true : false}
+            helperText={errors.username?.message}
+          />
+
+          <TextField 
+            required
+            id="email"
+            name="email"
+            label="E-mail"
+            fullWidth
+            margin="dense"
+            {...register('email')}
+            error={errors.email ? true : false}
+            helperText={errors.email?.message}
+          />
+
+          <TextField 
+            required
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            fullWidth
+            margin="dense"
+            {...register('password')}
+            error={errors.password ? true : false}
+            helperText={errors.password?.message}
+          />
+
+          <TextField 
+            required
+            id="rePassword"
+            name="rePassword"
+            label="Confirm Password"
+            type="password"
+            fullWidth
+            margin="dense"
+            {...register('rePassword')}
+            error={errors.rePassword ? true : false}
+            helperText={errors.rePassword?.message}
+          />  
+
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Controller
+                name="gender"
+                control={control}
+                render={({ field: { onChange, value} }) => (
+                  <FormControl required fullWidth margin="dense" error={errors.gender ? true : false}>
+                  <InputLabel>Gender</InputLabel>
+                  <Select 
+                    value={value}
+                    onChange={onChange}
+                    id="gender"
+                    name="gender"
+                    label="Gender"
+                    labelId="gender-id"
+                  >
+                    {genders.map((gender, index) => (
+                      <MenuItem value={index} key={index}>{gender}</MenuItem>
+                    ))}
+                  </Select>
+                  {errors.gender && <FormHelperText>{errors.gender?.message}</FormHelperText>}
+                  </FormControl>
+                )} 
+                defaultValue=""
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <Controller
+                name="rating"
+                control={control}
+                render={({ field: { onChange, value} }) => (
+                  <FormControl required fullWidth margin="dense" error={errors.rating ? true : false}>
+                  <InputLabel>Rating</InputLabel>
+                  <Select 
+                    value={value}
+                    onChange={onChange}
+                    id="rating"
+                    name="rating"
+                    label="rating"
+                  >                
+                    {ratings.map((rating, index) => (
+                      <MenuItem value={index} key={index}>{rating}</MenuItem>
+                    ))}
+                  </Select>
+                  {errors.rating && <FormHelperText>{errors.rating?.message}</FormHelperText>}
+                  </FormControl>
+                )} 
+                defaultValue=""
+              />
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12} sm={12}>
+            <Controller
+              name="region"
+              control={control}
+              render={({ field: { onChange, value} }) => (
+                <FormControl required fullWidth margin="dense" error={errors.region ? true : false}>
+                <InputLabel>Region</InputLabel>
+                <Select 
+                  value={value}
+                  onChange={onChange}
+                  id="region"
+                  name="region"
+                  label="region"
+                >
+                  {regions.map((region, index) => (
+                    <MenuItem value={index} key={index}>{region}</MenuItem>
+                  ))}
+                </Select>
+                {errors.region && <FormHelperText>{errors.region?.message}</FormHelperText>}
+                </FormControl>
+              )} 
+              defaultValue=""
+            />
+          </Grid>
+
+          <FormControlLabel control={<Checkbox defaultChecked/>} label="Log me in after registration" />
+          <Grid item xs={12} sm={12} align="center" justify="center">
+            <Button onClick={handleSubmit(onSubmit)} variant={"contained"} size="large" sx={{mt: 5, width: 0.8}}>
+              Sign up
+            </Button>
+          </Grid> 
+
+          <Typography variant="body2" align="center" sx={{mt:2}}>
+            {'Already have an account? '}
+            <NavText
+              to="/login"
+              align="center"
+              underline="always"
+              variant='inherit'
+            >
+              Log in
+            </NavText>
+          </Typography>
+        </FormContainer>
       <Footer />
     </React.Fragment>
   )

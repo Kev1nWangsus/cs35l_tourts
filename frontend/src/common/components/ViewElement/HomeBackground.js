@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import {styled} from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import React from 'react';
+import NavButton from '../NavigationElement/NavButton';
 
 
 const backgroundImage =
@@ -21,21 +21,18 @@ const HomeSection = styled('section')(({ theme }) => ({
   },
 }));
 
-const BgImgContainer = styled(Box)({
+const FixedBox = styled(Box)({
   position: 'absolute',
   left: 0,
   right: 0,
   top: 0,
   bottom: 0,
-  backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat',
-  zIndex: -2,
-});
+})
 
 const HomeBackground = () => {
   return (
     <HomeSection>
-      <Container
+      <Container 
         sx={{
           mt: 3,
           mb: 14,
@@ -60,36 +57,34 @@ const HomeBackground = () => {
         >
           Find nearby tennis player or initiate your appointment!
         </Typography>
-        <Button
-          color="secondary"
-          variant="contained"
-          size="large"
-          component="a"
-          href="/register"
+        <NavButton 
+          color="secondary" 
+          size="large" 
+          to="/register" 
+          variant="contained" 
           sx={{ minWidth: 200, mt: 10 }}
         >
           Register
-        </Button>
+        </NavButton>
         <Typography variant="body2" sx={{ mt: 2 }}>
           Powered by Tourts Team
         </Typography>
-
-        <Box
+        
+        <FixedBox 
           sx={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
             backgroundColor: 'common.black',
             opacity: 0.5,
             zIndex: -1,
           }}
         />
-        <BgImgContainer sx={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundColor: '#659fad', 
-          backgroundPosition: 'center',
+        <FixedBox 
+          sx={{
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundColor: '#659fad', 
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            zIndex: -2,
           }} 
         />
       </Container>
