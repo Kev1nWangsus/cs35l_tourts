@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 const usersRoutes = require('./routes/users-routes');
+const appointmentsRoutes = require('./routes/appointments-routes')
 const HttpError = require('./models/http-error');
 
 const app = express();
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/api/appointments', appointmentsRoutes);
 app.use('/api/users', usersRoutes);
 
 app.use((req, res, next) => {

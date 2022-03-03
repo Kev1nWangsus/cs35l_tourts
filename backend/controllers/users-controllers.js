@@ -53,7 +53,7 @@ const signup = async (req, res, next) => {
     gender,
     rating,
     region,
-    places: []
+    appoitments: []
   });
 
   try {

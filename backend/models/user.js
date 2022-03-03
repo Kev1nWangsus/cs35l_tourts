@@ -7,10 +7,10 @@ const userSchema = new Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minlength: 6 },
-  gender: { type: Number, required: true },
+  gender: { type: String, required: true },
   rating: { type: Number, required: true },
-  region: { type: Number, required: true },
-  places: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Place' }]
+  region: { type: String, required: true },
+  appointments: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Appointment' }]
 });
 
 userSchema.plugin(uniqueValidator);
