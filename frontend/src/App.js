@@ -18,17 +18,17 @@ import Users from './users/pages/Users.js';
 
 const App = () => {
   // set up global authentication context
-  const [isLogIn, setIsLogIn] = useState(true);
-  const [userId, setUserId] = useState(false);
+  const [isLogIn, setIsLogIn] = useState(false);
+  const [uid, setUId] = useState(false);
 
   const login = useCallback((uid) => {
     setIsLogIn(true);
-    setUserId(uid);
+    setUId(uid);
   }, []);
 
   const logout = useCallback(() => {
     setIsLogIn(false);
-    setUserId(null);
+    setUId(null);
   }, []);
 
   let routes = isLogIn ? (
@@ -41,7 +41,7 @@ const App = () => {
         <Users />
       </Route>
 
-      <Route path='/:userId/apps' exact>
+      <Route path='/:uid/apps' exact>
         {/* view all appointments initiated by user */}
       </Route>
       <Route path='/app/new' exact>
@@ -72,7 +72,7 @@ const App = () => {
     <AuthContext.Provider
       value={{
         isLogIn: isLogIn,
-        userId: userId,
+        uid: uid,
         login: login,
         logout: logout,
       }}

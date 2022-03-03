@@ -44,16 +44,21 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     // await server response for registration
-    try {
-      const responseData = await sendRequest(
-        'http://localhost:5000/api/users/login',
-        'POST',
-        JSON.stringify(data),
-        { 'Content-Type': 'application/json' }
-      );
-      auth.login(responseData.user.id);
-    } catch (err) {
-      console.log('error');
+    const [err, response] = await sendRequest(
+      'http://localhost:5000/api/users/login',
+      'POST',
+      JSON.stringify(data),
+      { 'Content-Type': 'application/json' }
+    )
+      .then((response) => [null, response])
+      .catch((err) => [err, null]);
+
+    console.log('data', response);
+
+    if (err) {
+      console.log('error', err);
+    } else {
+      auth.login(response.user.id);
     }
   };
 

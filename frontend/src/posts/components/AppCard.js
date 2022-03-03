@@ -1,17 +1,17 @@
-import React from 'react';
 import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
   Button,
+  Card,
+  CardContent,
+  CardMedia,
   Stack,
+  Typography,
 } from '@mui/material';
+import React from 'react';
 
 const AppCard = (props) => {
   const { title, description, date, time } = props;
   return (
-    <Card sx={{ maxWidth: 500 }}>
+    <Card sx={{ width: 1, height: 1 }}>
       <CardMedia
         component='img'
         height='100'
@@ -22,7 +22,15 @@ const AppCard = (props) => {
         <Typography gutterBottom variant='h5' component='div'>
           {title}
         </Typography>
-        <Typography variant='body2' color='text.secondary'>
+        <Typography
+          color='text.secondary'
+          noWrap
+          sx={{
+            width: 1,
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+          }}
+        >
           {description}
         </Typography>
       </CardContent>
