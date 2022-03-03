@@ -13,11 +13,12 @@ import Footer from './common/components/NavigationElement/Footer';
 import HeadBar from './common/components/NavigationElement/HeadBar';
 import HomeBackground from './common/components/ViewElement/HomeBackground';
 import { AuthContext } from './common/context/authcontext';
+import Posts from './posts/pages/Posts.js';
 import Users from './users/pages/Users.js';
 
 const App = () => {
   // set up global authentication context
-  const [isLogIn, setIsLogIn] = useState(false);
+  const [isLogIn, setIsLogIn] = useState(true);
   const [userId, setUserId] = useState(false);
 
   const login = useCallback((uid) => {
@@ -33,7 +34,7 @@ const App = () => {
   let routes = isLogIn ? (
     <Switch>
       <Route path='/' exact>
-        <Users />
+        <Posts />
       </Route>
 
       <Route path='/users' exact>

@@ -13,8 +13,6 @@ import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import FormContainer from '../../common/components/FormElement/FormContainer';
-import Footer from '../../common/components/NavigationElement/Footer';
-import HeadBar from '../../common/components/NavigationElement/HeadBar';
 import NavText from '../../common/components/NavigationElement/NavText';
 import { AuthContext } from '../../common/context/authcontext';
 import { useHttpClient } from '../../common/hooks/http-hook';
@@ -35,7 +33,6 @@ const Login = () => {
   const {
     handleSubmit,
     register,
-    control,
     formState: { errors },
   } = useForm({
     defaultValues: defaultValues,
@@ -43,7 +40,7 @@ const Login = () => {
   });
 
   const auth = useContext(AuthContext);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest } = useHttpClient();
 
   const onSubmit = async (data) => {
     // await server response for registration
@@ -62,7 +59,6 @@ const Login = () => {
 
   return (
     <React.Fragment>
-      <HeadBar />
       <FormContainer>
         <Typography
           variant='h3'
@@ -138,7 +134,6 @@ const Login = () => {
           </NavText>
         </Typography>
       </FormContainer>
-      <Footer />
     </React.Fragment>
   );
 };

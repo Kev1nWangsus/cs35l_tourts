@@ -18,8 +18,6 @@ import React, { useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import FormContainer from '../../common/components/FormElement/FormContainer';
-import Footer from '../../common/components/NavigationElement/Footer';
-import HeadBar from '../../common/components/NavigationElement/HeadBar';
 import NavText from '../../common/components/NavigationElement/NavText';
 import { genders, ratings, regions } from '../../common/constant/constant';
 import { AuthContext } from '../../common/context/authcontext';
@@ -65,7 +63,7 @@ const Register = () => {
   });
 
   const auth = useContext(AuthContext);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest } = useHttpClient();
 
   const onSubmit = async (data) => {
     // modify data
@@ -93,26 +91,8 @@ const Register = () => {
     }
   };
 
-  // const signUpRequest = async (data) => {
-
-  //   try {
-  //     const responseData = await sendRequest(
-  //       "http://localhost:5000/api/users/signup",
-  //       "POST",
-  //       JSON.stringify(data),
-  //       {
-  //         "Content-Type": "application/json",
-  //       }
-  //     );
-  //     auth.login(responseData.user.id);
-  //   } catch (err) {
-  //     console.log(error);
-  //   }
-  // }
-
   return (
     <React.Fragment>
-      <HeadBar />
       <FormContainer>
         <Typography
           variant='h3'
@@ -184,8 +164,8 @@ const Register = () => {
           helperText={errors.rePassword?.message}
         />
 
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
+        <Grid container spacing={1}>
+          <Grid item xs={5}>
             <Controller
               name='gender'
               control={control}
@@ -253,7 +233,9 @@ const Register = () => {
               defaultValue=''
             />
           </Grid>
-          <Quiz />
+          <Grid item xs={1} alignItems='center' justifyContent='center'>
+            <Quiz />
+          </Grid>
         </Grid>
 
         <Grid item xs={12} sm={12}>
@@ -317,7 +299,6 @@ const Register = () => {
           </NavText>
         </Typography>
       </FormContainer>
-      <Footer />
     </React.Fragment>
   );
 };
