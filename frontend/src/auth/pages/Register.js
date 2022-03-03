@@ -24,6 +24,7 @@ import NavText from '../../common/components/NavigationElement/NavText';
 import { genders, ratings, regions } from '../../common/constant/constant';
 import { AuthContext } from '../../common/context/authcontext';
 import { useHttpClient } from '../../common/hooks/http-hook';
+import Quiz from '../components/Quiz';
 
 const defaultValues = {
   email: '',
@@ -252,6 +253,7 @@ const Register = () => {
               defaultValue=''
             />
           </Grid>
+          <Quiz />
         </Grid>
 
         <Grid item xs={12} sm={12}>
