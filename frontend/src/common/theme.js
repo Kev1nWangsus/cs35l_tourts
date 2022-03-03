@@ -1,7 +1,7 @@
 // template of theme
 
-import {green, grey, red} from '@mui/material/colors';
-import {createTheme} from '@mui/material/styles';
+import { green, grey, red } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
 
 const customTheme = createTheme({
   palette: {
@@ -9,13 +9,13 @@ const customTheme = createTheme({
       light: '#69696a',
       main: '#28282a',
       dark: '#1e1e1f',
-      contrastText: "#fff",
+      contrastText: '#fff',
     },
     secondary: {
       light: '#dfff4f',
       main: '#49b02a',
       dark: '#1d4f0d',
-      contrastText: "#fff",
+      contrastText: '#fff',
     },
     warning: {
       main: '#ffc071',

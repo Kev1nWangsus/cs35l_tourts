@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const dotenv = require('dotenv').config();
 const usersRoutes = require('./routes/users-routes');
 const HttpError = require('./models/http-error');
 
@@ -23,16 +23,10 @@ app.use((req, res, next) => {
 app.use('/api/users', usersRoutes);
 
 app.use((req, res, next) => {
-  const error = new HttpError('Could not find this route.', 404);
-  throw error;
+  throw new HttpError('Could not find this route.', 404);
 });
 
 app.use((error, req, res, next) => {
-  if (req.file) {
-    fs.unlink(req.file.path, (err) => {
-      console.log(err);
-    });
-  }
   if (res.headerSent) {
     return next(error);
   }
@@ -40,13 +34,18 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || 'An unknown error occurred!' });
 });
 
+const mongooseOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+};
+
 mongoose
-  .connect(
-    `mongodb+srv://Jacky:Ljn_20010430@cluster0.vxmzu.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-qdh6b1-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true`
-  )
+  .connect(process.env.MONGO_URL, mongooseOptions)
   .then(() => {
+    console.log('Successfully connected to database');
     app.listen(5000);
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err);
   });

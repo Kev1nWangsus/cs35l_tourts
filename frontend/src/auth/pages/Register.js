@@ -1,51 +1,58 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { FormControl, FormHelperText, InputLabel } from "@mui/material";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import React, { useContext } from "react";
-import { Controller, useForm } from "react-hook-form";
-import * as Yup from "yup";
-import FormContainer from "../../common/components/FormElement/FormContainer";
-import Footer from "../../common/components/NavigationElement/Footer";
-import HeadBar from "../../common/components/NavigationElement/HeadBar";
-import NavText from "../../common/components/NavigationElement/NavText";
-import { genders, ratings, regions } from "../../common/constant/constant";
-import { AuthContext } from "../../common/context/authcontext";
-import { useHttpClient } from "../../common/hooks/http-hook";
+import { yupResolver } from '@hookform/resolvers/yup';
+import {
+  Backdrop,
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@mui/material';
+import React, { useContext } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+import FormContainer from '../../common/components/FormElement/FormContainer';
+import Footer from '../../common/components/NavigationElement/Footer';
+import HeadBar from '../../common/components/NavigationElement/HeadBar';
+import NavText from '../../common/components/NavigationElement/NavText';
+import { genders, ratings, regions } from '../../common/constant/constant';
+import { AuthContext } from '../../common/context/authcontext';
+import { useHttpClient } from '../../common/hooks/http-hook';
 
 const defaultValues = {
-  email: "",
-  password: "",
-  username: "",
-  region: "",
-  rating: "",
-  gender: "",
+  email: '',
+  password: '',
+  username: '',
+  region: '',
+  rating: '',
+  gender: '',
 };
 
 const Register = () => {
   const validator = Yup.object().shape({
-    email: Yup.string().required("Email is required").email("Email is invalid"),
+    email: Yup.string().required('Email is required').email('Email is invalid'),
     password: Yup.string()
-      .required("Password is required")
-      .min(6, "Password should be at least 6 characters")
-      .max(30, "Password should be at most 30 characters"),
+      .required('Password is required')
+      .min(6, 'Password should be at least 6 characters')
+      .max(30, 'Password should be at most 30 characters'),
     rePassword: Yup.string()
-      .required("Confirm Password is required")
-      .oneOf([Yup.ref("password"), null], "Passwords must match"),
+      .required('Confirm Password is required')
+      .oneOf([Yup.ref('password'), null], 'Passwords must match'),
     username: Yup.string()
-      .required("Username is required")
-      .min(6, "Username must be at least 6 characters")
-      .max(20, "Username must not exceed 20 characters"),
-    gender: Yup.string().required("Gender is required"),
-    rating: Yup.string().required("Rating is required"),
-    region: Yup.string().required("Region is required"),
+      .required('Username is required')
+      .min(6, 'Username must be at least 6 characters')
+      .max(20, 'Username must not exceed 20 characters'),
+    gender: Yup.string().required('Gender is required'),
+    rating: Yup.string().required('Rating is required'),
+    region: Yup.string().required('Region is required'),
   });
+
   const {
     handleSubmit,
     register,
@@ -57,92 +64,121 @@ const Register = () => {
   });
 
   const auth = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  const onSubmit = (data) => {
-    const { isLoading, error, sendRequest, clearError } = useHttpClient();
-
+  const onSubmit = async (data) => {
+    // modify data
     delete data.rePassword;
     data.region = +data.region;
     data.rating = +data.rating;
     data.gender = +data.gender;
-    console.log(data);
 
-    // stringfy data
-    // send request
-
-    const responseData = await sendRequest(
-      "http://localhost:5000/api/users/signup",
-      "POST",
+    // await server response for registration
+    const [err, response] = await sendRequest(
+      'http://localhost:5000/api/users/signup',
+      'POST',
       JSON.stringify(data),
-      {
-        "Content-Type": "application/json",
-      }
-    );
+      { 'Content-Type': 'application/json' }
+    )
+      .then((response) => [null, response])
+      .catch((err) => [err, null]);
 
-    auth.login(responseData.user.id);
+    console.log('data', response);
+
+    if (err) {
+      console.log('error', err);
+    } else {
+      auth.login(response.user.id);
+    }
   };
-  
+
+  // const signUpRequest = async (data) => {
+
+  //   try {
+  //     const responseData = await sendRequest(
+  //       "http://localhost:5000/api/users/signup",
+  //       "POST",
+  //       JSON.stringify(data),
+  //       {
+  //         "Content-Type": "application/json",
+  //       }
+  //     );
+  //     auth.login(responseData.user.id);
+  //   } catch (err) {
+  //     console.log(error);
+  //   }
+  // }
 
   return (
     <React.Fragment>
       <HeadBar />
       <FormContainer>
         <Typography
-          variant="h3"
+          variant='h3'
           gutterBottom
-          marked="center"
-          align="center"
+          marked='center'
+          align='center'
           sx={{ mb: 4 }}
         >
           Register
         </Typography>
-
+        {error && (
+          <Typography marked='center' align='center' color='red'>
+            {error}
+          </Typography>
+        )}
+        <Backdrop
+          sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading}
+        >
+          <CircularProgress color='inherit' />
+        </Backdrop>
         <TextField
           required
-          id="username"
-          name="username"
-          label="Username"
+          id='username'
+          name='username'
+          label='Username'
           fullWidth
-          margin="dense"
-          {...register("username")}
+          margin='dense'
+          {...register('username')}
           error={errors.username ? true : false}
           helperText={errors.username?.message}
         />
 
         <TextField
           required
-          id="email"
-          name="email"
-          label="E-mail"
+          id='email'
+          name='email'
+          label='E-mail'
           fullWidth
-          margin="dense"
-          {...register("email")}
+          margin='dense'
+          {...register('email')}
           error={errors.email ? true : false}
           helperText={errors.email?.message}
         />
 
         <TextField
           required
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
+          id='password'
+          name='password'
+          label='Password'
+          type='password'
           fullWidth
-          margin="dense"
-          {...register("password")}
+          margin='dense'
+          {...register('password')}
           error={errors.password ? true : false}
           helperText={errors.password?.message}
         />
 
         <TextField
           required
-          id="rePassword"
-          name="rePassword"
-          label="Confirm Password"
-          type="password"
+          id='rePassword'
+          name='rePassword'
+          label='Confirm Password'
+          type='password'
           fullWidth
-          margin="dense"
-          {...register("rePassword")}
+          margin='dense'
+          {...register('rePassword')}
           error={errors.rePassword ? true : false}
           helperText={errors.rePassword?.message}
         />
@@ -150,23 +186,23 @@ const Register = () => {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Controller
-              name="gender"
+              name='gender'
               control={control}
               render={({ field: { onChange, value } }) => (
                 <FormControl
                   required
                   fullWidth
-                  margin="dense"
+                  margin='dense'
                   error={errors.gender ? true : false}
                 >
                   <InputLabel>Gender</InputLabel>
                   <Select
                     value={value}
                     onChange={onChange}
-                    id="gender"
-                    name="gender"
-                    label="Gender"
-                    labelId="gender-id"
+                    id='gender'
+                    name='gender'
+                    label='Gender'
+                    labelId='gender-id'
                   >
                     {genders.map((gender, index) => (
                       <MenuItem value={index} key={index}>
@@ -179,28 +215,28 @@ const Register = () => {
                   )}
                 </FormControl>
               )}
-              defaultValue=""
+              defaultValue=''
             />
           </Grid>
 
           <Grid item xs={6}>
             <Controller
-              name="rating"
+              name='rating'
               control={control}
               render={({ field: { onChange, value } }) => (
                 <FormControl
                   required
                   fullWidth
-                  margin="dense"
+                  margin='dense'
                   error={errors.rating ? true : false}
                 >
                   <InputLabel>Rating</InputLabel>
                   <Select
                     value={value}
                     onChange={onChange}
-                    id="rating"
-                    name="rating"
-                    label="rating"
+                    id='rating'
+                    name='rating'
+                    label='rating'
                   >
                     {ratings.map((rating, index) => (
                       <MenuItem value={index} key={index}>
@@ -213,29 +249,29 @@ const Register = () => {
                   )}
                 </FormControl>
               )}
-              defaultValue=""
+              defaultValue=''
             />
           </Grid>
         </Grid>
 
         <Grid item xs={12} sm={12}>
           <Controller
-            name="region"
+            name='region'
             control={control}
             render={({ field: { onChange, value } }) => (
               <FormControl
                 required
                 fullWidth
-                margin="dense"
+                margin='dense'
                 error={errors.region ? true : false}
               >
                 <InputLabel>Region</InputLabel>
                 <Select
                   value={value}
                   onChange={onChange}
-                  id="region"
-                  name="region"
-                  label="region"
+                  id='region'
+                  name='region'
+                  label='region'
                 >
                   {regions.map((region, index) => (
                     <MenuItem value={index} key={index}>
@@ -248,32 +284,32 @@ const Register = () => {
                 )}
               </FormControl>
             )}
-            defaultValue=""
+            defaultValue=''
           />
         </Grid>
 
         <FormControlLabel
           control={<Checkbox defaultChecked />}
-          label="Log me in after registration"
+          label='Log me in after registration'
         />
-        <Grid item xs={12} sm={12} align="center" justify="center">
+        <Grid item xs={12} sm={12} align='center' justify='center'>
           <Button
             onClick={handleSubmit(onSubmit)}
-            variant={"contained"}
-            size="large"
+            variant={'contained'}
+            size='large'
             sx={{ mt: 5, width: 0.8 }}
           >
             Sign up
           </Button>
         </Grid>
 
-        <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-          {"Already have an account? "}
+        <Typography variant='body2' align='center' sx={{ mt: 2 }}>
+          {'Already have an account? '}
           <NavText
-            to="/login"
-            align="center"
-            underline="always"
-            variant="inherit"
+            to='/login'
+            align='center'
+            underline='always'
+            variant='inherit'
           >
             Log in
           </NavText>

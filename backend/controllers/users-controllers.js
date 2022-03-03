@@ -25,14 +25,14 @@ const signup = async (req, res, next) => {
     );
   }
 
-  const { name, email, password, gender, rating, region } = req.body;
+  const { username, email, password, gender, rating, region } = req.body;
 
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
     const error = new HttpError(
-      'Signing up failed, please try again later.',
+      'Sign up failed, please try again later.',
       500
     );
     return next(error);
@@ -40,14 +40,14 @@ const signup = async (req, res, next) => {
 
   if (existingUser) {
     const error = new HttpError(
-      'User exists already, please login instead.',
+      'User exists already, please log in instead.',
       422
     );
     return next(error);
   }
 
   const createdUser = new User({
-    name,
+    username,
     email,
     password,
     gender,
@@ -60,7 +60,7 @@ const signup = async (req, res, next) => {
     await createdUser.save();
   } catch (err) {
     const error = new HttpError(
-      'Signing up failed, please try again later.',
+      'Sign up failed, please try again later.',
       500
     );
     return next(error);
@@ -70,7 +70,9 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
+
   const { email, password } = req.body;
+  res.setHeader('Content-Type', 'application/json');
 
   let existingUser;
 
@@ -78,7 +80,7 @@ const login = async (req, res, next) => {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
     const error = new HttpError(
-      'Loggin in failed, please try again later.',
+      'Login failed, please try again later.',
       500
     );
     return next(error);
@@ -86,7 +88,7 @@ const login = async (req, res, next) => {
 
   if (!existingUser || existingUser.password !== password) {
     const error = new HttpError(
-      'Invalid credentials, could not log you in.',
+      'Email or password you entered is invalid.',
       401
     );
     return next(error);

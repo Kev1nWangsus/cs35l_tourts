@@ -1,8 +1,8 @@
 // beautify helper
 
-import React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import React from 'react';
 import theme from './theme';
 
 const beautify = (Component) => {
@@ -13,8 +13,8 @@ const beautify = (Component) => {
         <Component {...props} />
       </ThemeProvider>
     );
-  }
+  };
   return Beautify;
-}
+};
 
 export default beautify;
