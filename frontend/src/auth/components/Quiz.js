@@ -99,11 +99,8 @@ const Quiz = () => {
   return (
     <>
       <Tooltip title='Not sure about your rating? Take a quiz here!'>
-        <IconButton aria-label='quiz' sx={{ px: 0 }}>
-          <QuestionMarkIcon
-            onClick={handleClickOpen}
-            sx={{ mt: 1.5, fontSize: 28 }}
-          />
+        <IconButton aria-label='quiz' sx={{ px: 0 }} onClick={handleClickOpen}>
+          <QuestionMarkIcon sx={{ mt: 1.5, fontSize: 28 }} />
         </IconButton>
 
         {/* <Button
