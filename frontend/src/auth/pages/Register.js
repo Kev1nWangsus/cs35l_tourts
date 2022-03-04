@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import FormContainer from '../../common/components/FormElement/FormContainer';
@@ -31,6 +32,7 @@ const defaultValues = {
   region: '',
   rating: '',
   gender: '',
+  autologin: false,
 };
 
 const Register = () => {
@@ -50,6 +52,7 @@ const Register = () => {
     gender: Yup.string().required('Gender is required'),
     rating: Yup.string().required('Rating is required'),
     region: Yup.string().required('Region is required'),
+    agree: Yup.boolean().oneOf([true], 'Please check the box for agreement'),
   });
 
   const {
@@ -65,14 +68,15 @@ const Register = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest } = useHttpClient();
 
+  let toHome = null;
   const onSubmit = async (data) => {
     // modify data
     delete data.rePassword;
+    delete data.agree;
     data.region = +data.region;
     data.rating = +data.rating;
     data.gender = +data.gender;
 
-    // await server response for registration
     const [err, response] = await sendRequest(
       'http://localhost:5000/api/users/signup',
       'POST',
@@ -273,9 +277,25 @@ const Register = () => {
         </Grid>
 
         <FormControlLabel
-          control={<Checkbox defaultChecked />}
-          label='Log me in after registration'
+          control={
+            <Controller
+              render={({ field: { onChange, value } }) => (
+                <Checkbox
+                  id='agree'
+                  name='agree'
+                  label='agree'
+                  checked={value}
+                  onChange={onChange}
+                />
+              )}
+              name='agree'
+              type='checkbox'
+              control={control}
+            />
+          }
+          label='Agree to terms and policy'
         />
+
         <Grid item xs={12} sm={12} align='center' justify='center'>
           <Button
             onClick={handleSubmit(onSubmit)}
@@ -299,6 +319,7 @@ const Register = () => {
           </NavText>
         </Typography>
       </FormContainer>
+      {toHome}
     </React.Fragment>
   );
 };
