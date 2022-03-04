@@ -108,6 +108,7 @@ const createAppointment = async (req, res, next) => {
     description,
     address,
     timerange,
+    image: req.file.path,
     creator,
   });
 

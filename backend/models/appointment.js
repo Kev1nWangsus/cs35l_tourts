@@ -10,6 +10,7 @@ const appointmentSchema = new Schema({
     start: { type: String, required: true },
     end: { type: String, required: true }
   },
+  image: { type: String, required: true },
   creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
 });
 
