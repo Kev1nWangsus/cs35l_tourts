@@ -191,7 +191,7 @@ export const regions = [
   'Western Wilton',
   'Westlake',
   'Westside Village',
-  'Westwoodxa',
+  'Westwood',
   'Wholesale District',
   'Wilmington',
   'Wilshire Center',

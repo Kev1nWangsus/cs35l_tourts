@@ -13,34 +13,35 @@ import Footer from './common/components/NavigationElement/Footer';
 import HeadBar from './common/components/NavigationElement/HeadBar';
 import HomeBackground from './common/components/ViewElement/HomeBackground';
 import { AuthContext } from './common/context/authcontext';
+import Posts from './posts/pages/Posts.js';
 import Users from './users/pages/Users.js';
 
 const App = () => {
   // set up global authentication context
   const [isLogIn, setIsLogIn] = useState(false);
-  const [userId, setUserId] = useState(false);
+  const [uid, setUId] = useState(false);
 
   const login = useCallback((uid) => {
     setIsLogIn(true);
-    setUserId(uid);
+    setUId(uid);
   }, []);
 
   const logout = useCallback(() => {
     setIsLogIn(false);
-    setUserId(null);
+    setUId(null);
   }, []);
 
   let routes = isLogIn ? (
     <Switch>
       <Route path='/' exact>
-        <Users />
+        <Posts />
       </Route>
 
       <Route path='/users' exact>
         <Users />
       </Route>
 
-      <Route path='/:userId/apps' exact>
+      <Route path='/:uid/apps' exact>
         {/* view all appointments initiated by user */}
       </Route>
       <Route path='/app/new' exact>
@@ -71,7 +72,7 @@ const App = () => {
     <AuthContext.Provider
       value={{
         isLogIn: isLogIn,
-        userId: userId,
+        uid: uid,
         login: login,
         logout: logout,
       }}

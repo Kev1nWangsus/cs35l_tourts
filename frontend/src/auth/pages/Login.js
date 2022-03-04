@@ -13,8 +13,6 @@ import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import FormContainer from '../../common/components/FormElement/FormContainer';
-import Footer from '../../common/components/NavigationElement/Footer';
-import HeadBar from '../../common/components/NavigationElement/HeadBar';
 import NavText from '../../common/components/NavigationElement/NavText';
 import { AuthContext } from '../../common/context/authcontext';
 import { useHttpClient } from '../../common/hooks/http-hook';
@@ -35,7 +33,6 @@ const Login = () => {
   const {
     handleSubmit,
     register,
-    control,
     formState: { errors },
   } = useForm({
     defaultValues: defaultValues,
@@ -43,26 +40,30 @@ const Login = () => {
   });
 
   const auth = useContext(AuthContext);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, error, sendRequest } = useHttpClient();
 
   const onSubmit = async (data) => {
     // await server response for registration
-    try {
-      const responseData = await sendRequest(
-        'http://localhost:5000/api/users/login',
-        'POST',
-        JSON.stringify(data),
-        { 'Content-Type': 'application/json' }
-      );
-      auth.login(responseData.user.id);
-    } catch (err) {
-      console.log('error');
+    const [err, response] = await sendRequest(
+      'http://localhost:5000/api/users/login',
+      'POST',
+      JSON.stringify(data),
+      { 'Content-Type': 'application/json' }
+    )
+      .then((response) => [null, response])
+      .catch((err) => [err, null]);
+
+    console.log('data', response);
+
+    if (err) {
+      console.log('error', err);
+    } else {
+      auth.login(response.user.id);
     }
   };
 
   return (
     <React.Fragment>
-      <HeadBar />
       <FormContainer>
         <Typography
           variant='h3'
@@ -138,7 +139,6 @@ const Login = () => {
           </NavText>
         </Typography>
       </FormContainer>
-      <Footer />
     </React.Fragment>
   );
 };
