@@ -83,7 +83,9 @@ const Quiz = () => {
 
   function rating(answers) {
     let rate = 0;
+
     const numAnswers = answers.map((x) => Number(x));
+    
     for (let i = 0; i < answers.length; i++) {
       if (numAnswers[i] === 2) {
         numAnswers[i] = 0;

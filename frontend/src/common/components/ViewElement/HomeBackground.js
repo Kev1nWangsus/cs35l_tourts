@@ -4,10 +4,10 @@ import {styled} from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import NavButton from '../NavigationElement/NavButton';
+import LATC from './LATC.jpeg'
 
 
-const backgroundImage =
-  'https://recreation.ucla.edu/sites/default/files/styles/header_image/public/2021-03/facilities_LATC_1156x420.jpg?itok=3KRs1EdO'
+const backgroundImage = LATC
 
 const HomeSection = styled('section')(({ theme }) => ({
   color: theme.palette.common.white,
