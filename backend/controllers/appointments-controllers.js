@@ -5,6 +5,17 @@ const HttpError = require("../models/http-error");
 const Appointment = require("../models/appointment");
 const User = require("../models/user");
 
+const getCurrentTime = () => {
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, '0');
+  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  let yyyy = today.getFullYear();
+  let hr = String(today.getHours()).padStart(2, '0');
+
+  today = yyyy + '/' + mm + '/' + dd + '/' + hr;
+  return today;
+};
+
 
 const getAllAppointments = async (req, res, next) => {
   let appointments;
@@ -16,6 +27,18 @@ const getAllAppointments = async (req, res, next) => {
       500
     );
     return next(error);
+  }
+
+  const currenttime = getCurrentTime();
+  let i = 0;
+  while (i < appointments.length) {
+    if (appointments[i].timerange.end < currenttime) {
+      appointments[i].remove();
+      appointments.splice(i, 1);
+    }
+    else {
+      i = i + 1;
+    }
   }
 
   appointments = appointments.map(appointment => appointment.toObject({ getters: true }));
@@ -108,7 +131,7 @@ const createAppointment = async (req, res, next) => {
     description,
     address,
     timerange,
-    image: req.file.path,
+    image: req.file?.path || "cs35l_tourts\backend\fileuploads\images\72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg",
     creator,
   });
 
