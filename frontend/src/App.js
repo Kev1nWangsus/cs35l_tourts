@@ -18,7 +18,7 @@ import Users from './users/pages/Users.js';
 
 const App = () => {
   // set up global authentication context
-  const [isLogIn, setIsLogIn] = useState(false);
+  const [isLogIn, setIsLogIn] = useState(true);
   const [uid, setUId] = useState(false);
 
   const login = useCallback((uid) => {
