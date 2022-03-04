@@ -12,4 +12,6 @@ router.get("/user/:uid", appointmentsControllers.getAppointmentsByUserId);
 
 router.post("/create", appointmentsControllers.createAppointment);
 
+router.delete("/:pid", appointmentsControllers.deleteAppointment);
+
 module.exports = router;

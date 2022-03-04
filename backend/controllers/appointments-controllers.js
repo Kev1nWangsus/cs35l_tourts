@@ -145,7 +145,45 @@ const createAppointment = async (req, res, next) => {
   res.status(201).json({ appointment: createdAppointment });
 };
 
+const deleteAppointment = async (req, res, next) => {
+  const appointmentId = req.params.pid;
+
+  let appointment;
+  try {
+    appointment = await Appointment.findById(appointmentId).populate('creator');
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not delete appointment.',
+      500
+    );
+    return next(error);
+  }
+
+  if (!appointment) {
+    const error = new HttpError('Could not find appointment for this id.', 404);
+    return next(error);
+  }
+
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await appointment.remove({session: sess});
+    appointment.creator.appointments.pull(appointment);
+    await appointment.creator.save({session: sess});
+    await sess.commitTransaction();
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not appointment place.',
+      500
+    );
+    return next(error);
+  }
+  
+  res.status(200).json({ message: 'Deleted appointment.' });
+};
+
 exports.getAllAppointments = getAllAppointments;
 exports.getAppointmentById = getAppointmentById;
 exports.getAppointmentsByUserId = getAppointmentsByUserId;
 exports.createAppointment = createAppointment;
+exports.deleteAppointment = deleteAppointment;
