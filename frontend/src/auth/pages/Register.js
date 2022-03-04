@@ -15,7 +15,6 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useContext } from 'react';
-import { Redirect } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import FormContainer from '../../common/components/FormElement/FormContainer';
@@ -32,7 +31,7 @@ const defaultValues = {
   region: '',
   rating: '',
   gender: '',
-  autologin: false,
+  agree: false,
 };
 
 const Register = () => {
@@ -129,7 +128,6 @@ const Register = () => {
           error={errors.username ? true : false}
           helperText={errors.username?.message}
         />
-
         <TextField
           required
           id='email'
@@ -141,7 +139,6 @@ const Register = () => {
           error={errors.email ? true : false}
           helperText={errors.email?.message}
         />
-
         <TextField
           required
           id='password'
@@ -154,7 +151,6 @@ const Register = () => {
           error={errors.password ? true : false}
           helperText={errors.password?.message}
         />
-
         <TextField
           required
           id='rePassword'
@@ -167,7 +163,6 @@ const Register = () => {
           error={errors.rePassword ? true : false}
           helperText={errors.rePassword?.message}
         />
-
         <Grid container spacing={1}>
           <Grid item xs={5}>
             <Controller
@@ -241,7 +236,6 @@ const Register = () => {
             <Quiz />
           </Grid>
         </Grid>
-
         <Grid item xs={12} sm={12}>
           <Controller
             name='region'
@@ -277,24 +271,15 @@ const Register = () => {
         </Grid>
 
         <FormControlLabel
-          control={
-            <Controller
-              render={({ field: { onChange, value } }) => (
-                <Checkbox
-                  id='agree'
-                  name='agree'
-                  label='agree'
-                  checked={value}
-                  onChange={onChange}
-                />
-              )}
-              name='agree'
-              type='checkbox'
-              control={control}
-            />
-          }
+          {...register('agree')}
+          control={<Checkbox id='agree' name='agree' required />}
+          id='agree'
+          name='agree'
           label='Agree to terms and policy'
         />
+        <FormHelperText error>
+          {errors.agree ? errors.agree.message : ''}
+        </FormHelperText>
 
         <Grid item xs={12} sm={12} align='center' justify='center'>
           <Button
@@ -306,7 +291,6 @@ const Register = () => {
             Sign up
           </Button>
         </Grid>
-
         <Typography variant='body2' align='center' sx={{ mt: 2 }}>
           {'Already have an account? '}
           <NavText

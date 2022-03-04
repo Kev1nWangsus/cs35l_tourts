@@ -1,3 +1,7 @@
+import TextField from '@mui/material/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import AddIcon from '@mui/icons-material/Add';
 import {
   Button,
@@ -15,6 +19,7 @@ const NewCard = (props) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [value, setValue] = React.useState(new Date());
 
   return (
     <React.Fragment>
@@ -53,6 +58,17 @@ const NewCard = (props) => {
         sx={{ mt: 8 }}
       >
         <DialogContent>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <StaticDatePicker
+            displayStaticWrapperAs="desktop"
+            openTo="year"
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
           <FormContainer>
             <Typography
               variant='h3'
@@ -87,6 +103,17 @@ const NewCard = (props) => {
             </Grid>
           </FormContainer>
         </DialogContent>
+        <LocalizationProvider>
+          <StaticDatePicker
+            displayStaticWrapperAs="desktop"
+            openTo="year"
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider> 
       </Modal>
     </React.Fragment>
   );

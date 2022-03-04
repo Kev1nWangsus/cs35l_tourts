@@ -1,17 +1,20 @@
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import { IconButton, Tooltip } from '@mui/material';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
 import React from 'react';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { 
+  IconButton, 
+  Tooltip,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from '@mui/material';
 
 const Quiz = () => {
   const [open, setOpen] = React.useState(false);
@@ -90,7 +93,25 @@ const Quiz = () => {
       if (numAnswers[i] === 2) {
         numAnswers[i] = 0;
       }
-      rate += numAnswers[i];
+    }
+
+    if(numAnswers[0] === 0){
+      rate = 1;
+    }
+    if(numAnswers[0] === 1 && numAnswers[1] === 0){
+      rate = 1;
+    }
+    if(numAnswers[0] === 1 && numAnswers[1] === 1 && numAnswers[2] === 0){
+      rate = 2;
+    }
+    if(numAnswers[0] === 1 && numAnswers[1] === 1 && numAnswers[2] === 1 && numAnswers[3] === 0){
+      rate = 3;
+    }
+    if(numAnswers[0] === 1 && numAnswers[1] === 1 && numAnswers[2] === 1 && numAnswers[3] === 1 && numAnswers[4] === 0){
+      rate = 4;
+    }
+    if (numAnswers[0] === 1 && numAnswers[1] === 1 && numAnswers[2] === 1 && numAnswers[3] === 1 && numAnswers[4] === 1) {
+      rate = 5;
     }
     if (rate === 0) {
       return 1;

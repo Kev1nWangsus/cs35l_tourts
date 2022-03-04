@@ -5,6 +5,17 @@ const HttpError = require("../models/http-error");
 const Appointment = require("../models/appointment");
 const User = require("../models/user");
 
+const getCurrentTime = () => {
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, '0');
+  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  let yyyy = today.getFullYear();
+  let hr = String(today.getHours()).padStart(2, '0');
+
+  today = yyyy + '/' + mm + '/' + dd + '/' + hr;
+  return today;
+};
+
 
 const getAllAppointments = async (req, res, next) => {
   let appointments;
@@ -16,6 +27,18 @@ const getAllAppointments = async (req, res, next) => {
       500
     );
     return next(error);
+  }
+
+  const currenttime = getCurrentTime();
+  let i = 0;
+  while (i < appointments.length) {
+    if (appointments[i].timerange.end < currenttime) {
+      appointments[i].remove();
+      appointments.splice(i, 1);
+    }
+    else {
+      i = i + 1;
+    }
   }
 
   appointments = appointments.map(appointment => appointment.toObject({ getters: true }));
@@ -108,6 +131,7 @@ const createAppointment = async (req, res, next) => {
     description,
     address,
     timerange,
+    image: req.file?.path || "cs35l_tourts\backend\fileuploads\images\72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg",
     creator,
   });
 
@@ -145,7 +169,45 @@ const createAppointment = async (req, res, next) => {
   res.status(201).json({ appointment: createdAppointment });
 };
 
+const deleteAppointment = async (req, res, next) => {
+  const appointmentId = req.params.pid;
+
+  let appointment;
+  try {
+    appointment = await Appointment.findById(appointmentId).populate('creator');
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not delete appointment.',
+      500
+    );
+    return next(error);
+  }
+
+  if (!appointment) {
+    const error = new HttpError('Could not find appointment for this id.', 404);
+    return next(error);
+  }
+
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await appointment.remove({session: sess});
+    appointment.creator.appointments.pull(appointment);
+    await appointment.creator.save({session: sess});
+    await sess.commitTransaction();
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not appointment place.',
+      500
+    );
+    return next(error);
+  }
+  
+  res.status(200).json({ message: 'Deleted appointment.' });
+};
+
 exports.getAllAppointments = getAllAppointments;
 exports.getAppointmentById = getAppointmentById;
 exports.getAppointmentsByUserId = getAppointmentsByUserId;
 exports.createAppointment = createAppointment;
+exports.deleteAppointment = deleteAppointment;

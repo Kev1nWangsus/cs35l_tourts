@@ -22,7 +22,7 @@ const App = () => {
   const [uid, setUId] = useState(false);
 
   const login = useCallback((uid) => {
-    if (uid) setIsLogIn(true);
+    setIsLogIn(true);
     setUId(uid);
   }, []);
 
