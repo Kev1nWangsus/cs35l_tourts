@@ -237,6 +237,28 @@ function region(places){
     }
 
     return "Regions not found!!!!!";
-    
-
 }
+
+function in_region(places, region) {
+    if (region === "beach_airport") {
+        return (beach_airport.includes(places));
+    } else if (region === "Crescenta") {
+        return (CRESCENTA.includes(places));
+    } else if (region === "Harbor Area") {
+        return (Harbor_Area.includes(places));
+    } else if (region === "South LA") {
+        return (South_LA.includes(places));
+    } else if (region === "Hollywood Area") {
+        return (Hollywood_Area.includes(places));
+    } else if (region === "Westside LA") {
+        return (Westside_LA.includes(places));
+    } else if (region === "Central City") {
+        return (Central_City.includes(places));
+    } else if (region === "Northeast LA") {
+        return (NORTHEAST_LA.includes(places));
+    } else if (region === "San Fernando Valley") {
+        return (San_Fernando_Valley.includes(places));
+    }   
+    return "Places not founded!"
+}
+
