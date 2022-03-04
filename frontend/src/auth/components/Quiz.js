@@ -88,7 +88,25 @@ const Quiz = () => {
       if (numAnswers[i] === 2) {
         numAnswers[i] = 0;
       }
-      rate += numAnswers[i];
+    }
+
+    if(numAnswers[0] === 0){
+      rate = 1;
+    }
+    if(numAnswers[0] === 1 && numAnswers[1] === 0){
+      rate = 1;
+    }
+    if(numAnswers[0] === 1 && numAnswers[1] === 1 && numAnswers[2] === 0){
+      rate = 2;
+    }
+    if(numAnswers[0] === 1 && numAnswers[1] === 1 && numAnswers[2] === 1 && numAnswers[3] === 0){
+      rate = 3;
+    }
+    if(numAnswers[0] === 1 && numAnswers[1] === 1 && numAnswers[2] === 1 && numAnswers[3] === 1 && numAnswers[4] === 0){
+      rate = 4;
+    }
+    if (numAnswers[0] === 1 && numAnswers[1] === 1 && numAnswers[2] === 1 && numAnswers[3] === 1 && numAnswers[4] === 1) {
+      rate = 5;
     }
     if (rate === 0) {
       return 1;
