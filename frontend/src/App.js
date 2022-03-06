@@ -15,10 +15,11 @@ import HomeBackground from './common/components/ViewElement/HomeBackground';
 import { AuthContext } from './common/context/authcontext';
 import Posts from './posts/pages/Posts.js';
 import Users from './users/pages/Users.js';
+import Profile from './users/pages/Profile';
 
 const App = () => {
   // set up global authentication context
-  const [isLogIn, setIsLogIn] = useState(true);
+  const [isLogIn, setIsLogIn] = useState(false);
   const [uid, setUId] = useState(false);
 
   const login = useCallback((uid) => {
@@ -31,14 +32,21 @@ const App = () => {
     setUId(null);
   }, []);
 
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    const userId = savedUser;
+    if (userId) login(userId);
+    return userId || '';
+  });
+
   let routes = isLogIn ? (
     <Switch>
       <Route path='/' exact>
         <Posts />
       </Route>
 
-      <Route path='/users' exact>
-        <Users />
+      <Route path='/profile/:uid' exact>
+        <Profile />
       </Route>
 
       <Route path='/:uid/apps' exact>

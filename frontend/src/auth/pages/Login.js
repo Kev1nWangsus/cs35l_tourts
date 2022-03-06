@@ -20,6 +20,7 @@ import { useHttpClient } from '../../common/hooks/http-hook';
 const defaultValues = {
   email: '',
   password: '',
+  remember: true,
 };
 
 const Login = () => {
@@ -44,6 +45,8 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     // await server response for registration
+    const writeStorage = data.remember;
+    delete data.remember;
     const [err, response] = await sendRequest(
       'http://localhost:5000/api/users/login',
       'POST',
@@ -58,6 +61,7 @@ const Login = () => {
     if (err) {
       console.log('error', err);
     } else {
+      if (writeStorage) localStorage.setItem('user', response.user.id);
       auth.login(response.user.id);
     }
   };
@@ -113,8 +117,11 @@ const Login = () => {
         />
 
         <FormControlLabel
+          {...register('remember')}
           control={<Checkbox defaultChecked />}
           label='Remember me'
+          name='remember'
+          id='remember'
         />
         <Grid item xs={12} sm={12} align='center' justify='center'>
           <Button

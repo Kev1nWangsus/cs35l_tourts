@@ -21,7 +21,7 @@ const HeadBar = () => {
       <NavText to={`/${uid}/apps`} sx={defaultStyle}>
         MY POSTS
       </NavText>
-      <NavText to={`/${uid}`} sx={defaultStyle}>
+      <NavText to={`/profile/${uid}`} sx={defaultStyle}>
         PROFILE
       </NavText>
     </Box>

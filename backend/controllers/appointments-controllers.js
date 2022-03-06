@@ -1,9 +1,9 @@
-const { validationResult } = require("express-validator");
-const mongoose = require("mongoose");
+const { validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 
-const HttpError = require("../models/http-error");
-const Appointment = require("../models/appointment");
-const User = require("../models/user");
+const HttpError = require('../models/http-error');
+const Appointment = require('../models/appointment');
+const User = require('../models/user');
 
 const getCurrentTime = () => {
   let today = new Date();
@@ -15,7 +15,6 @@ const getCurrentTime = () => {
   today = yyyy + '/' + mm + '/' + dd + '/' + hr;
   return today;
 };
-
 
 const getAllAppointments = async (req, res, next) => {
   let appointments;
@@ -35,13 +34,14 @@ const getAllAppointments = async (req, res, next) => {
     if (appointments[i].timerange.end < currenttime) {
       appointments[i].remove();
       appointments.splice(i, 1);
-    }
-    else {
+    } else {
       i = i + 1;
     }
   }
 
-  appointments = appointments.map(appointment => appointment.toObject({ getters: true }));
+  appointments = appointments.map((appointment) =>
+    appointment.toObject({ getters: true })
+  );
 
   for (const appointment of appointments) {
     const appointmentCreator = await User.findById(appointment.creator);
@@ -55,7 +55,6 @@ const getAllAppointments = async (req, res, next) => {
   res.json({ appointments: appointments });
 };
 
-
 const getAppointmentById = async (req, res, next) => {
   const appointmentId = req.params.pid;
 
@@ -64,7 +63,7 @@ const getAppointmentById = async (req, res, next) => {
     appointment = await Appointment.findById(appointmentId);
   } catch (err) {
     const error = new HttpError(
-      "Something went wrong, could not find an appointment.",
+      'Something went wrong, could not find an appointment.',
       500
     );
     return next(error);
@@ -72,7 +71,7 @@ const getAppointmentById = async (req, res, next) => {
 
   if (!appointment) {
     const error = new HttpError(
-      "Could not find appointment for the provided id.",
+      'Could not find appointment for the provided id.',
       404
     );
     return next(error);
@@ -86,10 +85,10 @@ const getAppointmentsByUserId = async (req, res, next) => {
 
   let userWithAppointments;
   try {
-    userWithAppointments = await User.findById(userId).populate("appointments");
+    userWithAppointments = await User.findById(userId).populate('appointments');
   } catch (err) {
     const error = new HttpError(
-      "Fetching appointments failed, please try again later.",
+      'Fetching appointments failed, please try again later.',
       500
     );
     return next(error);
@@ -98,7 +97,7 @@ const getAppointmentsByUserId = async (req, res, next) => {
   if (!userWithAppointments) {
     return next(
       new HttpError(
-        "Could not find appointments for the provided user id.",
+        'Could not find appointments for the provided user id.',
         404
       )
     );
@@ -120,7 +119,7 @@ const createAppointment = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
+      new HttpError('Invalid inputs passed, please check your data.', 422)
     );
   }
 
@@ -131,7 +130,9 @@ const createAppointment = async (req, res, next) => {
     description,
     address,
     timerange,
-    image: req.file?.path || "cs35l_tourts\backend\fileuploads\images\72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg",
+    image:
+      req.file?.path ||
+      'cs35l_tourts\backend\fileuploadsimages\72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg',
     creator,
   });
 
@@ -139,28 +140,29 @@ const createAppointment = async (req, res, next) => {
   try {
     user = await User.findById(creator);
   } catch (err) {
-    const error = new HttpError(
-      "Creating appointment failed, please try again.",
-      500
-    );
+    const error = new HttpError('Failed when fetching info from user.', 500);
     return next(error);
   }
 
   if (!user) {
-    const error = new HttpError("Could not find user for provided id.", 404);
+    const error = new HttpError('Could not find user for provided id.', 404);
     return next(error);
   }
 
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await createdAppointment.save({ session: sess });
-    user.appointments.push(createdAppointment);
-    await user.save({ session: sess });
-    await sess.commitTransaction();
+    // TODO: This is problematic
+    // const sess = await mongoose.startSession();
+    // sess.startTransaction();
+    // await createdAppointment.save({ session: sess });
+    // user.appointments.push(createdAppointment);
+    // await user.save({ session: sess });
+    // await sess.commitTransaction();
+
+    await createdAppointment.save();
   } catch (err) {
+    console.log(err);
     const error = new HttpError(
-      "Creating appointment failed, please try again.",
+      'Creating appointment failed, please try again.',
       500
     );
     return next(error);
@@ -191,9 +193,9 @@ const deleteAppointment = async (req, res, next) => {
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
-    await appointment.remove({session: sess});
+    await appointment.remove({ session: sess });
     appointment.creator.appointments.pull(appointment);
-    await appointment.creator.save({session: sess});
+    await appointment.creator.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError(
@@ -202,7 +204,7 @@ const deleteAppointment = async (req, res, next) => {
     );
     return next(error);
   }
-  
+
   res.status(200).json({ message: 'Deleted appointment.' });
 };
 
