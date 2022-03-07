@@ -1,60 +1,68 @@
-import React, { useState } from 'react';
-import AppCard from '../components/AppCard';
-import { Container, Grid } from '@mui/material';
-import NewCard from '../components/NewCard';
+import { Backdrop, CircularProgress, Container, Grid } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useHttpClient } from '../../common/hooks/http-hook';
+import AppCard from '../components/AppCard';
+import NewCard from '../components/NewCard';
 
 const Post = () => {
-  const dummy_cards = [
-    { title: 'Hello', description: 'test', date: Date(), time: Date() },
-    {
-      title: 'Hi',
-      description:
-        'test a really long long long long long long long long long long long long text',
-      date: Date(),
-      time: Date(),
-    },
-    {
-      title: 'Hi',
-      description: 'test normal text',
-      date: Date(),
-      time: Date(),
-    },
-    { title: 'Hi', description: 'hello world', date: Date(), time: Date() },
-    {
-      title: 'Hi',
-      description:
-        'Welcome to Los Angeles. I found a great court near San Gabriel.',
-      date: Date(),
-      time: Date(),
-    },
-    { title: 'Hi', description: 'hello world', date: Date(), time: Date() },
-    { title: 'Hi', description: 'hello world', date: Date(), time: Date() },
-    { title: 'Hi', description: 'hello world', date: Date(), time: Date() },
-  ];
-
-  const [appointments, setAppointments] = useState();
-
   const { isLoading, error, sendRequest } = useHttpClient();
+  const [appointments, setAppointments] = useState([]);
+  const [refetch, setRefetch] = useState(0);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const url = 'http://localhost:5000/api/appointments';
+
+    const fetchData = async () => {
+      const [err, response] = await sendRequest(url)
+        .then((response) => [null, response])
+        .catch((err) => [err, null]);
+
+      if (err) {
+        console.log('error', err);
+      } else {
+        console.log('data', response);
+        setAppointments(response.appointments);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      // cancel the subscription
+      controller.abort();
+    };
+  }, [refetch]);
 
   return (
     <React.Fragment>
-      <Container sx={{ py: 8 }} maxWidth='lg'>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={6} md={4}>
-            <NewCard />
-          </Grid>
-          {dummy_cards.map((card, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <AppCard
-                title={card.title}
-                description={card.description}
-                date={card.date}
-                time={card.time}
-              />
+      <Container sx={{ py: 8, maxWidth: 'lg', minHeight: '80vh' }}>
+        <Backdrop
+          sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading}
+        >
+          <CircularProgress color='inherit' />
+        </Backdrop>
+        {!isLoading && (
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6} md={4}>
+              <NewCard submitNewApp={(refetch) => setRefetch(refetch)} />
             </Grid>
-          ))}
-        </Grid>
+            {appointments.map((app, index) => (
+              <Grid item key={index} xs={12} sm={6} md={4}>
+                <AppCard
+                  title={app.title}
+                  description={app.description}
+                  date={app.date}
+                  start={app.timerange.start}
+                  end={app.timerange.end}
+                  image={app.image}
+                  accept={app.creator != localStorage.getItem('user')}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Container>
     </React.Fragment>
   );

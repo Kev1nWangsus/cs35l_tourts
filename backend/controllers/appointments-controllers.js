@@ -11,9 +11,11 @@ const getCurrentTime = () => {
   let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   let yyyy = today.getFullYear();
   let hr = String(today.getHours()).padStart(2, '0');
+  let min = String(today.getMinutes()).padStart(2, '0');
 
-  today = yyyy + '/' + mm + '/' + dd + '/' + hr;
-  return today;
+  date = mm + '/' + dd + '/' + yyyy;
+  time = hr + ':' + min;
+  return date, time;
 };
 
 const getAllAppointments = async (req, res, next) => {
@@ -28,10 +30,13 @@ const getAllAppointments = async (req, res, next) => {
     return next(error);
   }
 
-  const currenttime = getCurrentTime();
+  const { curDate, curTime } = getCurrentTime();
   let i = 0;
   while (i < appointments.length) {
-    if (appointments[i].timerange.end < currenttime) {
+    if (
+      appointments[i].date < curDate ||
+      appointments[i].timerange.end < curTime
+    ) {
       appointments[i].remove();
       appointments.splice(i, 1);
     } else {
@@ -133,7 +138,7 @@ const createAppointment = async (req, res, next) => {
     timerange,
     image:
       req.file?.path ||
-      'cs35l_tourts\\backend\\fileuploadsimages\\72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg',
+      'fileuploads/images/72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg',
     creator,
   });
 

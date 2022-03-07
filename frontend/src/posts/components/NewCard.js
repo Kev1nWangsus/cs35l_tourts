@@ -1,4 +1,3 @@
-import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import AddIcon from '@mui/icons-material/Add';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -23,6 +22,7 @@ import TextField from '@mui/material/TextField';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import * as Yup from 'yup';
 import FormContainer from '../../common/components/FormElement/FormContainer';
 import { useHttpClient } from '../../common/hooks/http-hook';
 
@@ -40,6 +40,14 @@ const NewCard = (props) => {
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
     address: Yup.string().required('Address is required'),
+    date: Yup.date().typeError('Invalid date').required('Date is required'),
+    startTime: Yup.date()
+      .typeError('Invalid time')
+      .required('Start time is required'),
+    endTime: Yup.date()
+      .typeError('Invalid time')
+      .required('End time is required')
+      .min(Yup.ref('startTime'), 'End time cannot come before start time'),
   });
   const {
     handleSubmit,
@@ -88,6 +96,7 @@ const NewCard = (props) => {
       console.log('error', err);
       setOpenError(true);
     } else {
+      props.submitNewApp(+1);
       setOpenSuccess(true);
       console.log('data', response);
     }
@@ -225,7 +234,13 @@ const NewCard = (props) => {
                         value={value}
                         onChange={onChange}
                         minDate={new Date()}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            error={errors.date ? true : false}
+                            helperText={errors.date?.message}
+                          />
+                        )}
                       />
                     )}
                   />
@@ -238,7 +253,13 @@ const NewCard = (props) => {
                         ampm={false}
                         value={value}
                         onChange={onChange}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            error={errors.startTime ? true : false}
+                            helperText={errors.startTime?.message}
+                          />
+                        )}
                       />
                     )}
                   />
@@ -251,9 +272,16 @@ const NewCard = (props) => {
                         ampm={false}
                         value={value}
                         onChange={onChange}
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            error={errors.endTime ? true : false}
+                            helperText={errors.endTime?.message}
+                          />
+                        )}
                       />
                     )}
+                    defaultValue={defaultValues.endTime}
                   />
                 </Stack>
               </LocalizationProvider>
