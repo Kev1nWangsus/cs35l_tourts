@@ -123,16 +123,17 @@ const createAppointment = async (req, res, next) => {
     );
   }
 
-  const { title, description, address, creator, timerange } = req.body;
+  const { title, description, address, creator, date, timerange } = req.body;
 
   const createdAppointment = new Appointment({
     title,
     description,
     address,
+    date,
     timerange,
     image:
       req.file?.path ||
-      'cs35l_tourts\backend\fileuploadsimages\72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg',
+      'cs35l_tourts\\backend\\fileuploadsimages\\72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg',
     creator,
   });
 
@@ -151,14 +152,14 @@ const createAppointment = async (req, res, next) => {
 
   try {
     // TODO: This is problematic
-    // const sess = await mongoose.startSession();
-    // sess.startTransaction();
-    // await createdAppointment.save({ session: sess });
-    // user.appointments.push(createdAppointment);
-    // await user.save({ session: sess });
-    // await sess.commitTransaction();
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await createdAppointment.save({ session: sess });
+    user.appointments.push(createdAppointment);
+    await user.save({ session: sess });
+    await sess.commitTransaction();
 
-    await createdAppointment.save();
+    // await createdAppointment.save();
   } catch (err) {
     console.log(err);
     const error = new HttpError(

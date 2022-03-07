@@ -90,6 +90,7 @@ const Register = () => {
     if (err) {
       console.log('error', err);
     } else {
+      localStorage.setItem('user', response.user.id);
       auth.login(response.user.id);
     }
   };

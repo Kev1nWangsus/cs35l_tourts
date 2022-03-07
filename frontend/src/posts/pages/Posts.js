@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppCard from '../components/AppCard';
 import { Container, Grid } from '@mui/material';
 import NewCard from '../components/NewCard';
+import { useHttpClient } from '../../common/hooks/http-hook';
 
 const Post = () => {
   const dummy_cards = [
@@ -31,6 +32,11 @@ const Post = () => {
     { title: 'Hi', description: 'hello world', date: Date(), time: Date() },
     { title: 'Hi', description: 'hello world', date: Date(), time: Date() },
   ];
+
+  const [appointments, setAppointments] = useState();
+
+  const { isLoading, error, sendRequest } = useHttpClient();
+
   return (
     <React.Fragment>
       <Container sx={{ py: 8 }} maxWidth='lg'>
