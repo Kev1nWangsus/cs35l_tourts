@@ -212,8 +212,46 @@ const deleteAppointment = async (req, res, next) => {
   res.status(200).json({ message: 'Deleted appointment.' });
 };
 
+const updateAcceptor = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError('Invalid inputs passed, please check your data.', 422)
+    );
+  }
+
+  const { acceptor } = req.body;
+  const appointmentId = mongoose.Types.ObjectId(req.params.pid);
+
+  let appointment;
+  try {
+    appointment = await Appointment.findById(appointmentId);
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not accept the appointment.',
+      500
+    );
+    return next(error);
+  }
+
+  appointment.acceptor = acceptor;
+
+  try {
+    await appointment.save();
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not accept the appointment.',
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ appointment: appointment.toObject({ getters: true }) });
+}
+
 exports.getAllAppointments = getAllAppointments;
 exports.getAppointmentById = getAppointmentById;
 exports.getAppointmentsByUserId = getAppointmentsByUserId;
 exports.createAppointment = createAppointment;
 exports.deleteAppointment = deleteAppointment;
+exports.updateAcceptor = updateAcceptor;
