@@ -33,7 +33,7 @@ const Profile = () => {
         }}>
           <div>
             <img style={{width: "200px", height: "200px", borderRadius:"100px"}}
-            src='https://i0.wp.com/short-biography.com/wp-content/uploads/roger-federer/Roger-Federer.jpg?w=932&ssl=1' 
+            src='https://i0.wp.com/short-biography.com/wp-content/uploads/roger-federer/Roger-Federer.jpg?w=932&ssl=1'  //换成用户props的头像
             />
           </div>
           <div style =
@@ -45,18 +45,19 @@ const Profile = () => {
             <div style ={{
               color:"grey",
               textAlign:"justify",
-              justifyContent:"space-between", 
+              justifyContent:"space-between",   //用userStruct的info代替
               width: "108%",
-              }}>
-              <h4>Rating: 5</h4>
+              }}> 
+              <h4>Rating: 5</h4>  
               <h4>Region: Westwood</h4>
               <h4>Gender: Male</h4>
               <h4>Ongoing 'Serves': 1</h4>
             </div>
+            
           </div>
           
         </div>
-
+        
         <div className='serves'> 
           <img className="item" src ='https://images.unsplash.com/photo-1499510318569-1a3d67dc3976?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80'/>
           <img className="item" src ='https://images.unsplash.com/photo-1620742820748-87c09249a72a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=654&q=80'/>
@@ -66,6 +67,8 @@ const Profile = () => {
           <img className="item" src ='https://images.unsplash.com/photo-1510846699902-9211b99dac11?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=872&q=80'/>
         </div>
       </div>
+      
+      {//later replace with appointment info, 可以做翻开的然后显示信息的（美观）}
    
       <Box
         height='20vh'
