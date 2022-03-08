@@ -1,9 +1,55 @@
-# cs35l_tourts
+# **cs35l_tourts 🎾**
 
-Github repository for CS35L web application
+Github repository for CS35L web application Tourts 
 
-Structure:
+## **Developers**
 
-base_url/uid -> personal page
-base_url/uid/posts -> all recent appointment posts by current user
-base_url/posts -> all recent appointment posts from all users
+---
+
+*Kevin, Shuo Wang*
+
+*Jacky, Jianing Li*
+
+*Fiona, Xinyue Cui*
+
+*Ethan, Yiteng Jiang*
+
+*Cedric, Hongchang Kuang*
+
+## **How to run the program**
+
+---
+
+1. Clone the repository to your local machine:
+
+    `git clone #url#`
+
+2. Move into /cs35l_toruts/backend directory:
+
+    `cd /cs35l_toruts/backend`
+
+3. Install the packages and modules for backend:
+    
+    `npm install`
+
+4. Start the backend:
+
+    `npm start`
+
+    At this time, the backend should be running on http://localhost:5000
+
+5. Open another terminal, move into /cs35l_toruts/frontend directory:
+
+    `cd /cs35l_toruts/frontend`
+
+6. Install the packages and modules for frontend:
+    
+    `npm install`
+
+7.  Start the frontend:
+
+    `npm start`
+
+    At this time, the frontend should be running on http://localhost:3000, and your default browser should prompt out with the page.
+
+8. Enjoy Tourts!
