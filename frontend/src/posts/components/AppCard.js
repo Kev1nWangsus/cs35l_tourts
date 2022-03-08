@@ -6,12 +6,16 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React from 'react';
 import { format } from 'date-fns';
+import React from 'react';
 
 const AppCard = (props) => {
   const { image, title, description, date, start, end, accept } = props;
   const formatDate = format(new Date(date), 'PPP');
+
+  const handleAccept = () => {};
+
+  const handleDelete = () => {};
 
   return (
     <Card sx={{ width: 1, height: 1 }}>
@@ -41,13 +45,23 @@ const AppCard = (props) => {
         </Typography>
       </CardContent>
       <Stack direction='row' justifyContent='end'>
-        {accept && (
+        {accept ? (
           <Button
             variant='contained'
             color='secondary'
             sx={{ m: 1, width: 0.2 }}
+            onClick={handleAccept}
           >
             Accept
+          </Button>
+        ) : (
+          <Button
+            variant='contained'
+            color='error'
+            onClick={handleDelete}
+            sx={{ m: 1, width: 0.2 }}
+          >
+            Delete
           </Button>
         )}
         <Button variant='outlined' color='primary' sx={{ m: 1, width: 0.2 }}>

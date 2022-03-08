@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
+  Autocomplete,
   Backdrop,
   Button,
   Checkbox,
@@ -50,7 +51,7 @@ const Register = () => {
       .max(20, 'Username must not exceed 20 characters'),
     gender: Yup.string().required('Gender is required'),
     rating: Yup.string().required('Rating is required'),
-    region: Yup.string().required('Region is required'),
+    region: Yup.string().nullable().required('Region is required'),
     agree: Yup.boolean().oneOf([true], 'Please check the box for agreement'),
   });
 
@@ -72,10 +73,9 @@ const Register = () => {
     // modify data
     delete data.rePassword;
     delete data.agree;
-    data.region = +data.region;
     data.rating = +data.rating;
-    data.gender = +data.gender;
 
+    console.log(data);
     const [err, response] = await sendRequest(
       'http://localhost:5000/api/users/signup',
       'POST',
@@ -186,7 +186,7 @@ const Register = () => {
                     labelId='gender-id'
                   >
                     {genders.map((gender, index) => (
-                      <MenuItem value={index} key={index}>
+                      <MenuItem value={gender} key={index}>
                         {gender}
                       </MenuItem>
                     ))}
@@ -220,7 +220,7 @@ const Register = () => {
                     label='rating'
                   >
                     {ratings.map((rating, index) => (
-                      <MenuItem value={index} key={index}>
+                      <MenuItem value={index + 1} key={index}>
                         {rating}
                       </MenuItem>
                     ))}
@@ -243,30 +243,34 @@ const Register = () => {
             control={control}
             render={({ field: { onChange, value } }) => (
               <FormControl
-                required
                 fullWidth
                 margin='dense'
                 error={errors.region ? true : false}
               >
-                <InputLabel>Region</InputLabel>
-                <Select
-                  value={value}
-                  onChange={onChange}
+                <Autocomplete
+                  disablePortal
                   id='region'
-                  name='region'
-                  label='region'
-                >
-                  {regions.map((region, index) => (
-                    <MenuItem value={index} key={index}>
-                      {region}
-                    </MenuItem>
-                  ))}
-                </Select>
+                  options={regions}
+                  onChange={(e, data) => onChange(data)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      required
+                      label='Region'
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password',
+                      }}
+                      error={errors.region ? true : false}
+                    />
+                  )}
+                />
                 {errors.region && (
                   <FormHelperText>{errors.region?.message}</FormHelperText>
                 )}
               </FormControl>
             )}
+            onChange={([, data]) => data}
             defaultValue=''
           />
         </Grid>

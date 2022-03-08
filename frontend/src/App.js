@@ -15,11 +15,12 @@ import HomeBackground from './common/components/ViewElement/HomeBackground';
 import { AuthContext } from './common/context/authcontext';
 import Posts from './posts/pages/Posts.js';
 import Users from './users/pages/Users.js';
+import MyPosts from './posts/pages/MyPosts';
 import Profile from './users/pages/Profile';
 
 const App = () => {
   // set up global authentication context
-  const [isLogIn, setIsLogIn] = useState(true);
+  const [isLogIn, setIsLogIn] = useState(false);
   const [uid, setUId] = useState(false);
 
   const login = useCallback((uid) => {
@@ -50,14 +51,15 @@ const App = () => {
       </Route>
 
       <Route path='/:uid/apps' exact>
-        {/* view all appointments initiated by user */}
+        <MyPosts />
       </Route>
+
       <Route path='/app/new' exact>
         {/* initiate a new appointment */}
       </Route>
+
       <Route path='/app/:appId'>{/* view an appointment */}</Route>
       <Redirect to='/' />
-
     </Switch>
   ) : (
     <Switch>
