@@ -136,7 +136,7 @@ const createAppointment = async (req, res, next) => {
     end,
     image:
       req.file?.path ||
-      'fileuploads/images/72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg',
+      'fileuploads/images/3ffb1150-9e9f-11ec-99bc-812b45d57f55.jpeg',
     creator,
   });
 
