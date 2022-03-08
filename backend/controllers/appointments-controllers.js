@@ -33,10 +33,7 @@ const getAllAppointments = async (req, res, next) => {
   const { curDate, curTime } = getCurrentTime();
   let i = 0;
   while (i < appointments.length) {
-    if (
-      appointments[i].date < curDate ||
-      appointments[i].timerange.end < curTime
-    ) {
+    if (appointments[i].date < curDate || appointments[i].end < curTime) {
       appointments[i].remove();
       appointments.splice(i, 1);
     } else {
@@ -128,14 +125,15 @@ const createAppointment = async (req, res, next) => {
     );
   }
 
-  const { title, description, address, creator, date, timerange } = req.body;
+  const { title, description, address, creator, date, start, end } = req.body;
 
   const createdAppointment = new Appointment({
     title,
     description,
     address,
     date,
-    timerange,
+    start,
+    end,
     image:
       req.file?.path ||
       'fileuploads/images/72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg',

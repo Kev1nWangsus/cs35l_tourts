@@ -1,4 +1,11 @@
-import { Backdrop, CircularProgress, Container, Grid } from '@mui/material';
+import {
+  Backdrop,
+  CircularProgress,
+  Container,
+  Grid,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useHttpClient } from '../../common/hooks/http-hook';
 import AppCard from '../components/AppCard';
@@ -8,8 +15,12 @@ const Post = () => {
   const { isLoading, error, sendRequest } = useHttpClient();
   const [appointments, setAppointments] = useState([]);
   const [refetch, setRefetch] = useState(0);
+  const [openSuccess, setOpenSuccess] = useState(false);
+
+  const handleCloseSuccess = () => setOpenSuccess(false);
 
   useEffect(() => {
+    console.log(refetch);
     const controller = new AbortController();
     const url = 'http://localhost:5000/api/appointments';
 
@@ -22,6 +33,7 @@ const Post = () => {
         console.log('error', err);
       } else {
         console.log('data', response);
+        if (refetch >= 1) setOpenSuccess(true);
         setAppointments(response.appointments);
       }
     };
@@ -29,10 +41,9 @@ const Post = () => {
     fetchData();
 
     return () => {
-      // cancel the subscription
       controller.abort();
     };
-  }, [refetch]);
+  }, [refetch, sendRequest]);
 
   return (
     <React.Fragment>
@@ -43,10 +54,25 @@ const Post = () => {
         >
           <CircularProgress color='inherit' />
         </Backdrop>
+        <Snackbar
+          open={openSuccess}
+          autoHideDuration={3000}
+          onClose={handleCloseSuccess}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={handleCloseSuccess}
+            variant='filled'
+            severity='success'
+            sx={{ width: '100%', mt: 6 }}
+          >
+            {'Successfully submitted'}
+          </Alert>
+        </Snackbar>
         {!isLoading && (
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6} md={4}>
-              <NewCard submitNewApp={(refetch) => setRefetch(refetch)} />
+              <NewCard submitNewApp={(a) => setRefetch(refetch + a)} />
             </Grid>
             {appointments.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
@@ -54,10 +80,10 @@ const Post = () => {
                   title={app.title}
                   description={app.description}
                   date={app.date}
-                  start={app.timerange.start}
-                  end={app.timerange.end}
+                  start={app.start}
+                  end={app.end}
                   image={app.image}
-                  accept={app.creator != localStorage.getItem('user')}
+                  accept={app.creator !== localStorage.getItem('user')}
                 />
               </Grid>
             ))}

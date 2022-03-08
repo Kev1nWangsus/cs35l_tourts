@@ -12,6 +12,7 @@ import {
   CircularProgress,
   DialogContent,
   Grid,
+  Box,
   IconButton,
   Modal,
   Snackbar,
@@ -20,7 +21,7 @@ import {
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { format } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import FormContainer from '../../common/components/FormElement/FormContainer';
@@ -33,6 +34,7 @@ const defaultValues = {
   date: new Date(),
   startTime: new Date(),
   endTime: new Date(),
+  file: null,
 };
 
 const NewCard = (props) => {
@@ -63,31 +65,34 @@ const NewCard = (props) => {
   // handle logic of modal component
   const [open, setOpen] = useState(false);
   const [openError, setOpenError] = useState(false);
-  const [openSuccess, setOpenSuccess] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleCloseSuccess = () => setOpenSuccess(false);
   const handleCloseError = () => setOpenError(false);
 
   const { isLoading, error, sendRequest } = useHttpClient();
 
   const onSubmit = async (data) => {
-    data.date = format(data.date, 'MM/dd/yyyy');
-    data.timerange = {
-      start: format(data.startTime, 'HH:mm'),
-      end: format(data.endTime, 'HH:mm'),
-    };
-    data.creator = localStorage.getItem('user');
-    delete data.startTime;
-    delete data.endTime;
-    console.log(data);
+    setImageUrl(null);
+    const controller = new AbortController();
+    const date = format(data.date, 'MM/dd/yyyy');
+    const creator = localStorage.getItem('user');
+
+    const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('description', data.description);
+    formData.append('address', data.address);
+    formData.append('date', date);
+    formData.append('start', format(data.startTime, 'HH:mm'));
+    formData.append('end', format(data.endTime, 'HH:mm'));
+    formData.append('image', data.file);
+    formData.append('creator', creator);
+
     const [err, response] = await sendRequest(
       'http://localhost:5000/api/appointments/create',
       'POST',
-      JSON.stringify(data),
-      { 'Content-Type': 'application/json' }
+      formData
     )
       .then((response) => [null, response])
       .catch((err) => [err, null]);
@@ -96,13 +101,21 @@ const NewCard = (props) => {
       console.log('error', err);
       setOpenError(true);
     } else {
-      props.submitNewApp(+1);
-      setOpenSuccess(true);
+      props.submitNewApp(1);
       console.log('data', response);
     }
-    reset(defaultValues);
     handleClose();
   };
+
+  // image preview
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    if (selectedImage) {
+      setImageUrl(URL.createObjectURL(selectedImage));
+    }
+  }, [selectedImage]);
 
   return (
     <React.Fragment>
@@ -143,21 +156,7 @@ const NewCard = (props) => {
           {error}
         </Alert>
       </Snackbar>
-      <Snackbar
-        open={openSuccess}
-        autoHideDuration={3000}
-        onClose={handleCloseSuccess}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={handleCloseSuccess}
-          variant='filled'
-          severity='success'
-          sx={{ width: '100%', mt: 6 }}
-        >
-          {'Successfully submitted'}
-        </Alert>
-      </Snackbar>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -286,6 +285,39 @@ const NewCard = (props) => {
                 </Stack>
               </LocalizationProvider>
             </Grid>
+
+            <Controller
+              name='file'
+              control={control}
+              defaultValue=''
+              render={({ field }) => (
+                <label htmlFor='actual-upload'>
+                  <input
+                    type='file'
+                    id='actual-upload'
+                    style={{ display: 'none' }}
+                    onChange={(e) => {
+                      field.onChange(e.target.files[0]);
+                      setSelectedImage(e.target.files[0]);
+                    }}
+                  />
+                  <Button
+                    color='primary'
+                    variant='contained'
+                    component='span'
+                    sx={{ mt: 4 }}
+                  >
+                    {imageUrl ? 'Edit Image' : 'Upload Image'}
+                  </Button>
+                </label>
+              )}
+            />
+            {imageUrl && selectedImage && (
+              <Box mt={2}>
+                <div>Preview:</div>
+                <img src={imageUrl} alt={selectedImage.name} height='100px' />
+              </Box>
+            )}
 
             <Grid container>
               <Grid item xs={6} sm={6} align='center' justify='center'>
