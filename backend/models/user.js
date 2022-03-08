@@ -10,7 +10,8 @@ const userSchema = new Schema({
   gender: { type: String, required: true },
   rating: { type: Number, required: true },
   region: { type: String, required: true },
-  appointments: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Appointment' }]
+  appointments: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Appointment' }],
+  expiredappointments: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Appointment' }]
 });
 
 userSchema.plugin(uniqueValidator);

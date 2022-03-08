@@ -13,9 +13,9 @@ const getCurrentTime = () => {
   let hr = String(today.getHours()).padStart(2, '0');
   let min = String(today.getMinutes()).padStart(2, '0');
 
-  date = mm + '/' + dd + '/' + yyyy;
-  time = hr + ':' + min;
-  return date, time;
+  const curDate = mm + '/' + dd + '/' + yyyy;
+  const curTime = hr + ':' + min;
+  return {curDate, curTime};
 };
 
 const getAllAppointments = async (req, res, next) => {
@@ -33,8 +33,11 @@ const getAllAppointments = async (req, res, next) => {
   const { curDate, curTime } = getCurrentTime();
   let i = 0;
   while (i < appointments.length) {
-    if (appointments[i].date < curDate || appointments[i].end < curTime) {
-      appointments[i].remove();
+    if (appointments[i].date < curDate || (appointments[i].date === curDate && appointments[i].end < curTime)) {
+      const appointmentCreator = await User.findById(appointments[i].creator);
+      appointmentCreator.expiredappointments.push(appointments[i]);
+      appointmentCreator.save();
+      //appointments[i].remove();
       appointments.splice(i, 1);
     } else {
       i = i + 1;
@@ -136,7 +139,7 @@ const createAppointment = async (req, res, next) => {
     end,
     image:
       req.file?.path ||
-      'fileuploads/images/72d9fdd0-984f-11ec-8d84-b99f936ac44e.jpeg',
+      'fileuploads/images/appointmentsimage.jpeg',
     creator,
   });
 
