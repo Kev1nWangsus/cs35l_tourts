@@ -45,14 +45,14 @@ const HomeBackground = () => {
           src={backgroundImage}
           alt='increase priority'
         />
-        <Typography color='inherit' align='center' variant='h2' marked='center'>
+        <Typography color='inherit' align='center' variant='h2' marked='center' fontFamily='verdana'>
           Welcome to Tourts!
         </Typography>
         <Typography
           color='inherit'
           align='center'
           variant='h5'
-          sx={{ mb: 4, mt: { sx: 4, sm: 10 } }}
+          sx={{ mb: 4, mt: { sx: 4, sm: 10, fontFamily:"verdana" } }}
         >
           Find nearby tennis player or initiate your appointment!
         </Typography>
