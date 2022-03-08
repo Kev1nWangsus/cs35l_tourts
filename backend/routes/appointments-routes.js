@@ -15,4 +15,6 @@ router.post("/create", fileUpload.single('image'), appointmentsControllers.creat
 
 router.delete("/:pid", appointmentsControllers.deleteAppointment);
 
+router.patch("/:pid", appointmentsControllers.updateAcceptor);
+
 module.exports = router;

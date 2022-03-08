@@ -11,6 +11,7 @@ const appointmentSchema = new Schema({
   end: { type: String, required: true },
   image: { type: String },
   creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
+  acceptor: { type: mongoose.Types.ObjectId, ref: 'User' },
 });
 
 module.exports = mongoose.model('Appointment', appointmentSchema);
