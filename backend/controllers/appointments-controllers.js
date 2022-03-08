@@ -154,7 +154,6 @@ const createAppointment = async (req, res, next) => {
   }
 
   try {
-    // TODO: This is problematic
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await createdAppointment.save({ session: sess });
@@ -246,8 +245,10 @@ const updateAcceptor = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ appointment: appointment.toObject({ getters: true }) });
-}
+  res
+    .status(200)
+    .json({ appointment: appointment.toObject({ getters: true }) });
+};
 
 exports.getAllAppointments = getAllAppointments;
 exports.getAppointmentById = getAppointmentById;

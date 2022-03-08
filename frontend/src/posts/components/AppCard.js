@@ -8,14 +8,31 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import React from 'react';
+import { useHttpClient } from '../../common/hooks/http-hook';
 
 const AppCard = (props) => {
-  const { image, title, description, date, start, end, accept } = props;
+  console.log(props.app);
+  const { id, image, creator, title, description, date, start, end, address } =
+    props.app;
+  const accept = creator != localStorage.getItem('user');
   const formatDate = format(new Date(date), 'PPP');
+  const { isLoading, error, sendRequest } = useHttpClient();
 
   const handleAccept = () => {};
 
-  const handleDelete = () => {};
+  const handleDelete = async () => {
+    const url = `http://localhost:5000/api/appointments/${id}`;
+    const [err, response] = await sendRequest(url, 'DELETE')
+      .then((response) => [null, response])
+      .catch((err) => [err, null]);
+
+    if (err) {
+      console.log('error', err);
+    } else {
+      props.delApp(1);
+      console.log('Successfully deleted', response);
+    }
+  };
 
   return (
     <Card sx={{ width: 1, height: 1 }}>
@@ -43,6 +60,7 @@ const AppCard = (props) => {
         <Typography color='text.secondary'>
           {`${start}-${end}, ${formatDate}`}
         </Typography>
+        <Typography color='text.secondary'>{`@${address}`}</Typography>
       </CardContent>
       <Stack direction='row' justifyContent='end'>
         {accept ? (

@@ -101,7 +101,7 @@ const NewCard = (props) => {
       console.log('error', err);
       setOpenError(true);
     } else {
-      props.submitNewApp(1);
+      props.addApp(1);
       console.log('data', response);
     }
     handleClose();
