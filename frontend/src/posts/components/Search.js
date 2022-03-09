@@ -151,7 +151,7 @@ const Search = (props) => {
                 <FormControl
                   sx={{width: 200}}
                   margin='dense'
-                  error={errors.gender ? true : false}
+                  error={errors.sorting ? true : false}
                 >
                   <InputLabel>Sort by</InputLabel>
                   <Select

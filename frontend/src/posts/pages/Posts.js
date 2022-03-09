@@ -97,7 +97,6 @@ const Post = () => {
     if (searchInfo.length === 0) return apps;
     var result = [];
 
-    console.log(searchInfo);
     if (searchInfo[0] === null) {
       result = apps;
     } else {
