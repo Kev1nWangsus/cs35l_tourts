@@ -11,6 +11,7 @@ import { useHttpClient } from '../../common/hooks/http-hook';
 import AppCard from '../components/AppCard';
 import NewCard from '../components/NewCard';
 import Search from '../components/Search';
+import {sorting} from '../../common/functions/compare';
 
 const Post = () => {
   const { isLoading, error, sendRequest } = useHttpClient();
@@ -94,7 +95,30 @@ const Post = () => {
     console.log(newTime);
   }
 
-  
+  function appsToDisplay(apps) {
+    var result = [];
+    
+    if (time[0] === null) {
+      result = apps;
+    }
+    else {
+      var appsCopy = apps.map((x) => x); 
+      for (let i = 0; i < appsCopy.length; i++) {
+        console.log(appsCopy[i].date);
+        if (appsCopy[i].date === time[0]) {
+          result.push(appsCopy[i]);
+        }
+      }
+    }
+
+    let user_rating = localStorage.getItem('rating');
+    let user_region = localStorage.getItem('region');
+
+    result = sorting(user_rating, user_region, time[1], time[2], result);
+
+    return result;
+
+  }
 
   return (
     <React.Fragment>
@@ -144,7 +168,7 @@ const Post = () => {
             <Grid item xs={12} sm={6} md={4}>
               <NewCard addApp={(a) => setAdd(add + a)} />
             </Grid>
-            {appointments.map((app, index) => {
+            {appsToDisplay(appointments).map((app, index) => {
               if (app.acceptor == null) {
                 return (
                   <Grid item key={index} xs={12} sm={6} md={4}>
