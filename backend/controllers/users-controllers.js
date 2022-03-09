@@ -53,7 +53,11 @@ const signup = async (req, res, next) => {
     gender,
     rating,
     region,
-    appoitments: []
+    appoitments: [],
+    expired: [],
+    mine: [],
+    other: [],
+    finished: []
   });
 
   try {
@@ -100,6 +104,33 @@ const login = async (req, res, next) => {
   });
 };
 
+const getUserByUserId = async (req, res, next) => {
+  const userId = req.params.uid;
+
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not find this user.',
+      500
+    );
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError(
+      'Could not find user for the provided id.',
+      404
+    );
+    return next(error);
+  }
+
+  res.json({ user: user.toObject({ getters: true }) });
+}
+
+
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
+exports.getUserByUserId = getUserByUserId;

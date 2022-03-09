@@ -13,9 +13,9 @@ const getCurrentTime = () => {
   let hr = String(today.getHours()).padStart(2, '0');
   let min = String(today.getMinutes()).padStart(2, '0');
 
-  date = mm + '/' + dd + '/' + yyyy;
-  time = hr + ':' + min;
-  return date, time;
+  const curDate = yyyy + '/' + mm + '/' + dd + '/';
+  const curTime = hr + ':' + min;
+  return { curDate, curTime };
 };
 
 const getAllAppointments = async (req, res, next) => {
@@ -33,8 +33,27 @@ const getAllAppointments = async (req, res, next) => {
   const { curDate, curTime } = getCurrentTime();
   let i = 0;
   while (i < appointments.length) {
-    if (appointments[i].date < curDate || appointments[i].end < curTime) {
-      appointments[i].remove();
+    if (
+      appointments[i].date < curDate ||
+      (appointments[i].date === curDate && appointments[i].end < curTime)
+    ) {
+      if (appointments[i].acceptor !== null) {
+        const appointmentCreator = await User.findById(appointments[i].creator);
+        const appointmentAcceptor = await User.findById(
+          appointments[i].acceptor
+        );
+        appointmentCreator.finished.push(appointments[i]);
+        appointmentCreator.other.pull(appointments[i]);
+        appointmentAcceptor.finished.push(appointments[i]);
+        appointmentAcceptor.mine.pull(appointments[i]);
+        appointmentAcceptor.save();
+        appointmentCreator.save();
+      } else {
+        const appointmentCreator = await User.findById(appointments[i].creator);
+        appointmentCreator.expired.push(appointments[i]);
+        appointmentCreator.appointments.pull(appointments[i]);
+        appointmentCreator.save();
+      }
       appointments.splice(i, 1);
     } else {
       i = i + 1;
@@ -134,10 +153,9 @@ const createAppointment = async (req, res, next) => {
     date,
     start,
     end,
-    image:
-      req.file?.path ||
-      'fileuploads/images/3ffb1150-9e9f-11ec-99bc-812b45d57f55.jpeg',
+    image: req.file?.path || 'fileuploads/images/appointmentsimage.jpg',
     creator,
+    acceptor: null,
   });
 
   let user;
@@ -154,7 +172,6 @@ const createAppointment = async (req, res, next) => {
   }
 
   try {
-    // TODO: This is problematic
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await createdAppointment.save({ session: sess });
@@ -220,7 +237,16 @@ const updateAcceptor = async (req, res, next) => {
     );
   }
 
-  const { acceptor } = req.body;
+  const { acceptorId } = req.body;
+
+  let acceptor;
+  try {
+    acceptor = await User.findById(acceptorId);
+  } catch (err) {
+    const error = new HttpError('Failed when fetching info from user.', 500);
+    return next(error);
+  }
+
   const appointmentId = mongoose.Types.ObjectId(req.params.pid);
 
   let appointment;
@@ -234,10 +260,23 @@ const updateAcceptor = async (req, res, next) => {
     return next(error);
   }
 
-  appointment.acceptor = acceptor;
+  let creator;
+  try {
+    creator = await User.findById(appointment.creator);
+  } catch (err) {
+    const error = new HttpError('Failed when fetching info from user.', 500);
+    return next(error);
+  }
+
+  appointment.acceptor = acceptorId;
+  acceptor.mine.push(appointmentId);
+  creator.appointments.pull(appointmentId);
+  creator.other.push(appointmentId);
 
   try {
     await appointment.save();
+    await acceptor.save();
+    await creator.save();
   } catch (err) {
     const error = new HttpError(
       'Something went wrong, could not accept the appointment.',
@@ -246,8 +285,10 @@ const updateAcceptor = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ appointment: appointment.toObject({ getters: true }) });
-}
+  res
+    .status(200)
+    .json({ appointment: appointment.toObject({ getters: true }) });
+};
 
 exports.getAllAppointments = getAllAppointments;
 exports.getAppointmentById = getAppointmentById;

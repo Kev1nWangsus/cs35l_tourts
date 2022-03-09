@@ -44,15 +44,7 @@ const MyPosts = () => {
           <Grid container spacing={4}>
             {appointments.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
-                <AppCard
-                  title={app.title}
-                  description={app.description}
-                  date={app.date}
-                  start={app.start}
-                  end={app.end}
-                  image={app.image}
-                  accept={false}
-                />
+                <AppCard app={app} accept={false} />
               </Grid>
             ))}
           </Grid>
@@ -60,21 +52,17 @@ const MyPosts = () => {
 
         {'Accepted:'}
         <Grid container spacing={4}>
-          {appointments.map((app, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <AppCard
-                title={app.title}
-                description={app.description}
-                date={app.date}
-                start={app.start}
-                end={app.end}
-                image={app.image}
-                accept={false}
-              />
-            </Grid>
-          ))}
+          {appointments.map((app, index) => {
+            if (app.acceptor == '') {
+              return (
+                <Grid item key={index} xs={12} sm={6} md={4}>
+                  <AppCard app={app} accept={false} />
+                </Grid>
+              );
+            }
+          })}
         </Grid>
-
+        {/* 
         {'Finished'}
         <Grid container spacing={4}>
           {appointments.map((app, index) => (
@@ -107,7 +95,7 @@ const MyPosts = () => {
               />
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
       </Container>
     </React.Fragment>
   );
