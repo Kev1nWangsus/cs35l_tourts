@@ -14,13 +14,14 @@ import NewCard from '../components/NewCard';
 const Post = () => {
   const { isLoading, error, sendRequest } = useHttpClient();
   const [appointments, setAppointments] = useState([]);
-  const [refetch, setRefetch] = useState(0);
-  const [openSuccess, setOpenSuccess] = useState(false);
+  const [add, setAdd] = useState(0);
+  const [del, setDel] = useState(0);
+  const [addSuccess, setAddSuccess] = useState(false);
+  const [delSuccess, setDelSuccess] = useState(false);
 
-  const handleCloseSuccess = () => setOpenSuccess(false);
-
+  const handleCloseAddSuccess = () => setAddSuccess(false);
+  const handleCloseDelSuccess = () => setDelSuccess(false);
   useEffect(() => {
-    console.log(refetch);
     const controller = new AbortController();
     const url = 'http://localhost:5000/api/appointments';
 
@@ -33,8 +34,8 @@ const Post = () => {
         console.log('error', err);
       } else {
         console.log('data', response);
-        if (refetch >= 1) setOpenSuccess(true);
         setAppointments(response.appointments);
+        console.log(appointments[0]);
       }
     };
 
@@ -43,7 +44,47 @@ const Post = () => {
     return () => {
       controller.abort();
     };
-  }, [refetch, sendRequest]);
+  }, []);
+
+  useEffect(() => {
+    const url = 'http://localhost:5000/api/appointments';
+
+    const fetchData = async () => {
+      const [err, response] = await sendRequest(url)
+        .then((response) => [null, response])
+        .catch((err) => [err, null]);
+
+      if (err) {
+        console.log('error', err);
+      } else {
+        console.log('data', response);
+        if (add >= 1) setAddSuccess(true);
+        setAppointments(response.appointments);
+      }
+    };
+
+    fetchData();
+  }, [add]);
+
+  useEffect(() => {
+    const url = 'http://localhost:5000/api/appointments';
+
+    const fetchData = async () => {
+      const [err, response] = await sendRequest(url)
+        .then((response) => [null, response])
+        .catch((err) => [err, null]);
+
+      if (err) {
+        console.log('error', err);
+      } else {
+        console.log('data', response);
+        if (del >= 1) setDelSuccess(true);
+        setAppointments(response.appointments);
+      }
+    };
+
+    fetchData();
+  }, [del]);
 
   return (
     <React.Fragment>
@@ -55,36 +96,43 @@ const Post = () => {
           <CircularProgress color='inherit' />
         </Backdrop>
         <Snackbar
-          open={openSuccess}
+          open={addSuccess}
           autoHideDuration={3000}
-          onClose={handleCloseSuccess}
+          onClose={handleCloseAddSuccess}
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
           <Alert
-            onClose={handleCloseSuccess}
+            onClose={handleCloseAddSuccess}
             variant='filled'
             severity='success'
             sx={{ width: '100%', mt: 6 }}
           >
-            {'Successfully submitted'}
+            {'Successfully submitted new appointment'}
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={delSuccess}
+          autoHideDuration={3000}
+          onClose={handleCloseDelSuccess}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={handleCloseDelSuccess}
+            variant='filled'
+            severity='warning'
+            sx={{ width: '100%', mt: 6 }}
+          >
+            {'Successfully deleted'}
           </Alert>
         </Snackbar>
         {!isLoading && (
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6} md={4}>
-              <NewCard submitNewApp={(a) => setRefetch(refetch + a)} />
+              <NewCard addApp={(a) => setAdd(add + a)} />
             </Grid>
             {appointments.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
-                <AppCard
-                  title={app.title}
-                  description={app.description}
-                  date={app.date}
-                  start={app.start}
-                  end={app.end}
-                  image={app.image}
-                  accept={app.creator !== localStorage.getItem('user')}
-                />
+                <AppCard app={app} delApp={(a) => setDel(del + a)} />
               </Grid>
             ))}
           </Grid>
