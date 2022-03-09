@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useHttpClient } from '../../common/hooks/http-hook';
 import AppCard from '../components/AppCard';
 import NewCard from '../components/NewCard';
+import Search from '../components/Search';
 
 const Post = () => {
   const { isLoading, error, sendRequest } = useHttpClient();
@@ -35,7 +36,6 @@ const Post = () => {
       } else {
         console.log('data', response);
         setAppointments(response.appointments);
-        console.log(appointments[0]);
       }
     };
 
@@ -95,6 +95,7 @@ const Post = () => {
         >
           <CircularProgress color='inherit' />
         </Backdrop>
+
         <Snackbar
           open={addSuccess}
           autoHideDuration={3000}
@@ -119,22 +120,29 @@ const Post = () => {
           <Alert
             onClose={handleCloseDelSuccess}
             variant='filled'
-            severity='warning'
+            severity='success'
             sx={{ width: '100%', mt: 6 }}
           >
-            {'Successfully deleted'}
+            {'Successful'}
           </Alert>
         </Snackbar>
+
+        <Search />
+
         {!isLoading && (
-          <Grid container spacing={4}>
+          <Grid container spacing={4} sx={{ mt: 4 }}>
             <Grid item xs={12} sm={6} md={4}>
               <NewCard addApp={(a) => setAdd(add + a)} />
             </Grid>
-            {appointments.map((app, index) => (
-              <Grid item key={index} xs={12} sm={6} md={4}>
-                <AppCard app={app} delApp={(a) => setDel(del + a)} />
-              </Grid>
-            ))}
+            {appointments.map((app, index) => {
+              if (app.acceptor == null) {
+                return (
+                  <Grid item key={index} xs={12} sm={6} md={4}>
+                    <AppCard app={app} delApp={(a) => setDel(del + a)} />
+                  </Grid>
+                );
+              }
+            })}
           </Grid>
         )}
       </Container>

@@ -11,14 +11,34 @@ import React from 'react';
 import { useHttpClient } from '../../common/hooks/http-hook';
 
 const AppCard = (props) => {
-  console.log(props.app);
   const { id, image, creator, title, description, date, start, end, address } =
     props.app;
   const accept = creator != localStorage.getItem('user');
   const formatDate = format(new Date(date), 'PPP');
   const { isLoading, error, sendRequest } = useHttpClient();
 
-  const handleAccept = () => {};
+  const handleAccept = async () => {
+    const url = `http://localhost:5000/api/appointments/${id}`;
+    const acceptor = localStorage.getItem('user');
+    const data = { acceptor: acceptor };
+    console.log(localStorage.getItem('user'));
+    console.log(JSON.stringify(data));
+    const [err, response] = await sendRequest(
+      url,
+      'PATCH',
+      JSON.stringify(data),
+      { 'Content-Type': 'application/json' }
+    )
+      .then((response) => [null, response])
+      .catch((err) => [err, null]);
+
+    if (err) {
+      console.log('error', err);
+    } else {
+      props.delApp(1);
+      console.log('Successfully accepted', response);
+    }
+  };
 
   const handleDelete = async () => {
     const url = `http://localhost:5000/api/appointments/${id}`;

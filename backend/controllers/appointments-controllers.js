@@ -15,7 +15,7 @@ const getCurrentTime = () => {
 
   const curDate = mm + '/' + dd + '/' + yyyy;
   const curTime = hr + ':' + min;
-  return {curDate, curTime};
+  return { curDate, curTime };
 };
 
 const getAllAppointments = async (req, res, next) => {
@@ -33,7 +33,10 @@ const getAllAppointments = async (req, res, next) => {
   const { curDate, curTime } = getCurrentTime();
   let i = 0;
   while (i < appointments.length) {
-    if (appointments[i].date < curDate || (appointments[i].date === curDate && appointments[i].end < curTime)) {
+    if (
+      appointments[i].date < curDate ||
+      (appointments[i].date === curDate && appointments[i].end < curTime)
+    ) {
       const appointmentCreator = await User.findById(appointments[i].creator);
       appointmentCreator.expiredappointments.push(appointments[i]);
       appointmentCreator.save();
@@ -137,10 +140,9 @@ const createAppointment = async (req, res, next) => {
     date,
     start,
     end,
-    image:
-      req.file?.path ||
-      'fileuploads/images/appointmentsimage.jpeg',
+    image: req.file?.path || 'fileuploads/images/appointmentsimage.jpg',
     creator,
+    acceptor: null,
   });
 
   let user;
@@ -222,7 +224,8 @@ const updateAcceptor = async (req, res, next) => {
     );
   }
 
-  const { acceptor } = req.body;
+  console.log(req.body);
+  const acceptor = mongoose.Types.ObjectId(req.body.acceptor);
   const appointmentId = mongoose.Types.ObjectId(req.params.pid);
 
   let appointment;
@@ -235,8 +238,9 @@ const updateAcceptor = async (req, res, next) => {
     );
     return next(error);
   }
-
+  console.log(acceptor);
   appointment.acceptor = acceptor;
+  // console.log(appointment);
 
   try {
     await appointment.save();

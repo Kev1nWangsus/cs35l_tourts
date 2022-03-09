@@ -52,11 +52,15 @@ const MyPosts = () => {
 
         {'Accepted:'}
         <Grid container spacing={4}>
-          {appointments.map((app, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <AppCard app={app} accept={false} />
-            </Grid>
-          ))}
+          {appointments.map((app, index) => {
+            if (app.acceptor == '') {
+              return (
+                <Grid item key={index} xs={12} sm={6} md={4}>
+                  <AppCard app={app} accept={false} />
+                </Grid>
+              );
+            }
+          })}
         </Grid>
         {/* 
         {'Finished'}
