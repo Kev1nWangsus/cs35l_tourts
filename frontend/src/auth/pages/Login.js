@@ -61,6 +61,7 @@ const Login = () => {
     if (err) {
       console.log('error', err);
     } else {
+      console.log('data', response);
       if (writeStorage) localStorage.setItem('user', response.user.id);
       auth.login(response.user.id);
     }

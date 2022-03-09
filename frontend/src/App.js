@@ -11,7 +11,6 @@ import Register from './auth/pages/Register.js';
 import beautify from './common/beautify';
 import Footer from './common/components/NavigationElement/Footer';
 import HeadBar from './common/components/NavigationElement/HeadBar';
-import SearchBar from './common/components/NavigationElement/SearchBar';
 import HomeBackground from './common/components/ViewElement/HomeBackground';
 import { AuthContext } from './common/context/authcontext';
 import Posts from './posts/pages/Posts.js';
