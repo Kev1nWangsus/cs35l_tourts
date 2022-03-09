@@ -2,13 +2,33 @@
 import { Avatar } from '@mui/material';
 import { Button, Box, Typography, TextField } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState} from 'react';
 import HomeBackground from '../../common/components/ViewElement/HomeBackground';
 import { AuthContext } from '../../common/context/authcontext';
+import { useHttpClient } from '../../common/hooks/http-hook';
+
 
 
 const Profile = () => {
+  const {isLoading, error, sendRequest, clearError} = useHttpClient(); 
+  const [loadedUsers, setLoadedUsers] = useState();
+  
+  useEffect(() => {
+    const fetchUsers = async () => {      
+      try {
+        const responseData = await sendRequest(
+          'http://localhost:5000/api/users/${uid}'
+        );  //fetch(): default is a 'get' request
+
+        setLoadedUsers(responseData.users);
+      } catch (err) {}         
+    };
+    fetchUsers();
+  }, [sendRequest]);
+
+  
   const auth = useContext(AuthContext);
+
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -22,8 +42,7 @@ const Profile = () => {
       <div style={{
         maxWidth: "1000px",
         margin: "0px auto",
-        
-        
+               
       }}>
         <div style={{
           display: "flex",
