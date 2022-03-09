@@ -125,7 +125,7 @@ const getUserByUserId = async (req, res, next) => {
     );
     return next(error);
   }
-
+  console.log(user);
   res.json({ user: user.toObject({ getters: true }) });
 }
 

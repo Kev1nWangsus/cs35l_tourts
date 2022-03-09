@@ -112,9 +112,9 @@ const Search = () => {
             </Stack>
           </LocalizationProvider>
         </Grid>
-        <Grid item xs={4} marked='center'>
+
           <Stack
-            spacing={1}
+            spacing={2}
             direction='row'
             sx={{ justifyContent: 'center', alignItems: 'center' }}
           >
@@ -133,7 +133,6 @@ const Search = () => {
               Reset
             </Button>
           </Stack>
-        </Grid>
       </Grid>
     </React.Fragment>
   );
