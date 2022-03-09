@@ -6,40 +6,27 @@ import React, { useContext, useEffect, useState} from 'react';
 import HomeBackground from '../../common/components/ViewElement/HomeBackground';
 import { AuthContext } from '../../common/context/authcontext';
 import { useHttpClient } from '../../common/hooks/http-hook';
-import ErrorModal from '../../shared/components/UIElements/ErrorModal';
-import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+
 
 
 const Profile = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const {isLoading, error, sendRequest, clearError} = useHttpClient(); 
   const [loadedUsers, setLoadedUsers] = useState();
-
+  
   useEffect(() => {
-    const sendRequest = async () => {
-      setIsLoading(true);
+    const fetchUsers = async () => {      
       try {
-      const response = await fetch('http://localhost:5000/api/appointments/users/');  //fetch(): default is a 'get' request
+        const responseData = await sendRequest(
+          'http://localhost:5000/api/users/${uid}'
+        );  //fetch(): default is a 'get' request
 
-      const responeseData = await response.json();
+        setLoadedUsers(responseData.users);
+      } catch (err) {}         
+    };
+    fetchUsers();
+  }, [sendRequest]);
 
-      if (!response.ok) {
-        throw new Error(responeseData.message);
-      }
-
-      setLoadedUsers(responseData.users);
-      } catch (err) {      
-      setError(err.message)
-    }
-    setIsLoading(false);
-  };
-    sendRequest();
-  }, []);
-
-  const errorHandler = () => {
-    setError(null);
-  };
-
+  
   const auth = useContext(AuthContext);
 
 
