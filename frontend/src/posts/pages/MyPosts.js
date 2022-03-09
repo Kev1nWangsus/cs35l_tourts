@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHttpClient } from '../../common/hooks/http-hook';
 import AppCard from '../components/AppCard';
-import { Grid, Container } from '@mui/material';
-import FormBackground from '../../common/components/FormElement/FormBackground';
+import { Grid, Container, Typography, Divider } from '@mui/material';
 import FormContainer from '../../common/components/FormElement/FormContainer';
 
 const MyPosts = () => {
@@ -38,10 +37,13 @@ const MyPosts = () => {
 
   return (
     <React.Fragment>
-      <Container sx={{ py: 8, maxWidth: 'lg', minHeight: '80vh' }}>
-        <FormContainer maxWidth='lg'>
-          {'Ongoing:'}
-          <Grid container spacing={4}>
+      <Container sx={{ py: 4, maxWidth: 'lg', minHeight: '80vh' }}>
+        <FormContainer maxWidth='lg' marginTop={2} marginBottom={2}>
+          <Typography variant='h4' sx={{ mb: 1 }}>
+            TODO:
+          </Typography>
+          <Divider />
+          <Grid container spacing={4} sx={{ mt: 1 }}>
             {appointments.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
                 <AppCard app={app} accept={false} />
@@ -50,52 +52,47 @@ const MyPosts = () => {
           </Grid>
         </FormContainer>
 
-        {'Accepted:'}
-        <Grid container spacing={4}>
-          {appointments.map((app, index) => {
-            if (app.acceptor == '') {
-              return (
-                <Grid item key={index} xs={12} sm={6} md={4}>
-                  <AppCard app={app} accept={false} />
-                </Grid>
-              );
-            }
-          })}
-        </Grid>
-        {/* 
-        {'Finished'}
-        <Grid container spacing={4}>
-          {appointments.map((app, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <AppCard
-                title={app.title}
-                description={app.description}
-                date={app.date}
-                start={app.start}
-                end={app.end}
-                image={app.image}
-                accept={false}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <FormContainer maxWidth='lg' marginTop={2} marginBottom={2}>
+          <Typography variant='h4' sx={{ mb: 1 }}>
+            FUTURE:
+          </Typography>
+          <Divider />
+          <Grid container spacing={4} sx={{ mt: 1 }}>
+            {appointments.map((app, index) => (
+              <Grid item key={index} xs={12} sm={6} md={4}>
+                <AppCard app={app} accept={false} />
+              </Grid>
+            ))}
+          </Grid>
+        </FormContainer>
 
-        {'Expired:'}
-        <Grid container spacing={4}>
-          {appointments.map((app, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <AppCard
-                title={app.title}
-                description={app.description}
-                date={app.date}
-                start={app.start}
-                end={app.end}
-                image={app.image}
-                accept={false}
-              />
-            </Grid>
-          ))}
-        </Grid> */}
+        <FormContainer maxWidth='lg' marginTop={2} marginBottom={2}>
+          <Typography variant='h4' sx={{ mb: 1 }}>
+            Finished:
+          </Typography>
+          <Divider />
+          <Grid container spacing={4} sx={{ mt: 1 }}>
+            {appointments.map((app, index) => (
+              <Grid item key={index} xs={12} sm={6} md={4}>
+                <AppCard app={app} accept={false} />
+              </Grid>
+            ))}
+          </Grid>
+        </FormContainer>
+
+        <FormContainer maxWidth='lg' marginTop={2} marginBottom={2}>
+          <Typography variant='h4' sx={{ mb: 1 }}>
+            Expired:
+          </Typography>
+          <Divider />
+          <Grid container spacing={4} sx={{ mt: 1 }}>
+            {appointments.map((app, index) => (
+              <Grid item key={index} xs={12} sm={6} md={4}>
+                <AppCard app={app} accept={false} />
+              </Grid>
+            ))}
+          </Grid>
+        </FormContainer>
       </Container>
     </React.Fragment>
   );

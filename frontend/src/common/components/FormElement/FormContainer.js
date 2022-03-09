@@ -5,7 +5,7 @@ import * as React from 'react';
 import FormBackground from './FormBackground';
 
 const FormContainer = React.forwardRef((props, ref) => {
-  const { children, maxWidth } = props;
+  const { children, maxWidth, marginTop, marginBottom } = props;
 
   return (
     <Box
@@ -16,7 +16,10 @@ const FormContainer = React.forwardRef((props, ref) => {
       ref={ref}
     >
       <Container maxWidth={maxWidth ? maxWidth : 'sm'}>
-        <Box sx={{ mt: 7, mb: 12 }}>
+        <Box
+          marginTop={marginTop ? marginTop : 10}
+          marginBottom={marginBottom ? marginBottom : 10}
+        >
           <FormBackground
             background='light'
             justify='center'
