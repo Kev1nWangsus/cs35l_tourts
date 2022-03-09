@@ -21,7 +21,7 @@ const Post = () => {
   const [addSuccess, setAddSuccess] = useState(false);
   const [delSuccess, setDelSuccess] = useState(false);
 
-  const [time, setTime] = useState([]);
+  const [searchInfo, setSearchInfo] = useState([]);
 
   const handleCloseAddSuccess = () => setAddSuccess(false);
   const handleCloseDelSuccess = () => setDelSuccess(false);
@@ -89,23 +89,21 @@ const Post = () => {
     fetchData();
   }, [del]);
 
-  function handleChange(newTime) {
-    setTime(newTime);
-    console.log(newTime);
+  function handleChange(newInfo) {
+    setSearchInfo(newInfo);
   }
 
   function appsToDisplay(apps) {
-    if (time.length === 0) return apps;
-    console.log(time);
+    if (searchInfo.length === 0) return apps;
     var result = [];
 
-    if (time[0] === null) {
+    console.log(searchInfo);
+    if (searchInfo[0] === null) {
       result = apps;
     } else {
       var appsCopy = apps.map((x) => x);
       for (let i = 0; i < appsCopy.length; i++) {
-        console.log(appsCopy[i].date);
-        if (appsCopy[i].date === time[0]) {
+        if (appsCopy[i].date === searchInfo[0]) {
           result.push(appsCopy[i]);
         }
       }
@@ -114,7 +112,7 @@ const Post = () => {
     let user_rating = localStorage.getItem('rating');
     let user_region = localStorage.getItem('region');
 
-    result = sorting(user_rating, user_region, time[1], time[2], result);
+    result = sorting(user_rating, user_region, searchInfo[1], searchInfo[2], result, searchInfo[3]);
 
     return result;
   }
@@ -160,7 +158,9 @@ const Post = () => {
           </Alert>
         </Snackbar>
 
-        <Search value={time} onChange={handleChange} />
+        <Search value={searchInfo} onChange={handleChange} />
+
+
 
         {!isLoading && (
           <Grid container spacing={4} sx={{ mt: 4 }}>

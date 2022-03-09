@@ -3,18 +3,28 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
-import { Grid, Button } from '@mui/material';
+import { 
+  Grid, 
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText 
+} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { format } from 'date-fns';
+import { sortings } from '../../common/constant/constant';
 
 const defaultValues = {
   date: null,
   startTime: null,
   endTime: null,
+  sorting: 'Timeframe'
 };
 
 const validator = Yup.object().shape({
@@ -45,7 +55,7 @@ const Search = (props) => {
       date = null;
     }
     else {
-      date = format(data.date, 'MM/dd/yyyy');
+      date = format(data.date, 'yyyy-MM-dd');
     }
     if (data.startTime === null) {
       startTime = "00:00";
@@ -59,7 +69,7 @@ const Search = (props) => {
     else {
       endTime = format(data.endTime, 'HH:mm');
     }
-    props.onChange([date, startTime, endTime]);
+    props.onChange([date, startTime, endTime, data.sorting]);
 
   };
 
@@ -67,6 +77,7 @@ const Search = (props) => {
   const onReset = () => {
     reset(defaultValues);
   };
+
   return (
     <React.Fragment>
       <Grid container>
@@ -132,6 +143,38 @@ const Search = (props) => {
                 )}
                 defaultValue={defaultValues.endTime}
               />
+
+            <Controller
+              name='sorting'
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <FormControl
+                  sx={{width: 200}}
+                  margin='dense'
+                  error={errors.gender ? true : false}
+                >
+                  <InputLabel>Sort by</InputLabel>
+                  <Select
+                    value={value}
+                    onChange={onChange}
+                    id='sorting'
+                    name='sorting'
+                    label='sorting'
+                    labelId='sorting-id'
+                  >
+                    {sortings.map((sorting, index) => (
+                      <MenuItem value={sorting} key={index}>
+                        {sorting}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {errors.sorting && (
+                    <FormHelperText>{errors.sorting?.message}</FormHelperText>
+                  )}
+                </FormControl>
+              )}
+              defaultValue=''
+            />
             </Stack>
           </LocalizationProvider>
         </Grid>

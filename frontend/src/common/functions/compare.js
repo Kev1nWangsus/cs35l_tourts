@@ -52,11 +52,11 @@ function timeOverlap(user_start, user_end, app) {
     return (overlap / user_timeframe);
 }
 
-// default sorting criteria 0: time > rating > region
-// sorting criteria 1: rating > time > region
-// sorting criteria 2: region > time > rating
-export function sorting (user_rating, user_region, user_start, user_end, apps, criteria = 0) {
-    if (criteria == 0) {
+// sorting criteria 'Timeframe': time > rating > region
+// sorting criteria 'Skill Level': rating > time > region
+// sorting criteria 'Region': region > time > rating
+export function sorting (user_rating, user_region, user_start, user_end, apps, criteria) {
+    if (criteria === 'Timeframe') {
         function compare(a, b) {
             if (timeOverlap(user_start, user_end, a) > timeOverlap(user_start, user_end, b)) {
                 return -1;
@@ -88,7 +88,7 @@ export function sorting (user_rating, user_region, user_start, user_end, apps, c
         return (apps.sort(compare));
     }
 
-    else if (criteria == 1) {
+    else if (criteria == 'Skill Level') {
         function compare(a, b) {
             if (ratingMatch(user_rating, a) < ratingMatch(user_rating, b)) {
                 return -1;

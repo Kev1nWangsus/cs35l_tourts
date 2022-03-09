@@ -1,5 +1,7 @@
 export const genders = ['Male', 'Female', 'Other'];
 
+export const sortings = ['Timeframe', 'Skill Level', 'Region'];
+
 export const ratings = [
   '1.0 - Beginner',
   '2.0 - Limited Experience',
