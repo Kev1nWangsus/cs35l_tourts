@@ -20,6 +20,8 @@ Github repository for CS35L web application Tourts
 
 ---
 
+## **Note: to run the program successfully please ensure your Node.js version is not higher than v16.14.0**
+
 1. Clone the repository to your local machine:
 
     `git clone #url#`

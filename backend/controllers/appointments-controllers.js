@@ -13,7 +13,7 @@ const getCurrentTime = () => {
   let hr = String(today.getHours()).padStart(2, '0');
   let min = String(today.getMinutes()).padStart(2, '0');
 
-  const curDate = mm + '/' + dd + '/' + yyyy;
+  const curDate = yyyy + '/' + mm + '/' + dd + '/';
   const curTime = hr + ':' + min;
   return { curDate, curTime };
 };
@@ -37,10 +37,23 @@ const getAllAppointments = async (req, res, next) => {
       appointments[i].date < curDate ||
       (appointments[i].date === curDate && appointments[i].end < curTime)
     ) {
-      const appointmentCreator = await User.findById(appointments[i].creator);
-      appointmentCreator.expiredappointments.push(appointments[i]);
-      appointmentCreator.save();
-      //appointments[i].remove();
+      if (appointments[i].acceptor !== null) {
+        const appointmentCreator = await User.findById(appointments[i].creator);
+        const appointmentAcceptor = await User.findById(
+          appointments[i].acceptor
+        );
+        appointmentCreator.finished.push(appointments[i]);
+        appointmentCreator.other.pull(appointments[i]);
+        appointmentAcceptor.finished.push(appointments[i]);
+        appointmentAcceptor.mine.pull(appointments[i]);
+        appointmentAcceptor.save();
+        appointmentCreator.save();
+      } else {
+        const appointmentCreator = await User.findById(appointments[i].creator);
+        appointmentCreator.expired.push(appointments[i]);
+        appointmentCreator.appointments.pull(appointments[i]);
+        appointmentCreator.save();
+      }
       appointments.splice(i, 1);
     } else {
       i = i + 1;
@@ -224,8 +237,16 @@ const updateAcceptor = async (req, res, next) => {
     );
   }
 
-  console.log(req.body);
-  const acceptor = mongoose.Types.ObjectId(req.body.acceptor);
+  const { acceptorId } = req.body;
+
+  let acceptor;
+  try {
+    acceptor = await User.findById(acceptorId);
+  } catch (err) {
+    const error = new HttpError('Failed when fetching info from user.', 500);
+    return next(error);
+  }
+
   const appointmentId = mongoose.Types.ObjectId(req.params.pid);
 
   let appointment;
@@ -238,12 +259,24 @@ const updateAcceptor = async (req, res, next) => {
     );
     return next(error);
   }
-  console.log(acceptor);
-  appointment.acceptor = acceptor;
-  // console.log(appointment);
+
+  let creator;
+  try {
+    creator = await User.findById(appointment.creator);
+  } catch (err) {
+    const error = new HttpError('Failed when fetching info from user.', 500);
+    return next(error);
+  }
+
+  appointment.acceptor = acceptorId;
+  acceptor.mine.push(appointmentId);
+  creator.appointments.pull(appointmentId);
+  creator.other.push(appointmentId);
 
   try {
     await appointment.save();
+    await acceptor.save();
+    await creator.save();
   } catch (err) {
     const error = new HttpError(
       'Something went wrong, could not accept the appointment.',
