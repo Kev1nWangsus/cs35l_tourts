@@ -25,7 +25,7 @@ const validator = Yup.object().shape({
     .min(Yup.ref('startTime'), 'End time cannot come before start time'),
 });
 
-const Search = () => {
+const Search = (props) => {
   const {
     handleSubmit,
     register,
@@ -38,8 +38,30 @@ const Search = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    var date, startTime, endTime = null;
+
+    if (data.date === null) {
+      date = null;
+    }
+    else {
+      date = format(data.date, 'MM/dd/yyyy');
+    }
+    if (data.startTime === null) {
+      startTime = "00:00";
+    }
+    else {
+      startTime = format(data.startTime, 'HH:mm');
+    }
+    if (data.endTime === null) {
+      endTime = "23:59";
+    }
+    else {
+      endTime = format(data.endTime, 'HH:mm');
+    }
+    props.onChange([date, startTime, endTime]);
+
   };
+
 
   const onReset = () => {
     reset(defaultValues);

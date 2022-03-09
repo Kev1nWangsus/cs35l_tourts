@@ -20,6 +20,9 @@ const Post = () => {
   const [addSuccess, setAddSuccess] = useState(false);
   const [delSuccess, setDelSuccess] = useState(false);
 
+  const [time, setTime] = useState([]);
+
+
   const handleCloseAddSuccess = () => setAddSuccess(false);
   const handleCloseDelSuccess = () => setDelSuccess(false);
   useEffect(() => {
@@ -86,6 +89,11 @@ const Post = () => {
     fetchData();
   }, [del]);
 
+  function handleChange(newTime) {
+    setTime(newTime);
+    console.log(newTime);
+  }
+
   return (
     <React.Fragment>
       <Container sx={{ py: 8, maxWidth: 'lg', minHeight: '80vh' }}>
@@ -127,7 +135,7 @@ const Post = () => {
           </Alert>
         </Snackbar>
 
-        <Search />
+        <Search value={time} onChange={handleChange}/>
 
         {!isLoading && (
           <Grid container spacing={4} sx={{ mt: 4 }}>
