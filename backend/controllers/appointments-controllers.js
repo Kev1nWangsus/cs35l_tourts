@@ -36,6 +36,7 @@ const getAllAppointments = async (req, res, next) => {
     if (appointments[i].date < curDate || (appointments[i].date === curDate && appointments[i].end < curTime)) {
       const appointmentCreator = await User.findById(appointments[i].creator);
       appointmentCreator.expiredappointments.push(appointments[i]);
+      appointmentCreator.appointments.pull(appointments[i]);
       appointmentCreator.save();
       //appointments[i].remove();
       appointments.splice(i, 1);
@@ -141,6 +142,7 @@ const createAppointment = async (req, res, next) => {
       req.file?.path ||
       'fileuploads/images/appointmentsimage.jpeg',
     creator,
+    acceptor: null
   });
 
   let user;
