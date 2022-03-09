@@ -62,8 +62,13 @@ const Login = () => {
       console.log('error', err);
     } else {
       console.log('data', response);
-      if (writeStorage) localStorage.setItem('user', response.user.id);
+      if (writeStorage) {
+        localStorage.setItem('user', response.user.id);
+        localStorage.setItem('rating', response.user.rating);
+        localStorage.setItem('region', response.user.region);
+      }
       auth.login(response.user.id);
+      
     }
   };
 
