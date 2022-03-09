@@ -10,13 +10,11 @@ const userSchema = new Schema({
   gender: { type: String, required: true },
   rating: { type: Number, required: true },
   region: { type: String, required: true },
-  appointments: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Appointment' }],
-  expired: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Appointment' }],
-  mine: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Appointment' }],
-  other: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Appointment' }],
-  finished: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Appointment' }],
+  appointments: [
+    { type: mongoose.Types.ObjectId, required: true, ref: 'Appointment' },
+  ],
 });
 
 userSchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);

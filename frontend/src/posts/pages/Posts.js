@@ -11,7 +11,7 @@ import { useHttpClient } from '../../common/hooks/http-hook';
 import AppCard from '../components/AppCard';
 import NewCard from '../components/NewCard';
 import Search from '../components/Search';
-import {sorting} from '../../common/functions/compare';
+import { sorting } from '../../common/functions/compare';
 
 const Post = () => {
   const { isLoading, error, sendRequest } = useHttpClient();
@@ -22,7 +22,6 @@ const Post = () => {
   const [delSuccess, setDelSuccess] = useState(false);
 
   const [time, setTime] = useState([]);
-
 
   const handleCloseAddSuccess = () => setAddSuccess(false);
   const handleCloseDelSuccess = () => setDelSuccess(false);
@@ -96,13 +95,14 @@ const Post = () => {
   }
 
   function appsToDisplay(apps) {
+    if (time.length === 0) return apps;
+    console.log(time);
     var result = [];
-    
+
     if (time[0] === null) {
       result = apps;
-    }
-    else {
-      var appsCopy = apps.map((x) => x); 
+    } else {
+      var appsCopy = apps.map((x) => x);
       for (let i = 0; i < appsCopy.length; i++) {
         console.log(appsCopy[i].date);
         if (appsCopy[i].date === time[0]) {
@@ -117,7 +117,6 @@ const Post = () => {
     result = sorting(user_rating, user_region, time[1], time[2], result);
 
     return result;
-
   }
 
   return (
@@ -161,7 +160,7 @@ const Post = () => {
           </Alert>
         </Snackbar>
 
-        <Search value={time} onChange={handleChange}/>
+        <Search value={time} onChange={handleChange} />
 
         {!isLoading && (
           <Grid container spacing={4} sx={{ mt: 4 }}>

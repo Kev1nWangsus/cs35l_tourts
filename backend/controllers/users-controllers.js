@@ -14,7 +14,7 @@ const getUsers = async (req, res, next) => {
     );
     return next(error);
   }
-  res.json({ users: users.map(user => user.toObject({ getters: true })) });
+  res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
 const signup = async (req, res, next) => {
@@ -31,10 +31,7 @@ const signup = async (req, res, next) => {
   try {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
-    const error = new HttpError(
-      'Sign up failed, please try again later.',
-      500
-    );
+    const error = new HttpError('Sign up failed, please try again later.', 500);
     return next(error);
   }
 
@@ -54,19 +51,12 @@ const signup = async (req, res, next) => {
     rating,
     region,
     appoitments: [],
-    expired: [],
-    mine: [],
-    other: [],
-    finished: []
   });
 
   try {
     await createdUser.save();
   } catch (err) {
-    const error = new HttpError(
-      'Sign up failed, please try again later.',
-      500
-    );
+    const error = new HttpError('Sign up failed, please try again later.', 500);
     return next(error);
   }
 
@@ -74,7 +64,6 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-
   const { email, password } = req.body;
   res.setHeader('Content-Type', 'application/json');
 
@@ -83,10 +72,7 @@ const login = async (req, res, next) => {
   try {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
-    const error = new HttpError(
-      'Login failed, please try again later.',
-      500
-    );
+    const error = new HttpError('Login failed, please try again later.', 500);
     return next(error);
   }
 
@@ -100,7 +86,7 @@ const login = async (req, res, next) => {
 
   res.json({
     message: 'Logged in!',
-    user: existingUser.toObject({ getters: true })
+    user: existingUser.toObject({ getters: true }),
   });
 };
 
@@ -127,8 +113,7 @@ const getUserByUserId = async (req, res, next) => {
   }
   console.log(user);
   res.json({ user: user.toObject({ getters: true }) });
-}
-
+};
 
 exports.getUsers = getUsers;
 exports.signup = signup;

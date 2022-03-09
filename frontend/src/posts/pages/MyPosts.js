@@ -5,7 +5,7 @@ import { Grid, Container, Typography, Divider } from '@mui/material';
 import FormContainer from '../../common/components/FormElement/FormContainer';
 
 const MyPosts = () => {
-  const [appointments, setAppointments] = useState([]);
+  const [todo, setTodo] = useState([]);
   const [expired, setExpired] = useState([]);
   const [future, setFuture] = useState([]);
   const [finished, setFinished] = useState([]);
@@ -25,9 +25,9 @@ const MyPosts = () => {
         console.log('error', err);
       } else {
         console.log('data', response);
-        setAppointments(response.appointments);
+        setTodo(response.todo);
         setExpired(response.expired);
-        setFuture(response.mine.concat(response.other));
+        setFuture(response.future);
         setFinished(response.finished);
       }
     };
@@ -48,7 +48,7 @@ const MyPosts = () => {
           </Typography>
           <Divider />
           <Grid container spacing={4} sx={{ mt: 1 }}>
-            {future.map((app, index) => (
+            {todo.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
                 <AppCard app={app} accept={false} />
               </Grid>
@@ -62,7 +62,7 @@ const MyPosts = () => {
           </Typography>
           <Divider />
           <Grid container spacing={4} sx={{ mt: 1 }}>
-            {appointments.map((app, index) => (
+            {future.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
                 <AppCard app={app} accept={false} />
               </Grid>

@@ -32,41 +32,52 @@ const getAllAppointments = async (req, res, next) => {
 
   const { curDate, curTime } = getCurrentTime();
   let i = 0;
+  // updating appointments
   while (i < appointments.length) {
-    if (appointments[i].state !== 2) {
-      if (
-        appointments[i].date < curDate ||
-        (appointments[i].date === curDate && appointments[i].end < curTime)
-      ) {
-        if (appointments[i].acceptor !== null) {
-          const appointmentCreator = await User.findById(
-            appointments[i].creator
-          );
-          const appointmentAcceptor = await User.findById(
-            appointments[i].acceptor
-          );
-          appointmentCreator.finished.push(appointments[i]);
-          appointmentCreator.other.pull(appointments[i]);
-          appointmentAcceptor.finished.push(appointments[i]);
-          appointmentAcceptor.mine.pull(appointments[i]);
-          appointmentAcceptor.save();
-          appointmentCreator.save();
+    switch (appointments[i].state) {
+      case 0:
+        // check if expired
+        if (
+          appointments[i].date < curDate ||
+          (appointments[i].date === curDate && appointments[i].end < curTime)
+        ) {
+          // mark as expired and delete from array
+          appointments[i].state = 3;
+          try {
+            await appointments[i].save();
+          } catch (err) {
+            console.log(err);
+          }
+          appointments.splice(i, 1);
         } else {
-          const appointmentCreator = await User.findById(
-            appointments[i].creator
-          );
-          appointmentCreator.expired.push(appointments[i]);
-          appointmentCreator.appointments.pull(appointments[i]);
-          appointmentCreator.save();
+          i += 1;
         }
-        appointments[i].state = 2;
-        appointments[i].save();
+        break;
+
+      case 1:
+        if (
+          appointments[i].date < curDate ||
+          (appointments[i].date === curDate && appointments[i].end < curTime)
+        ) {
+          appointments[i].state = 2;
+          try {
+            await appointments[i].save();
+          } catch (err) {
+            console.log(err);
+          }
+          appointments.splice(i, 1);
+        } else {
+          i += 1;
+        }
+        break;
+
+      case 2:
+      case 3:
         appointments.splice(i, 1);
-      } else {
-        i = i + 1;
-      }
-    } else {
-      i = i + 1;
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -82,7 +93,6 @@ const getAllAppointments = async (req, res, next) => {
     appointment['gender'] = appointmentCreator.gender;
   }
 
-  //res.json({ appointments: appointments.map(appointment => appointment.toObject({ getters: true })) });
   res.json({ appointments: appointments });
 };
 
@@ -134,43 +144,36 @@ const getAppointmentsByUserId = async (req, res, next) => {
     );
   }
 
-  const appointments =
-    userWithAppointments.appointments.length > 0
-      ? userWithAppointments.appointments.map((item) =>
-          item.toObject({ getters: true })
-        )
-      : [];
-  const expired =
-    userWithAppointments.expired.length > 0
-      ? userWithAppointments.expired.map((item) =>
-          item.toObject({ getters: true })
-        )
-      : [];
-  const mine =
-    userWithAppointments.mine.length > 0
-      ? userWithAppointments.mine.map((item) =>
-          item.toObject({ getters: true })
-        )
-      : [];
-  const other =
-    userWithAppointments.other.length > 0
-      ? userWithAppointments.other.map((item) =>
-          item.toObject({ getters: true })
-        )
-      : [];
-  const finished =
-    userWithAppointments.finished.length > 0
-      ? userWithAppointments.finished.map((item) =>
-          item.toObject({ getters: true })
-        )
-      : [];
+  const len = userWithAppointments.appointments.length;
+  let future = [],
+    todo = [],
+    finished = [],
+    expired = [];
+  for (let i = 0; i < len; i++) {
+    switch (userWithAppointments.appointments[i].state) {
+      case 0:
+        future.push(userWithAppointments.appointments[i]);
+        break;
+      case 1:
+        todo.push(userWithAppointments.appointments[i]);
+        break;
+      case 2:
+        finished.push(userWithAppointments.appointments[i]);
+        break;
+      case 3:
+        expired.push(userWithAppointments.appointments[i]);
+        break;
+      default:
+        break;
+    }
+  }
+  console.log(userWithAppointments);
 
   res.json({
-    appointments: appointments,
-    expired: expired,
-    mine: mine,
-    other: other,
+    future: future,
+    todo: todo,
     finished: finished,
+    expired: expired,
   });
 };
 
@@ -309,9 +312,7 @@ const updateAcceptor = async (req, res, next) => {
 
   appointment.acceptor = acceptorId;
   appointment.state = 1;
-  acceptor.mine.push(appointmentId);
-  creator.appointments.pull(appointmentId);
-  creator.other.push(appointmentId);
+  acceptor.appointments.push(appointmentId);
 
   try {
     await appointment.save();

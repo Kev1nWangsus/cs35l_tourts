@@ -14,13 +14,14 @@ const AppCard = (props) => {
   const { id, image, creator, title, description, date, start, end, address } =
     props.app;
   const accept = creator != localStorage.getItem('user');
-  const formatDate = format(new Date(date), 'PPP');
+  const usdate = date + 'T00:00:00-08:00';
+  const formatDate = format(new Date(usdate), 'PPP');
   const { isLoading, error, sendRequest } = useHttpClient();
 
   const handleAccept = async () => {
     const url = `http://localhost:5000/api/appointments/${id}`;
     const acceptor = localStorage.getItem('user');
-    const data = { acceptor: acceptor };
+    const data = { acceptorId: acceptor };
     console.log(localStorage.getItem('user'));
     console.log(JSON.stringify(data));
     const [err, response] = await sendRequest(
