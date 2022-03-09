@@ -54,7 +54,10 @@ const signup = async (req, res, next) => {
     rating,
     region,
     appoitments: [],
-    expiredappointments: []
+    expired: [],
+    mine: [],
+    other: [],
+    finished: []
   });
 
   try {
