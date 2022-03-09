@@ -76,7 +76,7 @@ const NewCard = (props) => {
   const onSubmit = async (data) => {
     setImageUrl(null);
     const controller = new AbortController();
-    const date = format(data.date, 'MM/dd/yyyy');
+    const date = format(data.date, 'yyyy-MM-dd');
     const creator = localStorage.getItem('user');
 
     const formData = new FormData();

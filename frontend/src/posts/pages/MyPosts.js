@@ -6,11 +6,12 @@ import FormContainer from '../../common/components/FormElement/FormContainer';
 
 const MyPosts = () => {
   const [appointments, setAppointments] = useState([]);
-  const [refetch, setRefetch] = useState(0);
+  const [expired, setExpired] = useState([]);
+  const [future, setFuture] = useState([]);
+  const [finished, setFinished] = useState([]);
   const { isLoading, error, sendRequest } = useHttpClient();
 
   useEffect(() => {
-    console.log(refetch);
     const controller = new AbortController();
     const uid = localStorage.getItem('user');
     const url = `http://localhost:5000/api/appointments/user/${uid}`;
@@ -25,6 +26,9 @@ const MyPosts = () => {
       } else {
         console.log('data', response);
         setAppointments(response.appointments);
+        setExpired(response.expired);
+        setFuture(response.mine.concat(response.other));
+        setFinished(response.finished);
       }
     };
 
@@ -33,7 +37,7 @@ const MyPosts = () => {
     return () => {
       controller.abort();
     };
-  }, [refetch]);
+  }, [sendRequest]);
 
   return (
     <React.Fragment>
@@ -44,7 +48,7 @@ const MyPosts = () => {
           </Typography>
           <Divider />
           <Grid container spacing={4} sx={{ mt: 1 }}>
-            {appointments.map((app, index) => (
+            {future.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
                 <AppCard app={app} accept={false} />
               </Grid>
@@ -72,7 +76,7 @@ const MyPosts = () => {
           </Typography>
           <Divider />
           <Grid container spacing={4} sx={{ mt: 1 }}>
-            {appointments.map((app, index) => (
+            {finished.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
                 <AppCard app={app} accept={false} />
               </Grid>
@@ -86,7 +90,7 @@ const MyPosts = () => {
           </Typography>
           <Divider />
           <Grid container spacing={4} sx={{ mt: 1 }}>
-            {appointments.map((app, index) => (
+            {expired.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
                 <AppCard app={app} accept={false} />
               </Grid>

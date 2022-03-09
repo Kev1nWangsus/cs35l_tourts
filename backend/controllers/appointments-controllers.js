@@ -13,7 +13,7 @@ const getCurrentTime = () => {
   let hr = String(today.getHours()).padStart(2, '0');
   let min = String(today.getMinutes()).padStart(2, '0');
 
-  const curDate = yyyy + '/' + mm + '/' + dd + '/';
+  const curDate = yyyy + '-' + mm + '-' + dd;
   const curTime = hr + ':' + min;
   return { curDate, curTime };
 };
@@ -124,22 +124,43 @@ const getAppointmentsByUserId = async (req, res, next) => {
     );
   }
 
+  const appointments =
+    userWithAppointments.appointments.length > 0
+      ? userWithAppointments.appointments.map((item) =>
+          item.toObject({ getters: true })
+        )
+      : [];
+  const expired =
+    userWithAppointments.expired.length > 0
+      ? userWithAppointments.expired.map((item) =>
+          item.toObject({ getters: true })
+        )
+      : [];
+  const mine =
+    userWithAppointments.mine.length > 0
+      ? userWithAppointments.mine.map((item) =>
+          item.toObject({ getters: true })
+        )
+      : [];
+  const other =
+    userWithAppointments.other.length > 0
+      ? userWithAppointments.other.map((item) =>
+          item.toObject({ getters: true })
+        )
+      : [];
+  const finished =
+    userWithAppointments.finished.length > 0
+      ? userWithAppointments.finished.map((item) =>
+          item.toObject({ getters: true })
+        )
+      : [];
+
   res.json({
-    appointments: userWithAppointments.appointments.map((appointment) =>
-      appointment.toObject({ getters: true })
-    ),
-    expired: userWithAppointments.expired.map((appointment) =>
-      appointment.toObject({ getters: true })
-    ),
-    mine: userWithAppointments.mine.map((appointment) =>
-      appointment.toObject({ getters: true })
-    ),
-    other: userWithAppointments.other.map((appointment) =>
-      appointment.toObject({ getters: true })
-    ),
-    finished: userWithAppointments.finished.map((appointment) =>
-      appointment.toObject({ getters: true })
-    ),
+    appointments: appointments,
+    expired: expired,
+    mine: mine,
+    other: other,
+    finished: finished,
   });
 };
 
