@@ -46,7 +46,7 @@ const AppCard = (props) => {
         setAppointments(response.appointments);
       }
     };
-    
+
     fetchData();
 
     return () => {
@@ -159,7 +159,6 @@ const AppCard = (props) => {
         }}
         sx={{ mt: 8 }}
       >
-        
         <DialogContent>
           <FormContainer maxWidth='md'>
             <Typography
@@ -179,22 +178,22 @@ const AppCard = (props) => {
             </Backdrop>
             <Typography align='center' variant='h4' component='div'>
               {title}
-            </Typography> 
-            {!isLoading && appointments && ( 
-            <Grid item xs={8} sm={15} align='center' justify='center'>
-              <h4> Description: {description}</h4>
-              <h4>{`Start Time: ${start}`}</h4>
-              <h4>{`End Time: ${end}`}</h4>
-              <h4>{`End Time: ${end}`}</h4>
-              <h4>{`Appointment Date: ${formatDate}`}</h4>
-              <h4>{`Address: ${address}`}</h4>
-              <CardMedia
-                component='img'
-                height='500'
-                image={`http://localhost:5000/${image}`}
-                alt='view'
-              />
-            </Grid>
+            </Typography>
+            {!isLoading && appointments && (
+              <Grid item xs={8} sm={15} align='center' justify='center'>
+                <h4> Description: {description}</h4>
+                <h4>{`Start Time: ${start}`}</h4>
+                <h4>{`End Time: ${end}`}</h4>
+                <h4>{`End Time: ${end}`}</h4>
+                <h4>{`Appointment Date: ${formatDate}`}</h4>
+                <h4>{`Address: ${address}`}</h4>
+                <CardMedia
+                  component='img'
+                  height='500'
+                  image={`http://localhost:5000/${image}`}
+                  alt='view'
+                />
+              </Grid>
             )}
             <Grid item xs={8} sm={15} align='center' justify='center'>
               <Button
