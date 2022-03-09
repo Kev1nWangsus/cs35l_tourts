@@ -20,7 +20,7 @@ import Profile from './users/pages/Profile';
 
 const App = () => {
   // set up global authentication context
-  const [isLogIn, setIsLogIn] = useState(true);
+  const [isLogIn, setIsLogIn] = useState(false);
   const [uid, setUId] = useState(false);
 
   const login = useCallback((uid) => {
