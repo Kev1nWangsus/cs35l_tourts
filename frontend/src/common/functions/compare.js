@@ -88,7 +88,7 @@ export function sorting (user_rating, user_region, user_start, user_end, apps, c
         return (apps.sort(compare));
     }
 
-    else if (criteria == 'Skill Level') {
+    else if (criteria === 'Skill Level') {
         function compare(a, b) {
             if (ratingMatch(user_rating, a) < ratingMatch(user_rating, b)) {
                 return -1;
