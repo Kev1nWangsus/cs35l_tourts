@@ -125,12 +125,19 @@ const getAppointmentsByUserId = async (req, res, next) => {
   }
 
   res.json({
-    username: userWithAppointments.username,
-    gender: userWithAppointments.gender,
-    rating: userWithAppointments.rating,
-    region: userWithAppointments.region,
-    email: userWithAppointments.email,
     appointments: userWithAppointments.appointments.map((appointment) =>
+      appointment.toObject({ getters: true })
+    ),
+    expired: userWithAppointments.expired.map((appointment) =>
+      appointment.toObject({ getters: true })
+    ),
+    mine: userWithAppointments.mine.map((appointment) =>
+      appointment.toObject({ getters: true })
+    ),
+    other: userWithAppointments.other.map((appointment) =>
+      appointment.toObject({ getters: true })
+    ),
+    finished: userWithAppointments.finished.map((appointment) =>
       appointment.toObject({ getters: true })
     ),
   });
