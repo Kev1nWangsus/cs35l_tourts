@@ -9,6 +9,7 @@ import {
   CardMedia,
   Stack,
   Typography,
+  Box
 } from '@mui/material';
 import { format } from 'date-fns';
 import { useHttpClient } from '../../common/hooks/http-hook';
@@ -141,31 +142,52 @@ const AppCard = (props) => {
         <DialogContent>
           <FormContainer maxWidth='md'>
             <Typography
+              display = "flex"
+              justifyContent = "space-around"
               variant='h3'
-              gutterBottom
-              marked='center'
-              align='center'
+              color = "Black"
+             
               sx={{ mb: 4 }}
             >
               appointment details
             </Typography>
-            <Typography align='center' variant='h4' component='div'>
-              {title}
-            </Typography>
+          
+          
             {!isLoading && appointments && (
-              <Grid item xs={8} sm={15} align='center' justify='center'>
-                <h4> Description: {description}</h4>
-                <h4>{`Start Time: ${start}`}</h4>
-                <h4>{`End Time: ${end}`}</h4>
-                <h4>{`Appointment Date: ${formatDate}`}</h4>
-                <h4>{`Address: ${address}`}</h4>
+              <div item 
+                    xs={8} 
+                    sm={15} 
+                    justifyContent = "space-around"
+                    
+              > 
+                
+                <h4 style = {{
+                  color:"#696969",
+                  textAlign:"center"
+                }}> Description: {description}</h4>
+                <h4 style = {{
+                  color:"	#696969",
+                  textAlign:"center"
+                }}>{`Start Time: ${start}`}</h4>
+                <h4 style = {{
+                  color:"	#696969",
+                  textAlign:"center"
+                }}>{`End Time: ${end}`}</h4>
+                <h4 style = {{
+                  color:"	#696969",
+                  textAlign:"center"
+                }}>{`Appointment Date: ${formatDate}`}</h4>
+                <h4 style = {{
+                  color:"	#696969",
+                  textAlign:"center"
+                }}>{`Address: ${address}`}</h4>
                 <CardMedia
                   component='img'
-                  height='500'
+                  height='300'
                   image={`http://localhost:5000/${image}`}
                   alt='view'
                 />
-              </Grid>
+              </div>
             )}
             <Grid item xs={8} sm={15} align='center' justify='center'>
               <Button
