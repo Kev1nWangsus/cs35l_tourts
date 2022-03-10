@@ -19,7 +19,6 @@ import FormContainer from '../../common/components/FormElement/FormContainer';
 const AppCard = (props) => {
   const { id, image, creator, title, description, date, start, end, address } =
     props.app;
-  const accept = creator !== localStorage.getItem('user');
   const formatDate = format(new Date(date), 'PPP');
   const { isLoading, sendRequest } = useHttpClient();
 
@@ -28,38 +27,11 @@ const AppCard = (props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const uid = localStorage.getItem('user');
-    // const url = 'http://localhost:5000/api/appointments';
-    const url = `http://localhost:5000/api/appointments/${uid}`;
-
-    const fetchData = async () => {
-      const [err, response] = await sendRequest(url)
-        .then((response) => [null, response])
-        .catch((err) => [err, null]);
-
-      if (err) {
-        console.log('error', err);
-      } else {
-        console.log('data', response);
-        setAppointments(response.appointments);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      controller.abort();
-    };
-  }, [sendRequest]);
-
   const handleAccept = async () => {
     const url = `http://localhost:5000/api/appointments/${id}`;
-    const acceptor = localStorage.getItem('user');
-    const data = { acceptor: acceptor };
-    console.log(localStorage.getItem('user'));
-    console.log(JSON.stringify(data));
+    const acceptorId = localStorage.getItem('user');
+    const data = { acceptorId: acceptorId };
+    console.log(data);
     const [err, response] = await sendRequest(
       url,
       'PATCH',
@@ -93,6 +65,12 @@ const AppCard = (props) => {
 
   return (
     <Card sx={{ width: 1, height: 1 }}>
+      <Backdrop
+        sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color='inherit' />
+      </Backdrop>
       <CardMedia
         component='img'
         height='100'
@@ -120,7 +98,7 @@ const AppCard = (props) => {
         <Typography color='text.secondary'>{`@${address}`}</Typography>
       </CardContent>
       <Stack direction='row' justifyContent='end'>
-        {accept ? (
+        {props.accept && (
           <Button
             variant='contained'
             color='secondary'
@@ -129,7 +107,8 @@ const AppCard = (props) => {
           >
             Accept
           </Button>
-        ) : (
+        )}
+        {props.del && (
           <Button
             variant='contained'
             color='error'
@@ -170,12 +149,6 @@ const AppCard = (props) => {
             >
               appointment details
             </Typography>
-            <Backdrop
-              sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={isLoading}
-            >
-              <CircularProgress color='inherit' />
-            </Backdrop>
             <Typography align='center' variant='h4' component='div'>
               {title}
             </Typography>
@@ -183,7 +156,6 @@ const AppCard = (props) => {
               <Grid item xs={8} sm={15} align='center' justify='center'>
                 <h4> Description: {description}</h4>
                 <h4>{`Start Time: ${start}`}</h4>
-                <h4>{`End Time: ${end}`}</h4>
                 <h4>{`End Time: ${end}`}</h4>
                 <h4>{`Appointment Date: ${formatDate}`}</h4>
                 <h4>{`Address: ${address}`}</h4>

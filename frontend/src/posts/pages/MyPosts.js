@@ -64,7 +64,7 @@ const MyPosts = () => {
           <Grid container spacing={4} sx={{ mt: 1 }}>
             {future.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
-                <AppCard app={app} accept={false} />
+                <AppCard app={app} del={true} />
               </Grid>
             ))}
           </Grid>

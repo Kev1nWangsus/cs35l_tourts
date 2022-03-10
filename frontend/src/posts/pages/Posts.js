@@ -14,6 +14,7 @@ import Search from '../components/Search';
 import { sorting } from '../../common/functions/compare';
 
 const Post = () => {
+  const user = localStorage.getItem('user');
   const { isLoading, error, sendRequest } = useHttpClient();
   const [appointments, setAppointments] = useState([]);
   const [add, setAdd] = useState(0);
@@ -111,7 +112,14 @@ const Post = () => {
     let user_rating = localStorage.getItem('rating');
     let user_region = localStorage.getItem('region');
 
-    result = sorting(user_rating, user_region, searchInfo[1], searchInfo[2], result, searchInfo[3]);
+    result = sorting(
+      user_rating,
+      user_region,
+      searchInfo[1],
+      searchInfo[2],
+      result,
+      searchInfo[3]
+    );
 
     return result;
   }
@@ -159,22 +167,21 @@ const Post = () => {
 
         <Search value={searchInfo} onChange={handleChange} />
 
-
-
         {!isLoading && (
-          <Grid container spacing={4} sx={{ mt: 4 }}>
+          <Grid container spacing={4} sx={{ mt: 4, minHeight: '30vh' }}>
             <Grid item xs={12} sm={6} md={4}>
               <NewCard addApp={(a) => setAdd(add + a)} />
             </Grid>
-            {appsToDisplay(appointments).map((app, index) => {
-              if (app.acceptor == null) {
-                return (
-                  <Grid item key={index} xs={12} sm={6} md={4}>
-                    <AppCard app={app} delApp={(a) => setDel(del + a)} />
-                  </Grid>
-                );
-              }
-            })}
+            {appsToDisplay(appointments).map((app, index) => (
+              <Grid item key={index} xs={12} sm={6} md={4}>
+                <AppCard
+                  app={app}
+                  del={user === app.creator}
+                  accept={user !== app.creator}
+                  delApp={(a) => setDel(del + a)}
+                />
+              </Grid>
+            ))}
           </Grid>
         )}
       </Container>

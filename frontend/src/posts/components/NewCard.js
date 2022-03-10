@@ -32,8 +32,8 @@ const defaultValues = {
   title: '',
   address: '',
   date: new Date(),
-  startTime: new Date(),
-  endTime: new Date(),
+  startTime: new Date('14:00'),
+  endTime: new Date('16:00'),
   file: null,
 };
 
