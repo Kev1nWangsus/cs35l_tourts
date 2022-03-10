@@ -13,11 +13,18 @@ import {
 import { format } from 'date-fns';
 import { useHttpClient } from '../../common/hooks/http-hook';
 import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
+import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
+import EventIcon from '@mui/icons-material/Event';
+import StadiumIcon from '@mui/icons-material/Stadium';
 import React, { useState, useEffect } from 'react';
 import FormContainer from '../../common/components/FormElement/FormContainer';
 
@@ -151,7 +158,7 @@ const AppCard = (props) => {
                   <IconButton
                     aria-label='close'
                     color='inherit'
-                    size='big'
+                    size='extrabig'
                     onClick={() => {
                       setOpen(false);
                     }}
@@ -159,7 +166,7 @@ const AppCard = (props) => {
                     <CloseIcon fontSize='inherit' />
                   </IconButton>
                 }
-                sx={{ mb: 2 }}
+                sx={{ mb: 0 }}
               ></Alert>
             </Collapse>
             <Typography
@@ -171,15 +178,77 @@ const AppCard = (props) => {
             >
               appointment details
             </Typography>
-            <Typography align='center' variant='h4' component='div'>
+            <Typography
+              color='#696969'
+              variant='h4'
+              component='div'
+              align='center'
+              justfiy='center'
+              borderBottom='2px grey solid'
+            >
+              <div>
+                <img
+                  style={{
+                    width: '160px',
+                    height: '160px',
+                    borderRadius: '80px',
+                    align: 'center',
+                  }}
+                  src='https://marriedbiography.com/wp-content/uploads/2019/05/Rafael-Nadal.jpg' //Later replaced with user.image
+                />
+              </div>
               {title}
             </Typography>
-            <Grid item xs={8} sm={15} align='center' justify='center'>
-              <h4> Description: {description}</h4>
-              <h4>{`Start Time: ${start}`}</h4>
-              <h4>{`End Time: ${end}`}</h4>
-              <h4>{`Appointment Date: ${formatDate}`}</h4>
-              <h4>{`Address: ${address}`}</h4>
+            <Grid
+              color='#696969'
+              item
+              xs={8}
+              sm={15}
+              align='center'
+              justify='center'
+            >
+              <List>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <DocumentScannerIcon />
+                    </ListItemIcon>
+                    <h4> Description: {description}</h4>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <AccessAlarmsIcon />
+                    </ListItemIcon>
+                    <h4>{`Start Time: ${start}`}</h4>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <AccessAlarmsIcon />
+                    </ListItemIcon>
+                    <h4>{`End Time: ${end}`}</h4>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <EventIcon />
+                    </ListItemIcon>
+                    <h4>{`Appointment Date: ${formatDate}`}</h4>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <StadiumIcon />
+                    </ListItemIcon>
+                    <h4>{`Address: ${address}`}</h4>
+                  </ListItemButton>
+                </ListItem>
+              </List>
               <CardMedia
                 component='img'
                 height='500'
