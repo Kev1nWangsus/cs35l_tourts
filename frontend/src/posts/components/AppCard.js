@@ -27,6 +27,7 @@ import EventIcon from '@mui/icons-material/Event';
 import StadiumIcon from '@mui/icons-material/Stadium';
 import React, { useState, useEffect } from 'react';
 import FormContainer from '../../common/components/FormElement/FormContainer';
+import { textAlign } from '@mui/system';
 
 const AppCard = (props) => {
   const { id, image, creator, title, description, date, start, end, address } =
@@ -158,7 +159,7 @@ const AppCard = (props) => {
                   <IconButton
                     aria-label='close'
                     color='inherit'
-                    size='extrabig'
+                    size = 'extrabig'
                     onClick={() => {
                       setOpen(false);
                     }}
@@ -170,7 +171,7 @@ const AppCard = (props) => {
               ></Alert>
             </Collapse>
             <Typography
-              variant='h3'
+              variant='h2'
               gutterBottom
               marked='center'
               align='center'
@@ -213,7 +214,7 @@ const AppCard = (props) => {
                     <ListItemIcon>
                       <DocumentScannerIcon />
                     </ListItemIcon>
-                    <h4> Description: {description}</h4>
+                    <h5> Description: {description}</h5>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -221,7 +222,7 @@ const AppCard = (props) => {
                     <ListItemIcon>
                       <AccessAlarmsIcon />
                     </ListItemIcon>
-                    <h4>{`Start Time: ${start}`}</h4>
+                    <h5>{`Start Time: ${start}`}</h5>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -229,7 +230,7 @@ const AppCard = (props) => {
                     <ListItemIcon>
                       <AccessAlarmsIcon />
                     </ListItemIcon>
-                    <h4>{`End Time: ${end}`}</h4>
+                    <h5>{`End Time: ${end}`}</h5>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -237,7 +238,7 @@ const AppCard = (props) => {
                     <ListItemIcon>
                       <EventIcon />
                     </ListItemIcon>
-                    <h4>{`Appointment Date: ${formatDate}`}</h4>
+                    <h5>{`Appointment Date: ${formatDate}`}</h5>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -245,13 +246,13 @@ const AppCard = (props) => {
                     <ListItemIcon>
                       <StadiumIcon />
                     </ListItemIcon>
-                    <h4>{`Address: ${address}`}</h4>
+                    <h5>{`Address: ${address}`}</h5>
                   </ListItemButton>
                 </ListItem>
               </List>
               <CardMedia
                 component='img'
-                height='500'
+                height='350'
                 image={`http://localhost:5000/${image}`}
                 alt='view'
               />
