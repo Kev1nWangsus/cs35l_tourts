@@ -84,7 +84,7 @@ const Profile = () => {
                 <h4>Rating: {loadedUsers.rating}</h4>
                 <h4>Region: {loadedUsers.region}</h4>
                 <h4>Gender: {loadedUsers.gender}</h4>
-                <h4>Ongoing 'Serves': 1</h4>
+                <h4>'Serves'(appointments): {loadedUsers.appointments.length}</h4>
               </div>
             </div>
           )}
