@@ -29,7 +29,7 @@ import React, { useState, useEffect } from 'react';
 import FormContainer from '../../common/components/FormElement/FormContainer';
 
 const AppCard = (props) => {
-  const { id, image, creator, title, description, date, start, end, address } =
+  const { id, image, creator, title, description, date, start, end, address, rating, region } =
     props.app;
   const usDate = date + 'T00:00:00.000-08:00';
   const formatDate = format(new Date(usDate), 'PPP');
@@ -107,6 +107,8 @@ const AppCard = (props) => {
         <Typography color='text.secondary'>
           {`${start}-${end}, ${formatDate}`}
         </Typography>
+        <Typography color='text.secondary'>{`Skill level: ${rating}`}</Typography>
+        <Typography color='text.secondary'>{`Region: ${region}`}</Typography>
         <Typography color='text.secondary'>{`@${address}`}</Typography>
       </CardContent>
       <Stack direction='row' justifyContent='end'>
@@ -152,23 +154,28 @@ const AppCard = (props) => {
       >
         <DialogContent>
           <FormContainer maxWidth='md'>
-            <Collapse in={open}>
-              <Alert
-                action={
-                  <IconButton
-                    aria-label='close'
-                    color='inherit'
-                    size='extrabig'
-                    onClick={() => {
-                      setOpen(false);
-                    }}
-                  >
-                    <CloseIcon fontSize='inherit' />
-                  </IconButton>
-                }
-                sx={{ mb: 0 }}
-              ></Alert>
-            </Collapse>
+            <IconButton
+              aria-label='close'
+              color='inherit'
+              size='big'
+              border='none'
+              display='inline-block'
+              padding='8px 16px'
+              vertical-align='middle'
+              overflow='hidden'
+              text-decoration='none;'
+              text-align='center'
+              cursor='pointer'
+              white-space='nowrap'
+              position='absolute'
+              right='0'
+              top='0'
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              <CloseIcon fontSize='inherit' />
+            </IconButton>
             <Typography
               variant='h3'
               gutterBottom
@@ -176,8 +183,51 @@ const AppCard = (props) => {
               align='center'
               sx={{ mb: 4 }}
             >
-              appointment details
+              appointment details:
             </Typography>
+            <div
+              style={{
+                justifyContent: 'space-around',
+                display: 'flex',
+              }}
+            >
+              <img
+                style={{
+                  width: '160px',
+                  height: '160px',
+                  borderRadius: '80px',
+                  align: 'center',
+                  margin: '20px 0px',
+                }}
+                src='https://marriedbiography.com/wp-content/uploads/2019/05/Rafael-Nadal.jpg' //Later replaced with user.image
+              />
+              <div
+                style={{
+                  color: '#696969',
+                  textAlign: 'left',
+                }}
+              >
+                <h2
+                  style={{
+                    borderBottom: '2px solid grey',
+                  }}
+                >
+                  Creator: {props.app.username}
+                </h2>
+                <div
+                  style={{
+                    color: 'gray',
+                    textAlign: 'justify',
+                    justifyContent: 'space-between',
+                    width: '108%', //Later replaced with user.info
+                  }}
+                >
+                  <h4>Rating: {props.app.rating}</h4>
+                  <h4>Region: {props.app.region}</h4>
+                  <h4>Gender: {props.app.gender}</h4>
+                </div>
+              </div>
+            </div>
             <Typography
               color='#696969'
               variant='h4'
@@ -186,17 +236,6 @@ const AppCard = (props) => {
               justfiy='center'
               borderBottom='2px grey solid'
             >
-              <div>
-                <img
-                  style={{
-                    width: '160px',
-                    height: '160px',
-                    borderRadius: '80px',
-                    align: 'center',
-                  }}
-                  src='https://marriedbiography.com/wp-content/uploads/2019/05/Rafael-Nadal.jpg' //Later replaced with user.image
-                />
-              </div>
               {title}
             </Typography>
             <Grid

@@ -142,7 +142,7 @@ const Profile = () => {
           onClick={handleLogout}
           variant={'contained'}
           size='large'
-          sx={{ mt: 5, width: 0.8 }}
+          sx={{ mt: 5, width: 0.57 }}
         >
           Log out
         </Button>
