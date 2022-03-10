@@ -137,7 +137,9 @@ const AppCard = (props) => {
           justifyContent: 'center',
         }}
         sx={{ mt: 8 }}
+
       >
+        
         <DialogContent>
           <FormContainer maxWidth='md'>
             <Typography
