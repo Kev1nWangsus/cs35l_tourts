@@ -29,7 +29,7 @@ import React, { useState, useEffect } from 'react';
 import FormContainer from '../../common/components/FormElement/FormContainer';
 
 const AppCard = (props) => {
-  const { id, image, creator, title, description, date, start, end, address } =
+  const { id, image, creator, title, description, date, start, end, address, rating, region } =
     props.app;
   const usDate = date + 'T00:00:00.000-08:00';
   const formatDate = format(new Date(usDate), 'PPP');
@@ -107,6 +107,8 @@ const AppCard = (props) => {
         <Typography color='text.secondary'>
           {`${start}-${end}, ${formatDate}`}
         </Typography>
+        <Typography color='text.secondary'>{`Skill level: ${rating}`}</Typography>
+        <Typography color='text.secondary'>{`Region: ${region}`}</Typography>
         <Typography color='text.secondary'>{`@${address}`}</Typography>
       </CardContent>
       <Stack direction='row' justifyContent='end'>
