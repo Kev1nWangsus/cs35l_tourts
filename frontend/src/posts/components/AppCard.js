@@ -183,8 +183,51 @@ const AppCard = (props) => {
               align='center'
               sx={{ mb: 4 }}
             >
-              appointment details
+              appointment details:
             </Typography>
+            <div
+              style={{
+                justifyContent: 'space-around',
+                display: 'flex',
+              }}
+            >
+              <img
+                style={{
+                  width: '160px',
+                  height: '160px',
+                  borderRadius: '80px',
+                  align: 'center',
+                  margin: '20px 0px',
+                }}
+                src='https://marriedbiography.com/wp-content/uploads/2019/05/Rafael-Nadal.jpg' //Later replaced with user.image
+              />
+              <div
+                style={{
+                  color: '#696969',
+                  textAlign: 'left',
+                }}
+              >
+                <h2
+                  style={{
+                    borderBottom: '2px solid grey',
+                  }}
+                >
+                  Creator: {props.app.username}
+                </h2>
+                <div
+                  style={{
+                    color: 'gray',
+                    textAlign: 'justify',
+                    justifyContent: 'space-between',
+                    width: '108%', //Later replaced with user.info
+                  }}
+                >
+                  <h4>Rating: {props.app.rating}</h4>
+                  <h4>Region: {props.app.region}</h4>
+                  <h4>Gender: {props.app.gender}</h4>
+                </div>
+              </div>
+            </div>
             <Typography
               color='#696969'
               variant='h4'
@@ -193,17 +236,6 @@ const AppCard = (props) => {
               justfiy='center'
               borderBottom='2px grey solid'
             >
-              <div>
-                <img
-                  style={{
-                    width: '160px',
-                    height: '160px',
-                    borderRadius: '80px',
-                    align: 'center',
-                  }}
-                  src='https://marriedbiography.com/wp-content/uploads/2019/05/Rafael-Nadal.jpg' //Later replaced with user.image
-                />
-              </div>
               {title}
             </Typography>
             <Grid
