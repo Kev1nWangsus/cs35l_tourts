@@ -153,6 +153,7 @@ const AppCard = (props) => {
       >
         <DialogContent>
           <FormContainer maxWidth='md'>
+<<<<<<< HEAD
             <Collapse in={open}>
               <Alert
                 action={
@@ -170,6 +171,30 @@ const AppCard = (props) => {
                 sx={{ mb: 0 }}
               ></Alert>
             </Collapse>
+=======
+            <IconButton
+              aria-label='close'
+              color='inherit'
+              size='big'
+              border='none'
+              display='inline-block'
+              padding='8px 16px'
+              vertical-align='middle'
+              overflow='hidden'
+              text-decoration='none;'
+              text-align='center'
+              cursor='pointer'
+              white-space='nowrap'
+              position='absolute'
+              right='0'
+              top='0'
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              <CloseIcon fontSize='inherit' />
+            </IconButton>
+>>>>>>> 5171ea11305cbf9135c48161c3c84f9cb8fbf68a
             <Typography
               variant='h2'
               gutterBottom
