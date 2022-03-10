@@ -24,9 +24,9 @@ Github repository for CS35L web application Tourts
 
 1. Clone the repository to your local machine:
 
-    `git clone #url#`
+    `git clone git@github.com:Kev1nWangsus/cs35l_tourts.git`
 
-2. Move into /cs35l_toruts/backend directory:
+2. Change into /cs35l_toruts/backend directory:
 
     `cd /cs35l_toruts/backend`
 
@@ -40,7 +40,7 @@ Github repository for CS35L web application Tourts
 
     At this time, the backend should be running on http://localhost:5000
 
-5. Open another terminal, move into /cs35l_toruts/frontend directory:
+5. Open another terminal, change into /cs35l_toruts/frontend directory:
 
     `cd /cs35l_toruts/frontend`
 
@@ -48,7 +48,7 @@ Github repository for CS35L web application Tourts
     
     `npm install`
 
-7.  Start the frontend:
+7. Start the frontend:
 
     `npm start`
 
