@@ -134,6 +134,8 @@ const NewCard = (props) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          flex:1, 
+          backgroundColor:'#F0FAEF'
         }}
         elevation={0}
         onClick={handleOpen}
