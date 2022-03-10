@@ -164,6 +164,7 @@ const Post = () => {
               <Grid item key={index} xs={12} sm={6} md={4}>
                 <AppCard
                   app={app}
+                  desc={true}
                   del={user === app.creator}
                   accept={user !== app.creator}
                   delApp={(a) => setDel(del + a)}

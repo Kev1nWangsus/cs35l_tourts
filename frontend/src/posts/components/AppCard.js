@@ -27,10 +27,24 @@ import EventIcon from '@mui/icons-material/Event';
 import StadiumIcon from '@mui/icons-material/Stadium';
 import React, { useState, useEffect } from 'react';
 import FormContainer from '../../common/components/FormElement/FormContainer';
-
+import MapIcon from '@mui/icons-material/Map';
+import StarIcon from '@mui/icons-material/Star';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 const AppCard = (props) => {
-  const { id, image, creator, title, description, date, start, end, address, rating, region } =
-    props.app;
+  const {
+    id,
+    image,
+    creator,
+    title,
+    description,
+    date,
+    start,
+    end,
+    address,
+    rating,
+    region,
+  } = props.app;
   const usDate = date + 'T00:00:00.000-08:00';
   const formatDate = format(new Date(usDate), 'PPP');
   const { isLoading, sendRequest } = useHttpClient();
@@ -93,30 +107,67 @@ const AppCard = (props) => {
         <Typography gutterBottom variant='h5' component='div'>
           {title}
         </Typography>
-        <Typography
-          color='text.secondary'
-          noWrap
-          sx={{
-            width: 1,
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-          }}
+        {props.desc && (
+          <Typography
+            color='text.secondary'
+            noWrap
+            sx={{
+              ml: 2,
+              width: 1,
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+            }}
+          >
+            {description}
+          </Typography>
+        )}
+        <Stack
+          direction='row'
+          alignItems='center'
+          gap={1}
+          sx={{ ml: 2, mt: 1 }}
         >
-          {description}
-        </Typography>
-        <Typography color='text.secondary'>
-          {`${start}-${end}, ${formatDate}`}
-        </Typography>
-        <Typography color='text.secondary'>{`Skill level: ${rating}`}</Typography>
-        <Typography color='text.secondary'>{`Region: ${region}`}</Typography>
-        <Typography color='text.secondary'>{`@${address}`}</Typography>
+          <AccessAlarmsIcon color='text.secondary' />
+          <Typography color='text.secondary'>{`   ${start}-${end}, ${formatDate}`}</Typography>
+        </Stack>
+        {rating && (
+          <Stack
+            direction='row'
+            alignItems='center'
+            gap={1}
+            sx={{ ml: 2, mt: 1 }}
+          >
+            <StarIcon color='primary.light' />
+            <Typography color='text.secondary'>{`   ${rating}`}</Typography>
+          </Stack>
+        )}
+        {region && (
+          <Stack
+            direction='row'
+            alignItems='center'
+            gap={1}
+            sx={{ ml: 2, mt: 1 }}
+          >
+            <MapIcon color='primary.light' />
+            <Typography color='text.secondary'>{`   ${region}`}</Typography>
+          </Stack>
+        )}
+        <Stack
+          direction='row'
+          alignItems='center'
+          gap={1}
+          sx={{ ml: 2, mt: 1 }}
+        >
+          <LocationOnIcon color='primary.light' />
+          <Typography color='text.secondary'>{`   ${address}`}</Typography>
+        </Stack>
       </CardContent>
       <Stack direction='row' justifyContent='end'>
         {props.accept && (
           <Button
             variant='contained'
             color='secondary'
-            sx={{ m: 1, width: 0.2 }}
+            sx={{ mx: 1, mb: 1, width: 0.2 }}
             onClick={handleAccept}
           >
             Accept
@@ -127,7 +178,7 @@ const AppCard = (props) => {
             variant='contained'
             color='error'
             onClick={handleDelete}
-            sx={{ m: 1, width: 0.2 }}
+            sx={{ mx: 1, mb: 1, width: 0.2 }}
           >
             Delete
           </Button>
@@ -136,7 +187,7 @@ const AppCard = (props) => {
           variant='outlined'
           color='primary'
           onClick={handleOpen}
-          sx={{ m: 1, width: 0.2 }}
+          sx={{ mx: 1, mb: 1, width: 0.2 }}
         >
           More
         </Button>
