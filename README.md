@@ -6,15 +6,15 @@ Github repository for CS35L web application Tourts
 
 ---
 
-*Kevin, Shuo Wang*
+*Shuo Wang*
 
-*Jacky, Jianing Li*
+*Jacky Li*
 
-*Fiona, Xinyue Cui*
+*Xinyue Cui*
 
-*Ethan, Yiteng Jiang*
+*Yiteng Jiang*
 
-*Cedric, Hongchang Kuang*
+*Hongchang Kuang*
 
 ## **How to run the program**
 
