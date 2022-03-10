@@ -13,6 +13,11 @@ import {
 import { format } from 'date-fns';
 import { useHttpClient } from '../../common/hooks/http-hook';
 import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useState, useEffect } from 'react';
 import FormContainer from '../../common/components/FormElement/FormContainer';
 
@@ -24,7 +29,6 @@ const AppCard = (props) => {
   const { isLoading, sendRequest } = useHttpClient();
 
   const [open, setOpen] = useState(false);
-  const [appointments, setAppointments] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -141,6 +145,23 @@ const AppCard = (props) => {
       >
         <DialogContent>
           <FormContainer maxWidth='md'>
+            <Collapse in={open}>
+              <Alert
+                action={
+                  <IconButton
+                    aria-label='close'
+                    color='inherit'
+                    size='big'
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <CloseIcon fontSize='inherit' />
+                  </IconButton>
+                }
+                sx={{ mb: 2 }}
+              ></Alert>
+            </Collapse>
             <Typography
               variant='h3'
               gutterBottom
@@ -153,21 +174,19 @@ const AppCard = (props) => {
             <Typography align='center' variant='h4' component='div'>
               {title}
             </Typography>
-            {!isLoading && appointments && (
-              <Grid item xs={8} sm={15} align='center' justify='center'>
-                <h4> Description: {description}</h4>
-                <h4>{`Start Time: ${start}`}</h4>
-                <h4>{`End Time: ${end}`}</h4>
-                <h4>{`Appointment Date: ${formatDate}`}</h4>
-                <h4>{`Address: ${address}`}</h4>
-                <CardMedia
-                  component='img'
-                  height='500'
-                  image={`http://localhost:5000/${image}`}
-                  alt='view'
-                />
-              </Grid>
-            )}
+            <Grid item xs={8} sm={15} align='center' justify='center'>
+              <h4> Description: {description}</h4>
+              <h4>{`Start Time: ${start}`}</h4>
+              <h4>{`End Time: ${end}`}</h4>
+              <h4>{`Appointment Date: ${formatDate}`}</h4>
+              <h4>{`Address: ${address}`}</h4>
+              <CardMedia
+                component='img'
+                height='500'
+                image={`http://localhost:5000/${image}`}
+                alt='view'
+              />
+            </Grid>
             <Grid item xs={8} sm={15} align='center' justify='center'>
               <Button
                 variant={'contained'}
