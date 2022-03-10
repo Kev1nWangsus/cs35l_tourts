@@ -32,8 +32,8 @@ const defaultValues = {
   title: '',
   address: '',
   date: new Date(),
-  startTime: new Date('14:00'),
-  endTime: new Date('16:00'),
+  startTime: new Date(),
+  endTime: new Date(),
   file: null,
 };
 
@@ -44,6 +44,7 @@ const NewCard = (props) => {
     address: Yup.string().required('Address is required'),
     date: Yup.date().typeError('Invalid date').required('Date is required'),
     startTime: Yup.date()
+      .min(Yup.ref('date'), 'Please enter a future time')
       .typeError('Invalid time')
       .required('Start time is required'),
     endTime: Yup.date()
@@ -102,6 +103,7 @@ const NewCard = (props) => {
       setOpenError(true);
     } else {
       props.addApp(1);
+      reset(defaultValues);
       console.log('data', response);
     }
     handleClose();
@@ -261,6 +263,7 @@ const NewCard = (props) => {
                         )}
                       />
                     )}
+                    defaultValue={defaultValues.startTime}
                   />
                   <Controller
                     name='endTime'

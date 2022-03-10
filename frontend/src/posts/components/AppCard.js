@@ -19,7 +19,8 @@ import FormContainer from '../../common/components/FormElement/FormContainer';
 const AppCard = (props) => {
   const { id, image, creator, title, description, date, start, end, address } =
     props.app;
-  const formatDate = format(new Date(date), 'PPP');
+  const usDate = date + 'T00:00:00.000-08:00';
+  const formatDate = format(new Date(usDate), 'PPP');
   const { isLoading, sendRequest } = useHttpClient();
 
   const [open, setOpen] = useState(false);

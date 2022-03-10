@@ -3,14 +3,14 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
-import { 
-  Grid, 
+import {
+  Grid,
   Button,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
-  FormHelperText 
+  FormHelperText,
 } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -24,7 +24,7 @@ const defaultValues = {
   date: null,
   startTime: null,
   endTime: null,
-  sorting: 'Timeframe'
+  sorting: 'Best Match',
 };
 
 const validator = Yup.object().shape({
@@ -49,30 +49,27 @@ const Search = (props) => {
   });
 
   const onSubmit = (data) => {
-    var date, startTime, endTime = null;
+    var date,
+      startTime,
+      endTime = null;
 
     if (data.date === null) {
       date = null;
-    }
-    else {
+    } else {
       date = format(data.date, 'yyyy-MM-dd');
     }
     if (data.startTime === null) {
-      startTime = "00:00";
-    }
-    else {
+      startTime = '00:00';
+    } else {
       startTime = format(data.startTime, 'HH:mm');
     }
     if (data.endTime === null) {
-      endTime = "23:59";
-    }
-    else {
+      endTime = '23:59';
+    } else {
       endTime = format(data.endTime, 'HH:mm');
     }
     props.onChange([date, startTime, endTime, data.sorting]);
-
   };
-
 
   const onReset = () => {
     reset(defaultValues);
@@ -81,7 +78,7 @@ const Search = (props) => {
   return (
     <React.Fragment>
       <Grid container>
-        <Grid item xs={8} marked='center' align='center'>
+        <Grid item xs={8} marked='center'>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <Stack spacing={3} direction='row'>
               <Controller
@@ -144,61 +141,66 @@ const Search = (props) => {
                 defaultValue={defaultValues.endTime}
               />
 
-            <Controller
-              name='sorting'
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <FormControl
-                  sx={{width: 200}}
-                  margin='dense'
-                  error={errors.sorting ? true : false}
-                >
-                  <InputLabel>Sort by</InputLabel>
-                  <Select
-                    value={value}
-                    onChange={onChange}
-                    id='sorting'
-                    name='sorting'
-                    label='sorting'
-                    labelId='sorting-id'
+              <Controller
+                name='sorting'
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <FormControl
+                    margin='dense'
+                    sx={{ width: 200 }}
+                    error={errors.sorting ? true : false}
                   >
-                    {sortings.map((sorting, index) => (
-                      <MenuItem value={sorting} key={index}>
-                        {sorting}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {errors.sorting && (
-                    <FormHelperText>{errors.sorting?.message}</FormHelperText>
-                  )}
-                </FormControl>
-              )}
-              defaultValue=''
-            />
+                    <InputLabel>Sort by</InputLabel>
+                    <Select
+                      value={value}
+                      onChange={onChange}
+                      id='sorting'
+                      name='sorting'
+                      label='sorting'
+                      labelId='sorting-id'
+                    >
+                      {sortings.map((sorting, index) => (
+                        <MenuItem value={sorting} key={index}>
+                          {sorting}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {errors.sorting && (
+                      <FormHelperText>{errors.sorting?.message}</FormHelperText>
+                    )}
+                  </FormControl>
+                )}
+                defaultValue=''
+              />
             </Stack>
           </LocalizationProvider>
         </Grid>
 
-          <Stack
-            spacing={2}
-            direction='row'
-            sx={{ justifyContent: 'center', alignItems: 'center' }}
+        <Stack
+          spacing={2}
+          direction='row'
+          sx={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            ml: 4,
+            width: '20vw',
+          }}
+        >
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            variant={'contained'}
+            sx={{ width: 1, height: 1 }}
           >
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              variant={'contained'}
-              sx={{ width: 0.4, height: 1 }}
-            >
-              Search
-            </Button>
-            <Button
-              onClick={onReset}
-              variant={'contained'}
-              sx={{ width: 0.4, height: 1 }}
-            >
-              Reset
-            </Button>
-          </Stack>
+            Search
+          </Button>
+          <Button
+            onClick={onReset}
+            variant={'contained'}
+            sx={{ width: 1, height: 1 }}
+          >
+            Reset
+          </Button>
+        </Stack>
       </Grid>
     </React.Fragment>
   );

@@ -18,7 +18,7 @@ const getCurrentTime = () => {
   return { curDate, curTime };
 };
 
-const getAllAppointments = async (req, res, next) => {
+const refresh = async () => {
   let appointments;
   try {
     appointments = await Appointment.find({});
@@ -48,9 +48,6 @@ const getAllAppointments = async (req, res, next) => {
           } catch (err) {
             console.log(err);
           }
-          appointments.splice(i, 1);
-        } else {
-          i += 1;
         }
         break;
 
@@ -65,39 +62,65 @@ const getAllAppointments = async (req, res, next) => {
           } catch (err) {
             console.log(err);
           }
-          appointments.splice(i, 1);
-        } else {
-          i += 1;
         }
-        break;
-
-      case 2:
-      case 3:
-        appointments.splice(i, 1);
         break;
 
       default:
         break;
     }
+    i++;
+  }
+  return;
+};
+
+const getAllAppointments = async (req, res, next) => {
+  try {
+    await refresh();
+  } catch (err) {
+    console.log(err);
+  }
+  let appointments;
+  try {
+    appointments = await Appointment.find({});
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching appointments failed, please try again later.',
+      500
+    );
+    return next(error);
   }
 
   appointments = appointments.map((appointment) =>
     appointment.toObject({ getters: true })
   );
 
+  let availableAppointments = [];
   for (const appointment of appointments) {
-    const appointmentCreator = await User.findById(appointment.creator);
-    appointment['username'] = appointmentCreator.username;
-    appointment['rating'] = appointmentCreator.rating;
-    appointment['region'] = appointmentCreator.region;
-    appointment['gender'] = appointmentCreator.gender;
+    if (appointment.state === 0) {
+      console.log('hi');
+      try {
+        const appointmentCreator = await User.findById(appointment.creator);
+        appointment['username'] = appointmentCreator.username;
+        appointment['rating'] = appointmentCreator.rating;
+        appointment['region'] = appointmentCreator.region;
+        appointment['gender'] = appointmentCreator.gender;
+      } catch (err) {
+        console.log(err);
+      }
+      availableAppointments.push(appointment);
+    }
   }
 
-  res.json({ appointments: appointments });
+  res.json({ appointments: availableAppointments });
 };
 
 const getAppointmentById = async (req, res, next) => {
   const appointmentId = req.params.pid;
+  try {
+    await refresh();
+  } catch (err) {
+    console.log(err);
+  }
 
   let appointment;
   try {
@@ -280,7 +303,7 @@ const updateAcceptor = async (req, res, next) => {
   }
 
   const { acceptorId } = req.body;
-
+  console.log(acceptorId);
   let acceptor;
   try {
     acceptor = await User.findById(acceptorId);
@@ -288,7 +311,7 @@ const updateAcceptor = async (req, res, next) => {
     const error = new HttpError('Failed when fetching info from user.', 500);
     return next(error);
   }
-
+  console.log(acceptor);
   const appointmentId = mongoose.Types.ObjectId(req.params.pid);
 
   let appointment;

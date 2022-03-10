@@ -6,7 +6,7 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHttpClient } from '../../common/hooks/http-hook';
 import AppCard from '../components/AppCard';
 import NewCard from '../components/NewCard';
@@ -26,31 +26,11 @@ const Post = () => {
 
   const handleCloseAddSuccess = () => setAddSuccess(false);
   const handleCloseDelSuccess = () => setDelSuccess(false);
+
+  const isFirstRun = useRef(true);
+
   useEffect(() => {
     const controller = new AbortController();
-    const url = 'http://localhost:5000/api/appointments';
-
-    const fetchData = async () => {
-      const [err, response] = await sendRequest(url)
-        .then((response) => [null, response])
-        .catch((err) => [err, null]);
-
-      if (err) {
-        console.log('error', err);
-      } else {
-        console.log('data', response);
-        setAppointments(response.appointments);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
-  useEffect(() => {
     const url = 'http://localhost:5000/api/appointments';
 
     const fetchData = async () => {
@@ -68,9 +48,17 @@ const Post = () => {
     };
 
     fetchData();
+
+    return () => {
+      controller.abort();
+    };
   }, [add]);
 
   useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
     const url = 'http://localhost:5000/api/appointments';
 
     const fetchData = async () => {
