@@ -2,9 +2,10 @@
 
 Github repository for CS35L web application Tourts 
 
+---
+
 ## **Developers**
 
----
 
 *Shuo Wang*
 
@@ -16,11 +17,12 @@ Github repository for CS35L web application Tourts
 
 *Hongchang Kuang*
 
-## **How to run the program**
-
 ---
 
-## **Note: to run the program successfully please ensure your Node.js version is not higher than v16.14.0**
+## **How to run the program**
+
+
+#### **Note: to run the program successfully please ensure your Node.js version is not higher than v16.14.0**
 
 1. Clone the repository to your local machine:
 
