@@ -27,11 +27,24 @@ import EventIcon from '@mui/icons-material/Event';
 import StadiumIcon from '@mui/icons-material/Stadium';
 import React, { useState, useEffect } from 'react';
 import FormContainer from '../../common/components/FormElement/FormContainer';
-import { textAlign } from '@mui/system';
-
+import MapIcon from '@mui/icons-material/Map';
+import StarIcon from '@mui/icons-material/Star';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 const AppCard = (props) => {
-  const { id, image, creator, title, description, date, start, end, address } =
-    props.app;
+  const {
+    id,
+    image,
+    creator,
+    title,
+    description,
+    date,
+    start,
+    end,
+    address,
+    rating,
+    region,
+  } = props.app;
   const usDate = date + 'T00:00:00.000-08:00';
   const formatDate = format(new Date(usDate), 'PPP');
   const { isLoading, sendRequest } = useHttpClient();
@@ -94,28 +107,67 @@ const AppCard = (props) => {
         <Typography gutterBottom variant='h5' component='div'>
           {title}
         </Typography>
-        <Typography
-          color='text.secondary'
-          noWrap
-          sx={{
-            width: 1,
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-          }}
+        {props.desc && (
+          <Typography
+            color='text.secondary'
+            noWrap
+            sx={{
+              ml: 2,
+              width: 1,
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+            }}
+          >
+            {description}
+          </Typography>
+        )}
+        <Stack
+          direction='row'
+          alignItems='center'
+          gap={1}
+          sx={{ ml: 2, mt: 1 }}
         >
-          {description}
-        </Typography>
-        <Typography color='text.secondary'>
-          {`${start}-${end}, ${formatDate}`}
-        </Typography>
-        <Typography color='text.secondary'>{`@${address}`}</Typography>
+          <AccessAlarmsIcon color='text.secondary' />
+          <Typography color='text.secondary'>{`   ${start}-${end}, ${formatDate}`}</Typography>
+        </Stack>
+        {rating && (
+          <Stack
+            direction='row'
+            alignItems='center'
+            gap={1}
+            sx={{ ml: 2, mt: 1 }}
+          >
+            <StarIcon color='primary.light' />
+            <Typography color='text.secondary'>{`   ${rating}`}</Typography>
+          </Stack>
+        )}
+        {region && (
+          <Stack
+            direction='row'
+            alignItems='center'
+            gap={1}
+            sx={{ ml: 2, mt: 1 }}
+          >
+            <MapIcon color='primary.light' />
+            <Typography color='text.secondary'>{`   ${region}`}</Typography>
+          </Stack>
+        )}
+        <Stack
+          direction='row'
+          alignItems='center'
+          gap={1}
+          sx={{ ml: 2, mt: 1 }}
+        >
+          <LocationOnIcon color='primary.light' />
+          <Typography color='text.secondary'>{`   ${address}`}</Typography>
+        </Stack>
       </CardContent>
       <Stack direction='row' justifyContent='end'>
         {props.accept && (
           <Button
             variant='contained'
             color='secondary'
-            sx={{ m: 1, width: 0.2 }}
+            sx={{ mx: 1, mb: 1, width: 0.2 }}
             onClick={handleAccept}
           >
             Accept
@@ -126,7 +178,7 @@ const AppCard = (props) => {
             variant='contained'
             color='error'
             onClick={handleDelete}
-            sx={{ m: 1, width: 0.2 }}
+            sx={{ mx: 1, mb: 1, width: 0.2 }}
           >
             Delete
           </Button>
@@ -135,7 +187,7 @@ const AppCard = (props) => {
           variant='outlined'
           color='primary'
           onClick={handleOpen}
-          sx={{ m: 1, width: 0.2 }}
+          sx={{ mx: 1, mb: 1, width: 0.2 }}
         >
           More
         </Button>
@@ -153,25 +205,6 @@ const AppCard = (props) => {
       >
         <DialogContent>
           <FormContainer maxWidth='md'>
-<<<<<<< HEAD
-            <Collapse in={open}>
-              <Alert
-                action={
-                  <IconButton
-                    aria-label='close'
-                    color='inherit'
-                    size = 'extrabig'
-                    onClick={() => {
-                      setOpen(false);
-                    }}
-                  >
-                    <CloseIcon fontSize='inherit' />
-                  </IconButton>
-                }
-                sx={{ mb: 0 }}
-              ></Alert>
-            </Collapse>
-=======
             <IconButton
               aria-label='close'
               color='inherit'
@@ -194,7 +227,6 @@ const AppCard = (props) => {
             >
               <CloseIcon fontSize='inherit' />
             </IconButton>
->>>>>>> 5171ea11305cbf9135c48161c3c84f9cb8fbf68a
             <Typography
               variant='h2'
               gutterBottom
@@ -202,8 +234,51 @@ const AppCard = (props) => {
               align='center'
               sx={{ mb: 4 }}
             >
-              appointment details
+              appointment details:
             </Typography>
+            <div
+              style={{
+                justifyContent: 'space-around',
+                display: 'flex',
+              }}
+            >
+              <img
+                style={{
+                  width: '160px',
+                  height: '160px',
+                  borderRadius: '80px',
+                  align: 'center',
+                  margin: '20px 0px',
+                }}
+                src='https://marriedbiography.com/wp-content/uploads/2019/05/Rafael-Nadal.jpg' //Later replaced with user.image
+              />
+              <div
+                style={{
+                  color: '#696969',
+                  textAlign: 'left',
+                }}
+              >
+                <h2
+                  style={{
+                    borderBottom: '2px solid grey',
+                  }}
+                >
+                  Creator: {props.app.username}
+                </h2>
+                <div
+                  style={{
+                    color: 'gray',
+                    textAlign: 'justify',
+                    justifyContent: 'space-between',
+                    width: '108%', //Later replaced with user.info
+                  }}
+                >
+                  <h4>Rating: {props.app.rating}</h4>
+                  <h4>Region: {props.app.region}</h4>
+                  <h4>Gender: {props.app.gender}</h4>
+                </div>
+              </div>
+            </div>
             <Typography
               color='#696969'
               variant='h4'
@@ -212,17 +287,6 @@ const AppCard = (props) => {
               justfiy='center'
               borderBottom='2px grey solid'
             >
-              <div>
-                <img
-                  style={{
-                    width: '160px',
-                    height: '160px',
-                    borderRadius: '80px',
-                    align: 'center',
-                  }}
-                  src='https://marriedbiography.com/wp-content/uploads/2019/05/Rafael-Nadal.jpg' //Later replaced with user.image
-                />
-              </div>
               {title}
             </Typography>
             <Grid

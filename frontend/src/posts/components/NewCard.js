@@ -7,12 +7,12 @@ import TimePicker from '@mui/lab/TimePicker';
 import {
   Alert,
   Backdrop,
+  Box,
   Button,
   Card,
   CircularProgress,
   DialogContent,
   Grid,
-  Box,
   IconButton,
   Modal,
   Snackbar,
@@ -21,7 +21,7 @@ import {
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { format } from 'date-fns';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import FormContainer from '../../common/components/FormElement/FormContainer';
@@ -44,7 +44,6 @@ const NewCard = (props) => {
     address: Yup.string().required('Address is required'),
     date: Yup.date().typeError('Invalid date').required('Date is required'),
     startTime: Yup.date()
-      .min(Yup.ref('date'), 'Please enter a future time')
       .typeError('Invalid time')
       .required('Start time is required'),
     endTime: Yup.date()
@@ -231,7 +230,7 @@ const NewCard = (props) => {
                     render={({ field: { onChange, value } }) => (
                       <DesktopDatePicker
                         label='Date'
-                        inputFormat='MM/dd/yyyy'
+                        inputFormat='yyyy-MM-dd'
                         value={value}
                         onChange={onChange}
                         minDate={new Date()}

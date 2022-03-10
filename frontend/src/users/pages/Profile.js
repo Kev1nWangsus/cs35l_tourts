@@ -85,7 +85,7 @@ const Profile = () => {
                 <h4>Region: {loadedUsers.region}</h4>
                 <h4>Gender: {loadedUsers.gender}</h4>
                 <h4>
-                  'Serves'(appointments): {loadedUsers.appointments.length}
+                  'Serves' (appointments): {loadedUsers.appointments.length}
                 </h4>
               </div>
             </div>
@@ -142,7 +142,7 @@ const Profile = () => {
           onClick={handleLogout}
           variant={'contained'}
           size='large'
-          sx={{ mt: 5, width: 0.8 }}
+          sx={{ mt: 5, width: 0.57 }}
         >
           Log out
         </Button>
