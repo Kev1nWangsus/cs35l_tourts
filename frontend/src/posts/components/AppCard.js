@@ -183,14 +183,16 @@ const AppCard = (props) => {
             Delete
           </Button>
         )}
-        <Button
-          variant='outlined'
-          color='primary'
-          onClick={handleOpen}
-          sx={{ mx: 1, mb: 1, width: 0.2 }}
-        >
-          More
-        </Button>
+        {!props.noMore && (
+          <Button
+            variant='outlined'
+            color='primary'
+            onClick={handleOpen}
+            sx={{ mx: 1, mb: 1, width: 0.2 }}
+          >
+            More
+          </Button>
+        )}
       </Stack>
       <Modal
         open={open}
