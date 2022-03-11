@@ -97,7 +97,6 @@ const getAllAppointments = async (req, res, next) => {
   let availableAppointments = [];
   for (const appointment of appointments) {
     if (appointment.state === 0) {
-      console.log('hi');
       try {
         const appointmentCreator = await User.findById(appointment.creator);
         appointment['username'] = appointmentCreator.username;

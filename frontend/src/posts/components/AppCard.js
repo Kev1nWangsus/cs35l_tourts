@@ -114,6 +114,7 @@ const AppCard = (props) => {
           sx={{
             textOverflow: 'ellipsis',
             overflow: 'hidden',
+            ml: 1,
           }}
         >
           {title}
