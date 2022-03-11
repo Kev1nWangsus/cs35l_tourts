@@ -205,10 +205,23 @@ const AppCard = (props) => {
         <DialogContent>
           <FormContainer maxWidth='md'>
             <IconButton
+              aria-label='close'
               color='inherit'
               size='big'
+              border='none'
+              display='inline-block'
+              padding='8px 16px'
+              vertical-align='middle'
+              overflow='hidden'
+              text-decoration='none;'
+              text-align='center'
+              cursor='pointer'
+              white-space='nowrap'
+              position='absolute'
+              right='0'
+              top='0'
               onClick={() => {
-                setOpen(false);
+              setOpen(false);
               }}
             >
               <CloseIcon fontSize='inherit' />
