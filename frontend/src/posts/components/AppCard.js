@@ -13,9 +13,7 @@ import {
 import { format } from 'date-fns';
 import { useHttpClient } from '../../common/hooks/http-hook';
 import Modal from '@mui/material/Modal';
-import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
-import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -29,7 +27,6 @@ import React, { useState, useEffect } from 'react';
 import FormContainer from '../../common/components/FormElement/FormContainer';
 import MapIcon from '@mui/icons-material/Map';
 import StarIcon from '@mui/icons-material/Star';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 const AppCard = (props) => {
   const {
@@ -90,7 +87,10 @@ const AppCard = (props) => {
   };
 
   return (
-    <Card sx={{ width: 1, height: 1 }}>
+    <Card
+      sx={{ width: 1, height: 1 }}
+      style={{ flex: 1, backgroundColor: '#F0F0F0' }}
+    >
       <Backdrop
         sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isLoading}
@@ -104,23 +104,19 @@ const AppCard = (props) => {
         alt='view'
       />
       <CardContent>
-        <Typography gutterBottom variant='h5' component='div'>
+        <Typography align='center' gutterBottom variant='h5' component='div'>
           {title}
         </Typography>
-        {props.desc && (
-          <Typography
-            color='text.secondary'
-            noWrap
-            sx={{
-              ml: 2,
-              width: 1,
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-            }}
-          >
-            {description}
-          </Typography>
-        )}
+        <Stack
+          direction='row'
+          alignItems='center'
+          gap={1}
+          sx={{ ml: 2, mt: 1 }}
+        >
+          <EventIcon color='text.secondary' />
+          <Typography color='text.secondary'>{` ${formatDate}`}</Typography>
+        </Stack>
+
         <Stack
           direction='row'
           alignItems='center'
@@ -128,8 +124,9 @@ const AppCard = (props) => {
           sx={{ ml: 2, mt: 1 }}
         >
           <AccessAlarmsIcon color='text.secondary' />
-          <Typography color='text.secondary'>{`   ${start}-${end}, ${formatDate}`}</Typography>
+          <Typography color='text.secondary'>{`${start}-${end} `}</Typography>
         </Stack>
+
         {rating && (
           <Stack
             direction='row'
@@ -141,6 +138,17 @@ const AppCard = (props) => {
             <Typography color='text.secondary'>{`   ${rating}`}</Typography>
           </Stack>
         )}
+
+        <Stack
+          direction='row'
+          alignItems='center'
+          gap={1}
+          sx={{ ml: 2, mt: 1 }}
+        >
+          <LocationOnIcon color='primary.light' />
+          <Typography color='text.secondary'>{`   ${address}`}</Typography>
+        </Stack>
+
         {region && (
           <Stack
             direction='row'
@@ -152,15 +160,29 @@ const AppCard = (props) => {
             <Typography color='text.secondary'>{`   ${region}`}</Typography>
           </Stack>
         )}
-        <Stack
-          direction='row'
-          alignItems='center'
-          gap={1}
-          sx={{ ml: 2, mt: 1 }}
-        >
-          <LocationOnIcon color='primary.light' />
-          <Typography color='text.secondary'>{`   ${address}`}</Typography>
-        </Stack>
+
+        {props.desc && (
+          <Stack
+            direction='row'
+            alignItems='center'
+            gap={0}
+            sx={{ ml: 2, mt: 1 }}
+          >
+            <DocumentScannerIcon color='text.secondary' />
+            <Typography
+              color='text.secondary'
+              noWrap
+              sx={{
+                ml: 1,
+                width: 1,
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+              }}
+            >
+              {`${description}`}
+            </Typography>
+          </Stack>
+        )}
       </CardContent>
       <Stack direction='row' justifyContent='end'>
         {props.accept && (
@@ -180,7 +202,7 @@ const AppCard = (props) => {
             onClick={handleDelete}
             sx={{ mx: 1, mb: 1, width: 0.2 }}
           >
-            Delete
+            Cancel
           </Button>
         )}
         {!props.noMore && (
@@ -208,21 +230,8 @@ const AppCard = (props) => {
         <DialogContent>
           <FormContainer maxWidth='md'>
             <IconButton
-              aria-label='close'
               color='inherit'
               size='big'
-              border='none'
-              display='inline-block'
-              padding='8px 16px'
-              vertical-align='middle'
-              overflow='hidden'
-              text-decoration='none;'
-              text-align='center'
-              cursor='pointer'
-              white-space='nowrap'
-              position='absolute'
-              right='0'
-              top='0'
               onClick={() => {
                 setOpen(false);
               }}
@@ -256,7 +265,7 @@ const AppCard = (props) => {
               />
               <div
                 style={{
-                  color: '#696969',
+                  color: '#424242',
                   textAlign: 'left',
                 }}
               >
@@ -282,8 +291,9 @@ const AppCard = (props) => {
               </div>
             </div>
             <Typography
-              color='#696969'
+              color='#424242'
               variant='h4'
+              fontSize='12'
               component='div'
               align='center'
               justfiy='center'
@@ -303,9 +313,9 @@ const AppCard = (props) => {
                 <ListItem disablePadding>
                   <ListItemButton>
                     <ListItemIcon>
-                      <DocumentScannerIcon />
+                      <EventIcon />
                     </ListItemIcon>
-                    <h4> Description: {description}</h4>
+                    <h4>{`Appointment Date: ${formatDate}`}</h4>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -324,14 +334,7 @@ const AppCard = (props) => {
                     <h4>{`End Time: ${end}`}</h4>
                   </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <EventIcon />
-                    </ListItemIcon>
-                    <h4>{`Appointment Date: ${formatDate}`}</h4>
-                  </ListItemButton>
-                </ListItem>
+
                 <ListItem disablePadding>
                   <ListItemButton>
                     <ListItemIcon>
@@ -340,10 +343,18 @@ const AppCard = (props) => {
                     <h4>{`Address: ${address}`}</h4>
                   </ListItemButton>
                 </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <DocumentScannerIcon />
+                    </ListItemIcon>
+                    <h4> Description: {description}</h4>
+                  </ListItemButton>
+                </ListItem>
               </List>
               <CardMedia
                 component='img'
-                height='500'
+                height='350'
                 image={`http://localhost:5000/${image}`}
                 alt='view'
               />
@@ -352,7 +363,7 @@ const AppCard = (props) => {
               <Button
                 variant={'contained'}
                 size='large'
-                color='secondary'
+                color='error'
                 sx={{ mt: 5, width: 0.8 }}
                 onClick={handleClose}
               >

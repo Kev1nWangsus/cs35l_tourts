@@ -2,33 +2,35 @@
 
 Github repository for CS35L web application Tourts 
 
-## **Developers**
-
 ---
 
-*Kevin, Shuo Wang*
+## **Developers**
 
-*Jacky, Jianing Li*
 
-*Fiona, Xinyue Cui*
+*Shuo Wang*
 
-*Ethan, Yiteng Jiang*
+*Jacky Li*
 
-*Cedric, Hongchang Kuang*
+*Xinyue Cui*
+
+*Yiteng Jiang*
+
+*Hongchang Kuang*
+
+---
 
 ## **How to run the program**
 
----
 
-## **Note: to run the program successfully please ensure your Node.js version is not higher than v16.14.0**
+#### **Note: to run the program successfully, please ensure your Node.js version is not higher than v16.14.0**
 
 1. Clone the repository to your local machine:
 
-    `git clone #url#`
+    `git clone git@github.com:Kev1nWangsus/cs35l_tourts.git`
 
-2. Move into /cs35l_toruts/backend directory:
+2. Change into /cs35l_toruts/backend directory:
 
-    `cd /cs35l_toruts/backend`
+    `cd cs35l_toruts/backend`
 
 3. Install the packages and modules for backend:
     
@@ -40,18 +42,18 @@ Github repository for CS35L web application Tourts
 
     At this time, the backend should be running on http://localhost:5000
 
-5. Open another terminal, move into /cs35l_toruts/frontend directory:
+5. Open another terminal, change into /cs35l_toruts/frontend directory:
 
-    `cd /cs35l_toruts/frontend`
+    `cd cs35l_toruts/frontend`
 
 6. Install the packages and modules for frontend:
     
     `npm install`
 
-7.  Start the frontend:
+7. Start the frontend:
 
     `npm start`
 
-    At this time, the frontend should be running on http://localhost:3000, and your default browser should prompt out with the page.
+    At this time, the frontend should be running on http://localhost:3000, and your default browser should prompt out with this page.
 
 8. Enjoy Tourts!

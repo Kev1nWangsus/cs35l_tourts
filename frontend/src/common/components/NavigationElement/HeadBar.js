@@ -6,7 +6,7 @@ import NavText from './NavText';
 import { AuthContext } from '../../context/authcontext';
 
 const defaultStyle = {
-  fontSize: 16,
+  fontSize: 15,
   color: 'common.white',
   ml: 3,
 };
@@ -19,7 +19,7 @@ const HeadBar = () => {
   const NavLinks = isLogIn ? (
     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
       <NavText to={`/${uid}/apps`} sx={defaultStyle}>
-        MY POSTS
+        <subtitle1>MY APPOINTMENTS</subtitle1>
       </NavText>
       <NavText to={`/profile/${uid}`} sx={defaultStyle}>
         PROFILE
