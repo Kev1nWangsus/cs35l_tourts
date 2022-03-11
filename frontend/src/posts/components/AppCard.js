@@ -13,9 +13,7 @@ import {
 import { format } from 'date-fns';
 import { useHttpClient } from '../../common/hooks/http-hook';
 import Modal from '@mui/material/Modal';
-import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
-import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -29,7 +27,6 @@ import React, { useState, useEffect } from 'react';
 import FormContainer from '../../common/components/FormElement/FormContainer';
 import MapIcon from '@mui/icons-material/Map';
 import StarIcon from '@mui/icons-material/Star';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 const AppCard = (props) => {
   const {
@@ -183,14 +180,16 @@ const AppCard = (props) => {
             Delete
           </Button>
         )}
-        <Button
-          variant='outlined'
-          color='primary'
-          onClick={handleOpen}
-          sx={{ mx: 1, mb: 1, width: 0.2 }}
-        >
-          More
-        </Button>
+        {!props.noMore && (
+          <Button
+            variant='outlined'
+            color='primary'
+            onClick={handleOpen}
+            sx={{ mx: 1, mb: 1, width: 0.2 }}
+          >
+            More
+          </Button>
+        )}
       </Stack>
       <Modal
         open={open}
@@ -206,21 +205,8 @@ const AppCard = (props) => {
         <DialogContent>
           <FormContainer maxWidth='md'>
             <IconButton
-              aria-label='close'
               color='inherit'
               size='big'
-              border='none'
-              display='inline-block'
-              padding='8px 16px'
-              vertical-align='middle'
-              overflow='hidden'
-              text-decoration='none;'
-              text-align='center'
-              cursor='pointer'
-              white-space='nowrap'
-              position='absolute'
-              right='0'
-              top='0'
               onClick={() => {
                 setOpen(false);
               }}

@@ -50,7 +50,7 @@ const MyPosts = () => {
           <Grid container spacing={4} sx={{ mt: 1 }}>
             {todo.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
-                <AppCard app={app} accept={false} />
+                <AppCard app={app} noMore={true} accept={false} />
               </Grid>
             ))}
           </Grid>
@@ -64,7 +64,7 @@ const MyPosts = () => {
           <Grid container spacing={4} sx={{ mt: 1 }}>
             {future.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
-                <AppCard app={app} del={true} />
+                <AppCard app={app} noMore={true} del={true} />
               </Grid>
             ))}
           </Grid>
@@ -78,7 +78,7 @@ const MyPosts = () => {
           <Grid container spacing={4} sx={{ mt: 1 }}>
             {finished.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
-                <AppCard app={app} accept={false} />
+                <AppCard app={app} noMore={true} accept={false} />
               </Grid>
             ))}
           </Grid>
@@ -92,7 +92,7 @@ const MyPosts = () => {
           <Grid container spacing={4} sx={{ mt: 1 }}>
             {expired.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
-                <AppCard app={app} accept={false} />
+                <AppCard app={app} noMore={true} accept={false} />
               </Grid>
             ))}
           </Grid>
