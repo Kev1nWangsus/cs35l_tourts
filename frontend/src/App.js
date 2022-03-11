@@ -14,7 +14,6 @@ import HeadBar from './common/components/NavigationElement/HeadBar';
 import HomeBackground from './common/components/ViewElement/HomeBackground';
 import { AuthContext } from './common/context/authcontext';
 import Posts from './posts/pages/Posts.js';
-import Users from './users/pages/Users.js';
 import MyPosts from './posts/pages/MyPosts';
 import Profile from './users/pages/Profile';
 
@@ -54,11 +53,6 @@ const App = () => {
         <MyPosts />
       </Route>
 
-      <Route path='/app/new' exact>
-        {/* initiate a new appointment */}
-      </Route>
-
-      <Route path='/app/:appId'>{/* view an appointment */}</Route>
       <Redirect to='/' />
     </Switch>
   ) : (

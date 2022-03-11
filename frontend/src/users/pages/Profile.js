@@ -137,9 +137,6 @@ const Profile = () => {
           justifyContent: 'center',
         }}
       >
-        <Typography invariant='h2'>
-          Profile page is still under construction...
-        </Typography>
         <Button
           onClick={handleLogout}
           variant={'contained'}

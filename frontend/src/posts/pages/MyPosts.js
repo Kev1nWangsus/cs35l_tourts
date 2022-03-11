@@ -10,7 +10,7 @@ const MyPosts = () => {
   const [future, setFuture] = useState([]);
   const [finished, setFinished] = useState([]);
   const { isLoading, error, sendRequest } = useHttpClient();
-
+  const [del, setDel] = useState(0);
   useEffect(() => {
     const controller = new AbortController();
     const uid = localStorage.getItem('user');
@@ -37,7 +37,7 @@ const MyPosts = () => {
     return () => {
       controller.abort();
     };
-  }, [sendRequest]);
+  }, [del, sendRequest]);
 
   return (
     <React.Fragment>
@@ -64,7 +64,13 @@ const MyPosts = () => {
           <Grid container spacing={4} sx={{ mt: 1 }}>
             {future.map((app, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
-                <AppCard app={app} noMore={true} del={true} />
+                <AppCard
+                  app={app}
+                  noMore={true}
+                  accept={false}
+                  del={true}
+                  delApp={(a) => setDel(del + a)}
+                />
               </Grid>
             ))}
           </Grid>

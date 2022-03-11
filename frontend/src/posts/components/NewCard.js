@@ -75,7 +75,6 @@ const NewCard = (props) => {
 
   const onSubmit = async (data) => {
     setImageUrl(null);
-    const controller = new AbortController();
     const date = format(data.date, 'yyyy-MM-dd');
     const creator = localStorage.getItem('user');
 
@@ -101,8 +100,8 @@ const NewCard = (props) => {
       console.log('error', err);
       setOpenError(true);
     } else {
-      props.addApp(1);
       reset(defaultValues);
+      props.addApp(1);
       console.log('data', response);
     }
     handleClose();
@@ -134,8 +133,8 @@ const NewCard = (props) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          flex:1, 
-          backgroundColor:'#F0FAEF'
+          flex: 1,
+          backgroundColor: '#F0FAEF',
         }}
         elevation={0}
         onClick={handleOpen}
@@ -232,7 +231,7 @@ const NewCard = (props) => {
                     render={({ field: { onChange, value } }) => (
                       <DesktopDatePicker
                         label='Date'
-                        inputFormat='yyyy-MM-dd'
+                        inputFormat='MM/dd/yyyy'
                         value={value}
                         onChange={onChange}
                         minDate={new Date()}

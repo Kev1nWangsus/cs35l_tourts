@@ -30,7 +30,7 @@ import StarIcon from '@mui/icons-material/Star';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 const AppCard = (props) => {
   const {
-    id,
+    _id,
     image,
     creator,
     title,
@@ -45,13 +45,12 @@ const AppCard = (props) => {
   const usDate = date + 'T00:00:00.000-08:00';
   const formatDate = format(new Date(usDate), 'PPP');
   const { isLoading, sendRequest } = useHttpClient();
-
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleAccept = async () => {
-    const url = `http://localhost:5000/api/appointments/${id}`;
+    const url = `http://localhost:5000/api/appointments/${_id}`;
     const acceptorId = localStorage.getItem('user');
     const data = { acceptorId: acceptorId };
     console.log(data);
@@ -73,7 +72,7 @@ const AppCard = (props) => {
   };
 
   const handleDelete = async () => {
-    const url = `http://localhost:5000/api/appointments/${id}`;
+    const url = `http://localhost:5000/api/appointments/${_id}`;
     const [err, response] = await sendRequest(url, 'DELETE')
       .then((response) => [null, response])
       .catch((err) => [err, null]);
@@ -89,7 +88,7 @@ const AppCard = (props) => {
   return (
     <Card
       sx={{ width: 1, height: 1 }}
-      style={{ flex: 1, backgroundColor: '#F0F0F0' }}
+      style={{ flex: 1, backgroundColor: '#f0f0f0' }}
     >
       <Backdrop
         sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -104,7 +103,19 @@ const AppCard = (props) => {
         alt='view'
       />
       <CardContent>
-        <Typography align='center' gutterBottom variant='h5' component='div'>
+        <Typography
+          align='center'
+          color='primary.light'
+          gutterBottom
+          fontSize={20}
+          component='div'
+          variant='subtitle1'
+          noWrap
+          sx={{
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+          }}
+        >
           {title}
         </Typography>
         <Stack
@@ -113,8 +124,8 @@ const AppCard = (props) => {
           gap={1}
           sx={{ ml: 2, mt: 1 }}
         >
-          <EventIcon color='text.secondary' />
-          <Typography color='text.secondary'>{` ${formatDate}`}</Typography>
+          <EventIcon color='primary' />
+          <Typography color='primary'>{` ${formatDate}`}</Typography>
         </Stack>
 
         <Stack
@@ -123,8 +134,8 @@ const AppCard = (props) => {
           gap={1}
           sx={{ ml: 2, mt: 1 }}
         >
-          <AccessAlarmsIcon color='text.secondary' />
-          <Typography color='text.secondary'>{`${start}-${end} `}</Typography>
+          <AccessAlarmsIcon color='primary' />
+          <Typography color='primary'>{`${start}-${end} `}</Typography>
         </Stack>
 
         {rating && (
@@ -134,8 +145,8 @@ const AppCard = (props) => {
             gap={1}
             sx={{ ml: 2, mt: 1 }}
           >
-            <StarIcon color='primary.light' />
-            <Typography color='text.secondary'>{`   ${rating}`}</Typography>
+            <StarIcon color='primary' />
+            <Typography color='primary'>{`${rating}`}</Typography>
           </Stack>
         )}
 
@@ -146,7 +157,15 @@ const AppCard = (props) => {
           sx={{ ml: 2, mt: 1 }}
         >
           <LocationOnIcon color='primary.light' />
-          <Typography color='text.secondary'>{`   ${address}`}</Typography>
+          <Typography
+            noWrap
+            sx={{
+              width: 1,
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+            }}
+            color='primary'
+          >{`${address}`}</Typography>
         </Stack>
 
         {region && (
@@ -157,7 +176,7 @@ const AppCard = (props) => {
             sx={{ ml: 2, mt: 1 }}
           >
             <MapIcon color='primary.light' />
-            <Typography color='text.secondary'>{`   ${region}`}</Typography>
+            <Typography color='primary'>{`   ${region}`}</Typography>
           </Stack>
         )}
 
@@ -168,9 +187,9 @@ const AppCard = (props) => {
             gap={0}
             sx={{ ml: 2, mt: 1 }}
           >
-            <DocumentScannerIcon color='text.secondary' />
+            <DocumentScannerIcon color='primary' />
             <Typography
-              color='text.secondary'
+              color='primary'
               noWrap
               sx={{
                 ml: 1,

@@ -73,6 +73,7 @@ const Search = (props) => {
 
   const onReset = () => {
     reset(defaultValues);
+    props.onChange([]);
   };
 
   return (

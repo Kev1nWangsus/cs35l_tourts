@@ -19,7 +19,7 @@ const HeadBar = () => {
   const NavLinks = isLogIn ? (
     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
       <NavText to={`/${uid}/apps`} sx={defaultStyle}>
-        <subtitle1>MY APPOINTMENTS</subtitle1>
+        MY APPOINTMENTS
       </NavText>
       <NavText to={`/profile/${uid}`} sx={defaultStyle}>
         PROFILE
