@@ -346,7 +346,7 @@ const AppCard = (props) => {
                     <ListItemIcon>
                       <DocumentScannerIcon />
                     </ListItemIcon>
-                    <h5> Description: {description}</h5>
+                    <h4> Description: {description}</h4>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -354,7 +354,7 @@ const AppCard = (props) => {
                     <ListItemIcon>
                       <AccessAlarmsIcon />
                     </ListItemIcon>
-                    <h5>{`Start Time: ${start}`}</h5>
+                    <h4>{`Start Time: ${start}`}</h4>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -362,7 +362,7 @@ const AppCard = (props) => {
                     <ListItemIcon>
                       <AccessAlarmsIcon />
                     </ListItemIcon>
-                    <h5>{`End Time: ${end}`}</h5>
+                    <h4>{`End Time: ${end}`}</h4>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -370,7 +370,7 @@ const AppCard = (props) => {
                     <ListItemIcon>
                       <EventIcon />
                     </ListItemIcon>
-                    <h5>{`Appointment Date: ${formatDate}`}</h5>
+                    <h4>{`Appointment Date: ${formatDate}`}</h4>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -378,7 +378,7 @@ const AppCard = (props) => {
                     <ListItemIcon>
                       <StadiumIcon />
                     </ListItemIcon>
-                    <h5>{`Address: ${address}`}</h5>
+                    <h4>{`Address: ${address}`}</h4>
                   </ListItemButton>
                 </ListItem>
               </List>
