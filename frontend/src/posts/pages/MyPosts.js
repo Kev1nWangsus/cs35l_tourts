@@ -44,7 +44,7 @@ const MyPosts = () => {
       <Container sx={{ py: 4, maxWidth: 'lg', minHeight: '80vh' }}>
         <FormContainer maxWidth='lg' marginTop={2} marginBottom={2}>
           <Typography variant='h4' sx={{ mb: 1 }}>
-            TODO:
+            Appointments:
           </Typography>
           <Divider />
           <Grid container spacing={4} sx={{ mt: 1 }}>
@@ -58,7 +58,7 @@ const MyPosts = () => {
 
         <FormContainer maxWidth='lg' marginTop={2} marginBottom={2}>
           <Typography variant='h4' sx={{ mb: 1 }}>
-            FUTURE:
+            Pending:
           </Typography>
           <Divider />
           <Grid container spacing={4} sx={{ mt: 1 }}>
