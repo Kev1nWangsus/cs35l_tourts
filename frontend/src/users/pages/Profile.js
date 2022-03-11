@@ -36,8 +36,6 @@ const Profile = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
-    localStorage.removeItem('rating');
-    localStorage.removeItem('region');
     console.log('Successfully erased cache!');
     auth.logout();
     console.log('Successfully logged out!');

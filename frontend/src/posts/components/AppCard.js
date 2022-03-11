@@ -137,7 +137,6 @@ const AppCard = (props) => {
           <AccessAlarmsIcon color='primary' />
           <Typography color='primary'>{`${start}-${end} `}</Typography>
         </Stack>
-
         {rating && (
           <Stack
             direction='row'
@@ -221,7 +220,7 @@ const AppCard = (props) => {
             onClick={handleDelete}
             sx={{ mx: 1, mb: 1, width: 0.2 }}
           >
-            Cancel
+            Delete
           </Button>
         )}
         {!props.noMore && (
@@ -249,8 +248,21 @@ const AppCard = (props) => {
         <DialogContent>
           <FormContainer maxWidth='md'>
             <IconButton
+              aria-label='close'
               color='inherit'
               size='big'
+              border='none'
+              display='inline-block'
+              padding='8px 16px'
+              vertical-align='middle'
+              overflow='hidden'
+              text-decoration='none;'
+              text-align='center'
+              cursor='pointer'
+              white-space='nowrap'
+              position='absolute'
+              right='0'
+              top='0'
               onClick={() => {
                 setOpen(false);
               }}
@@ -258,7 +270,7 @@ const AppCard = (props) => {
               <CloseIcon fontSize='inherit' />
             </IconButton>
             <Typography
-              variant='h3'
+              variant='h2'
               gutterBottom
               marked='center'
               align='center'
@@ -284,7 +296,7 @@ const AppCard = (props) => {
               />
               <div
                 style={{
-                  color: '#424242',
+                  color: '#696969',
                   textAlign: 'left',
                 }}
               >
@@ -310,9 +322,8 @@ const AppCard = (props) => {
               </div>
             </div>
             <Typography
-              color='#424242'
+              color='#696969'
               variant='h4'
-              fontSize='12'
               component='div'
               align='center'
               justfiy='center'
@@ -332,42 +343,41 @@ const AppCard = (props) => {
                 <ListItem disablePadding>
                   <ListItemButton>
                     <ListItemIcon>
+                      <DocumentScannerIcon />
+                    </ListItemIcon>
+                    <h5> Description: {description}</h5>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <AccessAlarmsIcon />
+                    </ListItemIcon>
+                    <h5>{`Start Time: ${start}`}</h5>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <AccessAlarmsIcon />
+                    </ListItemIcon>
+                    <h5>{`End Time: ${end}`}</h5>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
                       <EventIcon />
                     </ListItemIcon>
-                    <h4>{`Appointment Date: ${formatDate}`}</h4>
+                    <h5>{`Appointment Date: ${formatDate}`}</h5>
                   </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <AccessAlarmsIcon />
-                    </ListItemIcon>
-                    <h4>{`Start Time: ${start}`}</h4>
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <AccessAlarmsIcon />
-                    </ListItemIcon>
-                    <h4>{`End Time: ${end}`}</h4>
-                  </ListItemButton>
-                </ListItem>
-
                 <ListItem disablePadding>
                   <ListItemButton>
                     <ListItemIcon>
                       <StadiumIcon />
                     </ListItemIcon>
-                    <h4>{`Address: ${address}`}</h4>
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <DocumentScannerIcon />
-                    </ListItemIcon>
-                    <h4> Description: {description}</h4>
+                    <h5>{`Address: ${address}`}</h5>
                   </ListItemButton>
                 </ListItem>
               </List>
@@ -382,7 +392,7 @@ const AppCard = (props) => {
               <Button
                 variant={'contained'}
                 size='large'
-                color='error'
+                color='secondary'
                 sx={{ mt: 5, width: 0.8 }}
                 onClick={handleClose}
               >

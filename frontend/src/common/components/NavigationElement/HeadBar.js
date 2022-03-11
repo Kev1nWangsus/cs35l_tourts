@@ -6,7 +6,7 @@ import NavText from './NavText';
 import { AuthContext } from '../../context/authcontext';
 
 const defaultStyle = {
-  fontSize: 15,
+  fontSize: 16,
   color: 'common.white',
   ml: 3,
 };

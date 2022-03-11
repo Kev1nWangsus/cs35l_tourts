@@ -91,8 +91,6 @@ const Register = () => {
       console.log('error', err);
     } else {
       localStorage.setItem('user', response.user.id);
-      localStorage.setItem('rating', response.user.rating);
-      localStorage.setItem('region', response.user.region);
       auth.login(response.user.id);
     }
   };
