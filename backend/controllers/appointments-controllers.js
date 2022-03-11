@@ -109,6 +109,7 @@ const getAllAppointments = async (req, res, next) => {
       availableAppointments.push(appointment);
     }
   }
+  availableAppointments.reverse();
 
   res.json({ appointments: availableAppointments });
 };
@@ -189,7 +190,6 @@ const getAppointmentsByUserId = async (req, res, next) => {
         break;
     }
   }
-  console.log(userWithAppointments);
 
   res.json({
     future: future,
@@ -302,7 +302,6 @@ const updateAcceptor = async (req, res, next) => {
   }
 
   const { acceptorId } = req.body;
-  console.log(acceptorId);
   let acceptor;
   try {
     acceptor = await User.findById(acceptorId);
@@ -310,7 +309,6 @@ const updateAcceptor = async (req, res, next) => {
     const error = new HttpError('Failed when fetching info from user.', 500);
     return next(error);
   }
-  console.log(acceptor);
   const appointmentId = mongoose.Types.ObjectId(req.params.pid);
 
   let appointment;
